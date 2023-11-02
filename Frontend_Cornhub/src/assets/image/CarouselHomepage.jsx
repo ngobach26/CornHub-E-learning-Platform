@@ -2,7 +2,7 @@ import React from "react";
 
 const customImageStyle = {
   maxHeight: "400px", 
-  width: "900px", 
+  width: "1300px", 
 };
 
 const CarouselHomepage = {

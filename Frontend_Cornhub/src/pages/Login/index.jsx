@@ -1,12 +1,14 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; 
 
 import { useLogin } from "../../hooks/useLogin";
 import Button from "../../components/Button";
 
-import { Checkbox, FormControlLabel, TextField, Snackbar, Alert } from "@mui/material";
+import LoadingButton from '@mui/lab/LoadingButton';
+import { Checkbox, FormControlLabel, TextField, Snackbar, Avatar, CircularProgress } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import WarningIcon from "@mui/icons-material/Warning";
+
 
 function Copyright(props) {
   return (
@@ -24,6 +26,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorAlert, setErrorAlert] = useState(false);
+  const [loading, setLoading] = useState(false);
   const login = useLogin();
   const navigate = useNavigate();
 
@@ -55,12 +58,15 @@ export default function Login() {
       <div className="flex flex-1 items-center justify-center rounded-[15px] shadow-[rgba(0,_0,_0,_0.3)_0px_20px_60px]">
         <div className="w-4/5 max-w-md">
           <div className="text-center">
-            <div className="p-3 mx-auto rounded-full bg-secondary-main">
-              <LockOutlinedIcon />
+            <div className="flex items-center justify-center">
+              <Avatar sx={{  bgcolor: "#0077FF" }}>
+                <LockOutlinedIcon />
+              </Avatar>
             </div>
             <h1 className="mt-4 text-2xl font-semibold">Log in</h1>
           </div>
           <Snackbar
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
             open={errorAlert}
             autoHideDuration={5000}
             onClose={handleAlertClose}

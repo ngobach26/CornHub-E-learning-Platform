@@ -1,17 +1,21 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
-import React from "react";
+import { useAuthContext } from "../../hooks/useAuthContext";
 import SearchBar from "../SearchBar";
 import Profilemenu from "./components/Profilemenu";
 import Button from "../Button";
 
-export default function Navbar(){
+export default function Navbar() {
+  const { user } = useAuthContext();
+  const [query, setQuery] = useState("");
+  const navigate = useNavigate();
   return (
     <div className="">
       <div className="w-full shadow-lg lg:px-6 md:w-auto">
@@ -33,36 +37,53 @@ export default function Navbar(){
               </h3>
             </div>
             <div className="flex gap-2 mx-5">
-              <IconButton 
-                size="large" 
-                aria-label="wishlist" 
-                color="inherit">
+              <IconButton
+                style={{ color: '#0077FF' }}
+                size="large"
+                aria-label="shopping cart"
+                color="inherit"
+              >
                 <Badge color="primary">
                   <ShoppingCartOutlinedIcon />
                 </Badge>
               </IconButton>
               <IconButton
+                style={{ color: '#0077FF' }}
                 size="large"
-                aria-label="shopping cart"
+                aria-label="favorite"
                 color="inherit"
               >
                 <Badge color="primary">
                   <FavoriteBorderIcon />
                 </Badge>
               </IconButton>
+              <IconButton
+                style={{ color: '#0077FF' }}
+                size="large"
+                color="inherit"
+              >
+                <Badge color="error">
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
             </div>
-            <div className="hidden gap-3 md:flex">
-              <Link to="/login">
-                <Button label="Log In" variant="outlined" />
-              </Link>
-              <Link to="/signup">
-                <Button label="Sign Up" />
-              </Link>
-              <Profilemenu />
-            </div>
+            {user ? (
+              <div className="hidden gap-3 md:flex">
+                <Profilemenu />
+              </div>
+            ) : (
+              <div className="hidden gap-3 md:flex">
+                <Button
+                  label="Log In"
+                  variant="outlined"
+                  onClick={() => navigate("/login")}
+                />
+                <Button label="Sign Up" onClick={() => navigate("/signup")} />
+              </div>
+            )}
           </div>
         </div>
       </div>
     </div>
   );
-};
+}

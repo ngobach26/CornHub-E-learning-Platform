@@ -13,7 +13,7 @@ function Footer(){
   ];
   return (
     <div className="font-normal leading-5 text-1.6 text-gray-900">
-      <div className="px-8 pt-10 pb-0 text-white bg-gray-900 border-t border-gray-700 border-solid">
+      <div className="px-8 pt-10 pb-0 text-white bg-blue-800 border-t border-gray-700 border-solid">
         <div className="flex">
           <div className="order-1 p-0 ml-auto">
             <div className="text-white justify-start min-w-36 bg-transparent h-16 relative items-center inline-flex cursor-pointer font-normal leading-5 text-1.6 px-4 py-0 border border-white">

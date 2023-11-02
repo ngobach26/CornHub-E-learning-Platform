@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-// import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
@@ -10,15 +10,33 @@ import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 
 export default function Profilemenu() {
-  //   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
+  
+  const handleClose = (route) => {
     setAnchorEl(null);
+    if (route) {
+      navigate(route); 
+    }
   };
+
+  const menuItems = [
+    {
+      icon: <Settings />,
+      label: "Settings",
+      route: "/settings",
+    },
+    {
+      icon: <Logout />,
+      label: "Logout",
+      route: "/logout",
+    },
+  ];
 
   return (
     <>
@@ -62,18 +80,15 @@ export default function Profilemenu() {
           My account
         </MenuItem>
         <Divider />
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <Settings />
-          </ListItemIcon>
-          Settings
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <Logout />
-          </ListItemIcon>
-          Logout
-        </MenuItem>
+        {menuItems.map((item, index) => (
+          <MenuItem
+            key={index}
+            onClick={() => handleClose(item.route)} 
+          >
+            {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}
+            {item.label}
+          </MenuItem>
+        ))}
       </Menu>
     </>
   );

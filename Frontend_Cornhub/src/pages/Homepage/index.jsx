@@ -1,17 +1,14 @@
 import React from "react";
-import Footer from "../../components/Footer";
-import Navbar from "../../components/Navbar";
 import CarouselComp from "../../components/CarouselComp";
+import Layout from "../../components/Layout";
+import Footer from "../../components/Footer";
+// import SectionList from "../../components/SectionList";
+
 
 function Homepage() {
   return (
     <>
-      {/* <div>Homepage</div> */}
-      {/* just to test things out */}
-      <Navbar />
-      <CarouselComp />
-      something
-      <Footer />
+      <Layout />
     </>
   );
 }

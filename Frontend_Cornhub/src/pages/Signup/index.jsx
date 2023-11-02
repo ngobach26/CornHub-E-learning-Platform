@@ -4,8 +4,14 @@ import { useState } from "react";
 import { useSignup } from "../../hooks/useSignup";
 import Button from "../../components/Button";
 
-import { Checkbox, FormControlLabel, TextField, Snackbar, Alert } from "@mui/material";
-import LockOutlined from "@mui/icons-material/LockOutlined";
+import {
+  Checkbox,
+  FormControlLabel,
+  TextField,
+  Snackbar,
+  Avatar,
+} from "@mui/material";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import WarningIcon from "@mui/icons-material/Warning";
 
 function Copyright(props) {
@@ -71,14 +77,17 @@ export default function Signup() {
     <div className="flex items-center justify-center h-screen bg-gray-100">
       <div className="w-full max-w-md p-6 bg-white rounded-md shadow-2xl">
         <div className="text-center">
-          <div className="p-3 mx-auto rounded-full bg-secondary-main">
-            <LockOutlined />
+          <div className="flex items-center justify-center">
+            <Avatar sx={{ bgcolor: "#0077FF" }}>
+              <LockOutlinedIcon />
+            </Avatar>
           </div>
           <h1 className="mt-4 text-2xl font-semibold">
             Sign up and start learning
           </h1>
         </div>
         <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
           open={errorAlert}
           autoHideDuration={5000}
           onClose={handleAlertClose}
