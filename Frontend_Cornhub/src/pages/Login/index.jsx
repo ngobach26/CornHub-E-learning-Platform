@@ -121,7 +121,7 @@ export default function Login() {
                 </Link>
               </div>
             </div>
-            <Button label="Sign In" type="submit" className="mt-5" />
+            <Button label="Log In" type="submit" className="mt-5" />
             <div className="mt-4 text-center">
               Don't have an account?{" "}
               <Link
