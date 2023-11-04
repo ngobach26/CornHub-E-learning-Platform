@@ -25,9 +25,9 @@ function Footer(){
             <ul key={index} className="w-64 p-0 my-0 ml-0 mr-4">
               <li className="pl-0">
                 {section.map((link, i) => (
-                  <li key={i} className="text-white block font-normal text-1.4 no-underline px-0 py-1 hover:cursor-pointer hover:underline">
+                  <div key={i} className="text-white block font-normal text-1.4 no-underline px-0 py-1 hover:cursor-pointer hover:underline">
                     {link}
-                  </li>
+                  </div>
                 ))}
               </li>
             </ul>

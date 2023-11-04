@@ -20,7 +20,7 @@ export default function Layout(props) {
   if (error) {
     return (
       <CenterAligned height="screen">
-        <h3>Cannot fetch data. Please reload the page!</h3>
+        <h3>Error fetching data. Please refresh the page.</h3>
       </CenterAligned>
     );
   }
@@ -28,25 +28,14 @@ export default function Layout(props) {
   return (
     <>
       <Navbar />
-      <CarouselComp />
       <main
         className={classnames(
-          { "xl:px-24 pb-10": !containerClass },
+          { 'xl: pb-10': !containerClass },
           containerClass
         )}
       >
-        <div className="flex flex-col items-start mx-8 mb-8 space-y-3 mt-14">
-          <h2 className="text-4xl font-bold">A broad selection of courses</h2>
-          <h3 className="text-xl">
-            Choose from 69,000 online video courses with new additions published
-            every month
-          </h3>
-        </div>
-        {props.chilren}
+        {props.children}
       </main>
-      <CenterAligned height="screen">
-        <CircularProgress />
-      </CenterAligned>
       <Footer />
     </>
   );

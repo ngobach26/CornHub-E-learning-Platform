@@ -11,6 +11,7 @@ import { useAuthContext } from "../../hooks/useAuthContext";
 import SearchBar from "../SearchBar";
 import Profilemenu from "./components/Profilemenu";
 import Button from "../Button";
+import Logo from "../Logo";
 
 export default function Navbar() {
   const { user } = useAuthContext();
@@ -21,7 +22,7 @@ export default function Navbar() {
       <div className="w-full shadow-lg lg:px-6 md:w-auto">
         <div className="flex items-center h-20">
           <div className="text-3xl font-semibold hover:cursor-pointer">
-            CornHub
+            <Logo variant='header' />
           </div>
           <h3 className="hidden ml-5 text-base md:block hover:text-gray-500 hover:cursor-pointer">
             Categories

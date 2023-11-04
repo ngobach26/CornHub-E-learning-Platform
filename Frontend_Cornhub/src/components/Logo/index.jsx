@@ -1,7 +1,8 @@
-import { Link } from 'react-router-dom';
-import Image from 'next/image';
+import React from "react";
+import { Link } from "react-router-dom";
+import Brand from "../../assets/image/Brand";
 
-export default function Logo(props){
+export default function Logo(props) {
   const { variant } = props;
 
   const variants = {
@@ -11,9 +12,9 @@ export default function Logo(props){
     },
     header: {
       width: 150,
-      height: 40,
+      height: 50,
     },
-    'header-md': {
+    "header-md": {
       width: 145,
       height: 35,
     },
@@ -23,17 +24,16 @@ export default function Logo(props){
     },
   };
 
+  const { width, height } = variants[variant];
+  const BrandSVG = Brand.logoName;
+
   return (
-    <div className={variant === 'header' && 'mt-2'}>
-      <Link to='/'>
-        <a>
-          <Image
-            src=''
-            alt='CornHub'
-            {...variants[variant]}
-          />
-        </a>
+    <div >
+      <Link to="/">
+        <svg {...BrandSVG.props} width={width} height={height}>
+          {BrandSVG.props.children}
+        </svg>
       </Link>
     </div>
   );
-};
+}
