@@ -7,6 +7,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 import Homepage from "./pages/Homepage";
 import UserProfileEditing from "./pages/UserProfileEditing";
 import AccountSecurity from "./pages/AccountSecurity";
+import ViewPublicProfile from "./pages/ViewPublicProfile";
 
 export default function Router() {
   const { user } = useAuthContext();
@@ -42,6 +43,10 @@ export default function Router() {
     {
       path: "/account-security",
       element: <AccountSecurity />,
+    },
+    {
+       path: "/view-public-profile",
+      element: <ViewPublicProfile />
     },
   ]);
 
