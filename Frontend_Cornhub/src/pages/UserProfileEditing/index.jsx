@@ -18,7 +18,7 @@ export default function UserProfileEditing() {
                         <div className="pb-3 text-sm italic">Computer Science Student</div>
                         <ul className="space-y-2 font-medium">
                             <li>
-                                <a href="#" className="flex items-center p-2 text-gray-900 rounded-lg n dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                                <a href="/view-public-profile" className="flex items-center p-2 text-gray-900 rounded-lg n dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                     <span className="flex-1 ml-3 whitespace-nowrap">View public profile</span>
                                 </a>
                             </li>
@@ -88,7 +88,7 @@ export default function UserProfileEditing() {
                                 <input className="w-full h-10 px-3 my-2 border border-black " type="text" placeholder="LinkedIn"/>
                             </form>
                             <span className="p-5">
-                                <button className="px-4 py-2 font-bold text-white bg-black border rounded hover:bg-blue">Save</button>
+                                <button className="px-4 py-2 font-bold text-white bg-gray-500 border rounded hover:bg-blue">Save</button>
                             </span>
                         </div>
                     </div>
