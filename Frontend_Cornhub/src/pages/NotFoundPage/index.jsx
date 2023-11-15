@@ -1,7 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 
 function NotFoundPage() {
+  const navigate = useNavigate()
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <img
@@ -17,6 +18,7 @@ function NotFoundPage() {
       </p>
       <Button
         label="Go back to home"
+        onClick={() => navigate("/")}
         size="large"
         type="submit"
         className="mt-5"
