@@ -38,7 +38,7 @@ function newEmptyData() {
 
 export default function Signup() {
   const [formData, setFormData] = useState(newEmptyData);
-  const [errorAlert, setErrorAlert] = useState(false);
+  const [errorAlert, setErrorAlert] = useState(null);
   const signup = useSignup();
   const navigate = useNavigate();
 
@@ -65,12 +65,12 @@ export default function Signup() {
       navigate("/login");
     } catch (err) {
       console.log("err", err);
-      setErrorAlert(true);
+      setErrorAlert(err.response.data.error);
     }
   };
 
   const handleAlertClose = () => {
-    setErrorAlert(false);
+    setErrorAlert(null);
   };
 
   return (
@@ -88,14 +88,14 @@ export default function Signup() {
         </div>
         <Snackbar
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
-          open={errorAlert}
+          open={!!errorAlert}
           autoHideDuration={5000}
           onClose={handleAlertClose}
           message={
             <div className="flex items-center">
               <WarningIcon color="error" style={{ marginRight: "8px" }} />
               <span>
-                This email is already in use. Please try with a different email.
+                {errorAlert}
               </span>
             </div>
           }

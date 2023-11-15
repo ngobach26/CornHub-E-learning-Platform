@@ -2,8 +2,7 @@ import axios from "axios";
 
 const VITE_APP_BASE_URL = "http://localhost:3000/api";
 
-const baseUrl = VITE_APP_BASE_URL + "/users";
-console.log("VITE_APP_BASE_URL", import.meta.env.VITE_APP_BASE_URL);
+const baseUrl = VITE_APP_BASE_URL + "/auth";
 
 const login = async (email, password) => {
   const response = await axios.post(`${baseUrl}/login`, { email, password });

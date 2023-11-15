@@ -25,7 +25,7 @@ function Copyright(props) {
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorAlert, setErrorAlert] = useState(false);
+  const [errorAlert, setErrorAlert] = useState(null);
   const [loading, setLoading] = useState(false);
   const login = useLogin();
   const navigate = useNavigate();
@@ -36,13 +36,12 @@ export default function Login() {
       await login(email, password);
       navigate("/");
     } catch (err) {
-      console.log("err", err);
-      setErrorAlert(true);
+      setErrorAlert(err.response.data.error);
     }
   };
 
   const handleAlertClose = () => {
-    setErrorAlert(false);
+    setErrorAlert(null);
   };
 
   return (
@@ -67,15 +66,14 @@ export default function Login() {
           </div>
           <Snackbar
             anchorOrigin={{ vertical: "top", horizontal: "center" }}
-            open={errorAlert}
+            open={!!errorAlert}
             autoHideDuration={5000}
             onClose={handleAlertClose}
             message={
               <div className="flex items-center">
                 <WarningIcon color="error" style={{ marginRight: "8px" }} />
                 <span>
-                  There was a problem logging in. Please check your email and
-                  password or create an account
+                  {errorAlert}
                 </span>
               </div>
             }
