@@ -11,7 +11,7 @@ const sectionSchema = new Schema({
       required: true,
     },
     duration: String,
-    content: [Lesson.Schema],
+    content: [Lesson.schema],
   });
 
   module.exports = mongoose.model("Section", sectionSchema);
