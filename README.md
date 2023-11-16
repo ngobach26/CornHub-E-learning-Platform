@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="25%" src="./Frontend_Cornhub/src/assets/CornHub.png" />
+  <img width="50%" src="./Frontend_Cornhub/src/assets/CornHub.png" />
 </p>
 <p align="center">
   <a href="https://reactjs.org/"><img src="https://img.shields.io/badge/React-18.2.0-blue.svg?style=flat-square" alt="react" title="React" /></a><!--
