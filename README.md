@@ -17,6 +17,10 @@ An online learning platform for Management of Software Development course, SOICT
   cd Backend_Cornhub
   npm install
 ```
+```shell
+  cd Admin_Cornhub
+  npm install
+```
 4. Connect a new database on mongoDB.
 
 ## Usage
@@ -31,7 +35,12 @@ To run the local website, use the following command for both interface and serve
   cd Backend_Cornhub
   npm run dev
 ```
+```shell
+  cd Admin_Cornhub
+  npm run dev
+```
 The application will be accessible at:
 
 - Frontend_Cornhub: [http://localhost:5173/](http://localhost:5173/)
 - Backend_Cornhub: [http://localhost:3000/api/](http://localhost:3000/api/)
+- Admin_Cornhub: [http://localhost:3001/](http://localhost:3001/)

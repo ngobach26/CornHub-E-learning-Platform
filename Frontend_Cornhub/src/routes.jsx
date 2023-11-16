@@ -10,6 +10,9 @@ import Instructor from "./pages/Instructor";
 import Courses from "./pages/Instructor/Courses";
 import Settings from "./pages/Instructor/Settings";
 import Team from "./pages/Instructor/Team";
+import UserProfileEditing from "./pages/UserProfileEditing"
+import AccountSecurity from "./pages/AccountSecurity"
+import ViewPublicProfile from "./pages/ViewPublicProfile"
 import AddInstructor from "./pages/Instructor/Team/AddInstructor";
 import ManageCourse from "./components/ManageCourse"; // test only
 
