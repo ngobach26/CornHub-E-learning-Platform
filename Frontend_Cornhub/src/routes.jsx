@@ -5,9 +5,13 @@ import Logout from "./pages/logout";
 import Signup from "./pages/Signup";
 import NotFoundPage from "./pages/NotFoundPage";
 import Homepage from "./pages/Homepage";
-import UserProfileEditing from "./pages/UserProfileEditing";
-import AccountSecurity from "./pages/AccountSecurity";
-import ViewPublicProfile from "./pages/ViewPublicProfile";
+import Search from "./pages/Search";
+import Instructor from "./pages/Instructor";
+import Courses from "./pages/Instructor/Courses";
+import Settings from "./pages/Instructor/Settings";
+import Team from "./pages/Instructor/Team";
+import AddInstructor from "./pages/Instructor/Team/AddInstructor";
+import ManageCourse from "./components/ManageCourse"; // test only
 
 export default function Router() {
   const { user } = useAuthContext();
@@ -21,6 +25,10 @@ export default function Router() {
       element: <Homepage />,
     },
     {
+      path: "/search",
+      element: <Search />,
+    },
+    {
       path: "/login",
       element: !user ? <Login /> : <Navigate to="/" />,
     },
@@ -31,6 +39,30 @@ export default function Router() {
     {
       path: "/logout",
       element: <Logout />,
+    },
+    {
+      path: "/instructor",
+      element: <Instructor />
+    },
+    {
+      path: "/instructor/settings",
+      element: <Settings />
+    },
+    {
+      path: "/instructor/courses",
+      element: <Courses />
+    },
+    {
+      path: "/instructor/team",
+      element: <Team />
+    },
+    {
+      path: "/instructor/team/add",
+      element: <AddInstructor />
+    },
+    {
+      path: "/instructor/courses/manage",
+      element: <ManageCourse /> // this tag is for test only
     },
     {
       path: "/notfound",
