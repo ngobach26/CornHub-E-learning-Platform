@@ -5,10 +5,6 @@ const validator = require('validator');
 
 const userSchema = Schema(
     {
-        isAdmin: {
-            type: Boolean,
-            default: false,
-        },
         email: {
             type: String,
             required: true,
@@ -29,6 +25,7 @@ const userSchema = Schema(
         birthday: {
             type: Date,
         },
+        interests: [{type: String}],
         joinedCourses: {
             type: [
                 {

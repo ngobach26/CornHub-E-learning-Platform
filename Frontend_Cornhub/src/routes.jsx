@@ -68,6 +68,18 @@ export default function Router() {
       path: "/notfound",
       element: <NotFoundPage />,
     },
+    {
+      path: "/userprofileediting",
+      element: <UserProfileEditing />,
+    },
+    {
+      path: "/account-security",
+      element: <AccountSecurity />,
+    },
+    {
+       path: "/view-public-profile",
+      element: <ViewPublicProfile />
+    },
   ]);
 
   return routes;

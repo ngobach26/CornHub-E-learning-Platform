@@ -10,8 +10,8 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const userRouter = require("./routes/user");
-app.use("/api/users", userRouter);
+const authRouter = require("./routes/auth");
+app.use("/api/auth", authRouter);
 
 app.listen(process.env.PORT, () => {
     console.log(`Listening on port ${process.env.PORT}`);
