@@ -1,3 +1,11 @@
+<p align="center">
+  <img width="50%" src="./Frontend_Cornhub/src/assets/CornHub.png" />
+</p>
+<p align="center">
+  <a href="https://reactjs.org/"><img src="https://img.shields.io/badge/React-18.2.0-blue.svg?style=flat-square" alt="react" title="React" /></a><!--
+  --><a href="https://ant.design/"><img src="https://img.shields.io/badge/Ant%20Design-5.5.2-blue.svg?style=flat-square" alt="Antd" title="antd" /></a>
+</p>
+
 ## What is CornHub? 
 An online learning platform for Management of Software Development course, SOICT - HUST.
 
