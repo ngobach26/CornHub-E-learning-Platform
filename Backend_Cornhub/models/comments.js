@@ -17,4 +17,4 @@ const commentsSchema = new Schema({
     replies:[this]
   });
 
-  module.exports = mongoose.model("Section", sectionSchema);
+  module.exports = mongoose.model("Comments", commentsSchema);

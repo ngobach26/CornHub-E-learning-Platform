@@ -17,27 +17,15 @@ const lessonSchema = Schema(
     },
     description: {
       type: String,
-      default: function () {
-        return this.type === "quiz" ? null : "";
-      },
     },
     lengthSeconds: {
       type: Number,
       min: 0,
       default: 0,
     },
-
-    // Video specific fields
-    videoUrl: {
-      type: String,
-      required: function () {
-        return this.type === "video";
-      },
-    },
-
-    // Quiz specific fields
-    questions: [Question.schema],
-    note: String
+    data: {
+      type: Object
+    }
   },
   { timestamps: true }
 );

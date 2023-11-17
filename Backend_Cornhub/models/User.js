@@ -33,7 +33,6 @@ const userSchema = Schema(
                         type: Schema.Types.ObjectId,
                         ref: "Course",
                     },
-                    userRating: Number,
                     currentLesson: {
                         type: Schema.Types.ObjectId,
                         ref: "Lesson",
@@ -48,6 +47,16 @@ const userSchema = Schema(
             ],
             default: [],
         },
+        cart:[{
+            type: Schema.Types.ObjectId,
+            ref: "Course",
+            default: [],
+        }],
+        publishedCourse:[{
+            type: Schema.Types.ObjectId,
+            ref:"Course",
+            default: [],
+        }],
     },
     { timestamps: true }
 );
