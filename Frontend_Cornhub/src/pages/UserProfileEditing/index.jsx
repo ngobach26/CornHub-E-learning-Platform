@@ -5,6 +5,7 @@ import { Avatar } from "@mui/material";
 // import Sidebar from "../../components/Navbar/components/Sidebar";
 
 export default function UserProfileEditing() {
+  const { user } = useAuthContext();
   return (
     <>
       <Navbar />
@@ -25,7 +26,7 @@ export default function UserProfileEditing() {
                   className="items-center mx-20"
                 />
                 <div className="py-3 font-bold text-center text-md">
-                  Nguyen Chan Hung
+                  {user.firstName} {user.lastName}
                 </div>
                 <div className="pb-3 text-sm italic">
                   Computer Science Student
