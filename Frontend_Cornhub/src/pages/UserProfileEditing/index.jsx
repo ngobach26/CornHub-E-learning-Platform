@@ -120,13 +120,13 @@ export default function UserProfileEditing() {
                     <input
                       className="w-full h-10 px-3 my-2 border border-black "
                       type="text"
-                      placeholder="First Name"
+                      placeholder={user.firstName}
                     />
                     <br />
                     <input
                       className="w-full h-10 px-3 my-2 border border-black "
                       type="text"
-                      placeholder="Last Name"
+                      placeholder={user.lastName}
                     />
                     <br />
                     <input
