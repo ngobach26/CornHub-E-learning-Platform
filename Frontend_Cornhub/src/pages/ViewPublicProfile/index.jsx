@@ -7,6 +7,7 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 
 export default function ViewPublicProfile() {
+  const { user } = useAuthContext();
   return (
     <>
       <Navbar />
@@ -15,7 +16,9 @@ export default function ViewPublicProfile() {
         {/* Sidebar and Form Container */}
         <div className="flex-1">
           <div className="pt-5 pb-10 text-left text-white bg-black h-30">
-            <span className="ml-20 text-2xl">Nguyen Chan Hung</span>
+            <span className="ml-20 text-2xl">
+              {user.firstName} {user.lastName}
+            </span>
             <br />
             <span className="ml-20 text-md">Work hard, play harder!</span>
           </div>
