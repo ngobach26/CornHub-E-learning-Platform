@@ -10,6 +10,7 @@ import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 
 export default function Profilemenu() {
+  const { user } = useAuthContext();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -77,7 +78,7 @@ export default function Profilemenu() {
       ><a href="/userprofileediting">
         <MenuItem onClick={handleClose}>
             <Avatar sx={{ width: 24, height: 24 }} className="mr-3" />
-            My account
+          {user.firstName} {user.lastName}
         </MenuItem> </a>
         <Divider className="mt-5"/>
         {menuItems.map((item, index) => (
