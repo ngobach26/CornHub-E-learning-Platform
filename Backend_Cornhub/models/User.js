@@ -5,10 +5,6 @@ const validator = require('validator');
 
 const userSchema = Schema(
     {
-        isAdmin: {
-            type: Boolean,
-            default: false,
-        },
         email: {
             type: String,
             required: true,
@@ -29,6 +25,7 @@ const userSchema = Schema(
         birthday: {
             type: Date,
         },
+        interests: [{type: String}],
         joinedCourses: {
             type: [
                 {
@@ -36,7 +33,6 @@ const userSchema = Schema(
                         type: Schema.Types.ObjectId,
                         ref: "Course",
                     },
-                    userRating: Number,
                     currentLesson: {
                         type: Schema.Types.ObjectId,
                         ref: "Lesson",
@@ -51,6 +47,16 @@ const userSchema = Schema(
             ],
             default: [],
         },
+        cart:[{
+            type: Schema.Types.ObjectId,
+            ref: "Course",
+            default: [],
+        }],
+        publishedCourse:[{
+            type: Schema.Types.ObjectId,
+            ref:"Course",
+            default: [],
+        }],
     },
     { timestamps: true }
 );

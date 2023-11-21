@@ -10,6 +10,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import SearchBar from "../SearchBar";
 import Profilemenu from "./components/Profilemenu";
+import Submenu from "./components/Submenu";
 import Button from "../Button";
 import Logo from "../Logo";
 
@@ -24,18 +25,19 @@ export default function Navbar() {
           <div className="text-3xl font-semibold hover:cursor-pointer">
             <Logo variant='header' />
           </div>
-          <h3 className="hidden ml-5 text-base md:block hover:text-gray-500 hover:cursor-pointer">
-            Categories
-          </h3>
-          <div className="items-center hidden w-1/3 ml-5 md:flex">
+          <div className="items-center hidden w-1/2 md:flex">
+            <Submenu />
             <SearchBar />
           </div>
           <div className="flex-grow" />
           <div className="flex items-center">
             <div className="hidden gap-8 md:flex">
-              <h3 className="hidden text-base lg:block hover:text-gray-500 hover:cursor-pointer">
-                My learning
-              </h3>
+              <Link to='/instructor' className="hidden text-base lg:block hover:text-gray-500 hover:cursor-pointer">
+                Instructor
+              </Link>
+              <Link className="hidden text-base lg:block hover:text-gray-500 hover:cursor-pointer">
+                My Learning
+              </Link>
             </div>
             <div className="flex gap-2 mx-5">
               <IconButton

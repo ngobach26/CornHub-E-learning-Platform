@@ -1,7 +1,7 @@
 import React from "react";
 
 const customImageStyle = {
-  maxHeight: "400px", 
+  maxHeight: "450px", 
   width: "1300px", 
 };
 

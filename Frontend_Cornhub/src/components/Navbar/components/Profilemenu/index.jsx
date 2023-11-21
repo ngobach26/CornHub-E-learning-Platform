@@ -52,10 +52,10 @@ export default function Profilemenu() {
           elevation: 0,
           overflow: "visible",
           filter: "drop-shadow(0px 2px 8px rgba(66, 55, 55, 0.32))",
-          mt: 1.5,
+          mt: 1.5, 
           "& .MuiAvatar-root": {
-            width: 32,
-            height: 32,
+            width: 40,
+            height: 40,
             ml: -0.5,
             mr: 1,
           },
@@ -74,12 +74,12 @@ export default function Profilemenu() {
         }}
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-      >
+      ><a href="/userprofileediting">
         <MenuItem onClick={handleClose}>
-          <Avatar sx={{ width: 24, height: 24 }} className="mr-3" />
-          My account
-        </MenuItem>
-        <Divider />
+            <Avatar sx={{ width: 24, height: 24 }} className="mr-3" />
+            My account
+        </MenuItem> </a>
+        <Divider className="mt-5"/>
         {menuItems.map((item, index) => (
           <MenuItem
             key={index}
