@@ -10,6 +10,55 @@ Each developer pulls and pushes to origin. In addition to these centralized push
 
 Technically, this means nothing more than that Alice has defined a Git remote, named `bob`, pointing to Bob’s repository, and vice versa.
 
+## Pull Requests
+
+Pull Requests (PRs) play a crucial role in our GitHub workflow, facilitating collaboration, code review, and the integration of new changes into the codebase. Whether you're working on a new feature, bug fix, or a hotfix, using pull requests helps maintain code quality, traceability, and ensures that changes align with the project's development standards.
+
+### Creating a Pull Request
+
+1. **Branch off `origin`:** When starting work on a new feature or bug fix, create a new branch from the `origin` branch.
+
+    ```shell
+    $ git checkout -b myfeature develop
+    ```
+
+2. **Commit Changes:**
+   - Make the necessary code changes.
+   - Commit your changes to the feature branch.
+
+    ```shell
+    $ git commit -m "Implement new feature"
+    ```
+
+3. **Push Branch:**
+   - Push the feature branch to the remote repository.
+
+    ```shell
+    $ git push origin myfeature
+    ```
+
+4. **Initiate Pull Request:**
+   - Navigate to the GitHub repository.
+   - Open a new pull request from your feature branch to the `origin` branch.
+
+### Code Review
+
+1. **Reviewers:** Assign relevant team members as reviewers for the pull request.
+2. **Discussion:** Use the GitHub interface to discuss code changes, ask questions, and provide feedback.
+3. **Commits:** Ensure commits are clear, concise, and follow the project's commit message conventions.
+
+### Merging a Pull Request
+
+1. **Approval:** PRs require approval from one or more reviewers before merging.
+2. **Tests:** Ensure that automated tests pass successfully.
+3. **Merge:** After approval and passing tests, merge the feature branch into the `develop` branch.
+4. **Delete Branch:** Once merged, delete the feature branch both locally and remotely.
+
+```shell
+$ git branch -d myfeature  # Locally
+$ git push origin --delete myfeature  # Remotely
+```
+
 # The main branches
 
 ![https://nvie.com/img/main-branches@2x.png](https://nvie.com/img/main-branches@2x.png)
