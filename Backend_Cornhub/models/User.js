@@ -105,7 +105,7 @@ userSchema.statics.signup = async function (data) {
 
     return user;
 };
-//ádasdasd
+
 userSchema.statics.login = async function (data) {
     const { email, password } = data;
 
