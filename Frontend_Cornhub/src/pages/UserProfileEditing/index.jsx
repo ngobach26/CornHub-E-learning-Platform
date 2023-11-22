@@ -2,6 +2,7 @@ import React from "react";
 import Footer from "../../components/Footer";
 import Navbar from "../../components/Navbar";
 import { Avatar } from "@mui/material";
+import { useAuthContext } from "../../hooks/useAuthContext";
 // import Sidebar from "../../components/Navbar/components/Sidebar";
 
 export default function UserProfileEditing() {

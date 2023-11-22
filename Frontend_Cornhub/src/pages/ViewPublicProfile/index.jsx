@@ -6,6 +6,8 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 
+import { useAuthContext } from "../../hooks/useAuthContext";
+
 export default function ViewPublicProfile() {
   const { user } = useAuthContext();
   return (

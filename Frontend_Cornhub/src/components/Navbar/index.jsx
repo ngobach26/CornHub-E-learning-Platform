@@ -36,7 +36,7 @@ export default function Navbar() {
                 Instructor
               </Link>
               <Link className="hidden text-base lg:block hover:text-gray-500 hover:cursor-pointer">
-                My Learning
+                Learning
               </Link>
             </div>
             <div className="flex gap-2 mx-5">

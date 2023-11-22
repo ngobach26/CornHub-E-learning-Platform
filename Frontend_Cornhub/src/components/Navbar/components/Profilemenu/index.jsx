@@ -9,6 +9,8 @@ import Divider from "@mui/material/Divider";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 
+import { useAuthContext } from "../../../../hooks/useAuthContext";
+
 export default function Profilemenu() {
   const { user } = useAuthContext();
   const navigate = useNavigate();
