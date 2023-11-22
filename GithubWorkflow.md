@@ -59,6 +59,8 @@ $ git branch -d myfeature  # Locally
 $ git push origin --delete myfeature  # Remotely
 ```
 
+### Important: Every commit MUST be pushed through a branch and then a Pull Request created to avoid potential conflicts!
+
 # The main branches
 
 ![https://nvie.com/img/main-branches@2x.png](https://nvie.com/img/main-branches@2x.png)
