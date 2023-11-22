@@ -10,7 +10,7 @@ const createToken = (_id) => {
 };
 
 //Profile Route
-const profile = async (req, res) => {
+const getprofile = async (req, res) => {
     try {
     if (!req.user) {
       return res.status(404).json({ error: "No such user" });
@@ -21,10 +21,10 @@ const profile = async (req, res) => {
   }
   };
   
-const profile = async (req, res) => {
+const updateprofile = async (req, res) => {
     const { _id } = req.user;
   try {
-    // Sử dụng findByIdAndUpdate để cập nhật thông tin người dùng
+    // Use findByIdAndUpdate to update user's information
     const user = await User.findByIdAndUpdate(_id, req.body, { new: true });
     if (!user) {
       return res.status(404).json({ error: "No such user" });
@@ -34,4 +34,4 @@ const profile = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-module.exports = {profile};
+module.exports = {getprofile, updateprofile};

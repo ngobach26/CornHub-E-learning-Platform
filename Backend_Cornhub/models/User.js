@@ -25,6 +25,24 @@ const userSchema = Schema(
         birthday: {
             type: Date,
         },
+        currentjob: {
+            type: String
+        },
+        introduction: {
+            type: String
+        },
+        website: {
+            type: String
+        },
+        twitter: {
+            type: String
+        },
+        facebook: {
+            type: String
+        },
+        linkedin: {
+            type: String
+        },
         interests: [{type: String}],
         joinedCourses: {
             type: [
@@ -107,5 +125,23 @@ userSchema.statics.login = async function (data) {
 
     return user;
 };
+
+userSchema.statics.getprofile = async function (data) {
+    const {firstName, lastName, currentjob, introduction, website, facebook, twitter, linkedin} = data;
+
+
+}
+
+userSchema.statics.updateprofile = async function (userId, data) {
+    try {
+      const user = await this.findByIdAndUpdate(userId, data, { new: true });
+      if (!user) {
+        throw Error("User not found");
+      }
+      return user;
+    } catch (error) {
+      throw Error("Error updating profile");
+    }
+  };
 
 module.exports = mongoose.model("User", userSchema);
