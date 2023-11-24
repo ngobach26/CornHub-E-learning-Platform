@@ -20,13 +20,12 @@ export default function Profilemenu() {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  
+
   const handleClose = (route) => {
     setAnchorEl(null);
     if (route) {
-      navigate(route); 
+      navigate(route);
     }
-    
   };
 
   const menuItems = [
@@ -56,7 +55,7 @@ export default function Profilemenu() {
           elevation: 0,
           overflow: "visible",
           filter: "drop-shadow(0px 2px 8px rgba(66, 55, 55, 0.32))",
-          mt: 1.5, 
+          mt: 1.5,
           "& .MuiAvatar-root": {
             width: 40,
             height: 40,
@@ -78,17 +77,16 @@ export default function Profilemenu() {
         }}
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-      ><a href="/userprofileediting">
-        <MenuItem onClick={handleClose}>
+      >
+        <a href="/user-profile-editing">
+          <MenuItem onClick={handleClose}>
             <Avatar sx={{ width: 24, height: 24 }} className="mr-3" />
-          {user.firstName} {user.lastName}
-        </MenuItem> </a>
-        <Divider className="mt-5"/>
+            {user.firstName} {user.lastName}
+          </MenuItem>{" "}
+        </a>
+        <Divider className="mt-5" />
         {menuItems.map((item, index) => (
-          <MenuItem
-            key={index}
-            onClick={() => handleClose(item.route)} 
-          >
+          <MenuItem key={index} onClick={() => handleClose(item.route)}>
             {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}
             {item.label}
           </MenuItem>
