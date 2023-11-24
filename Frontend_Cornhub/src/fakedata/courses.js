@@ -1,0 +1,68 @@
+export const exampleCourses = [
+  {
+    title: "Introduction to React",
+    level: "Beginner",
+    subtitle: "Learn the basics of React.js",
+    highlights: [
+      { points: "Hands-on coding exercises" },
+      { points: "Interactive quizzes" },
+      { points: "Certificate upon completion" },
+    ],
+    slug: "intro-to-react",
+    pricing: "Paid",
+    currency: "USD",
+    price: 49.99,
+  },
+  {
+    title: "Advanced JavaScript Concepts",
+    level: "Intermediate",
+    subtitle: "Dive deep into advanced JavaScript concepts",
+    highlights: [
+      { points: "In-depth video lectures" },
+      { points: "Real-world projects" },
+      { points: "Expert instructor guidance" },
+    ],
+    slug: "advanced-js-concepts",
+    pricing: "Paid",
+    currency: "USD",
+    price: 79.99,
+  },
+  {
+    title: "Machine Learning Basics",
+    level: "Intermediate",
+    subtitle: "Explore the fundamentals of machine learning",
+    highlights: [
+      { points: "Practical machine learning examples" },
+      { points: "Hands-on projects" },
+      { points: "Industry-relevant content" },
+    ],
+    slug: "ml-basics",
+    pricing: "Free",
+  },
+  {
+    title: "Web Development Bootcamp",
+    level: "Intermediate",
+    subtitle: "Comprehensive web development course",
+    highlights: [
+      { points: "Full-stack development" },
+      { points: "Portfolio-worthy projects" },
+      { points: "Career guidance" },
+    ],
+    slug: "web-dev-bootcamp",
+    pricing: "Paid",
+    currency: "USD",
+    price: 99.99,
+  },
+  {
+    title: "Python for Data Science",
+    level: "Intermediate",
+    subtitle: "Learn Python for data analysis and visualization",
+    highlights: [
+      { points: "Data manipulation techniques" },
+      { points: "Data visualization projects" },
+      { points: "Quizzes and assessments" },
+    ],
+    slug: "python-data-science",
+    pricing: "Free",
+  },
+];

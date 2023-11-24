@@ -5,7 +5,6 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import CircularProgress from "@mui/material/CircularProgress";
 
-import InstructorPageLayout from "../../../components/InstructorPageLayout";
 import Button from "../../../components/Button";
 import InstructorTable from "../../../components/InstructorTable";
 import CenterAligned from "../../../components/CenterAligned";
@@ -50,7 +49,6 @@ const sampleData = [
 ];
 
 export default function Team() {
-  const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const navigate = useNavigate();
 
@@ -60,26 +58,17 @@ export default function Team() {
 
   useEffect(() => {
     const fetchData = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
       setData(sampleData);
-      setLoading(false);
     };
     fetchData();
   }, []);
 
   const renderTeam = () => {
-    if (loading) {
-      return (
-        <CenterAligned>
-          <CircularProgress />
-        </CenterAligned>
-      );
-    }
     return <InstructorTable data={data} />;
   };
 
   return (
-    <InstructorPageLayout>
+    <>
       <div className="flex justify-between mb-5">
         <h1 className="text-2xl font-medium">Team</h1>
         <div className="flex space-x-4">
@@ -92,6 +81,6 @@ export default function Team() {
         </div>
       </div>
       {renderTeam()}
-    </InstructorPageLayout>
+    </>
   );
 }

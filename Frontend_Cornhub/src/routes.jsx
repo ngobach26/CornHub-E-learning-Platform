@@ -1,89 +1,104 @@
-import { Navigate, useRoutes } from "react-router-dom";
+import React, { Suspense } from "react";
+import { CircularProgress } from "@mui/material";
+import { Navigate, Routes, Route } from "react-router-dom";
 import { useAuthContext } from "./hooks/useAuthContext";
 import Login from "./pages/Login";
 import Logout from "./pages/logout";
 import Signup from "./pages/Signup";
 import NotFoundPage from "./pages/NotFoundPage";
-import Homepage from "./pages/Homepage";
+const Homepage = React.lazy(() => delayForDemo(import("./pages/Homepage")));
 import Search from "./pages/Search";
-import Instructor from "./pages/Instructor";
-import Courses from "./pages/Instructor/Courses";
+const Courses = React.lazy(() =>
+  delayForDemo(import("./pages/Instructor/Courses"))
+);
 import Settings from "./pages/Instructor/Settings";
-import Team from "./pages/Instructor/Team";
-import UserProfileEditing from "./pages/UserProfileEditing"
-import AccountSecurity from "./pages/AccountSecurity"
-import ViewPublicProfile from "./pages/ViewPublicProfile"
+const Team = React.lazy(() => delayForDemo(import("./pages/Instructor/Team")));
+import UserProfileEditing from "./pages/UserProfileEditing";
+import AccountSecurity from "./pages/AccountSecurity";
+import ViewPublicProfile from "./pages/ViewPublicProfile";
 import AddInstructor from "./pages/Instructor/Team/AddInstructor";
 import ManageCourse from "./components/ManageCourse"; // test only
+import Layout from "./components/Layout";
+import InstructorPageLayout from "./components/InstructorPageLayout";
+import CenterAligned from "./components/CenterAligned";
+
+async function delayForDemo(promise) {
+  await new Promise((resolve) => {
+    setTimeout(resolve, 2000);
+  });
+  return promise;
+}
 
 export default function Router() {
   const { user } = useAuthContext();
-  const routes = useRoutes([
-    {
-      path: "/",
-      element: <Homepage />,
-    },
-    {
-      path: "/home",
-      element: <Homepage />,
-    },
-    {
-      path: "/search",
-      element: <Search />,
-    },
-    {
-      path: "/login",
-      element: !user ? <Login /> : <Navigate to="/" />,
-    },
-    {
-      path: "/signup",
-      element: !user ? <Signup /> : <Navigate to="/" />,
-    },
-    {
-      path: "/logout",
-      element: <Logout />,
-    },
-    {
-      path: "/instructor",
-      element: <Instructor />
-    },
-    {
-      path: "/instructor/settings",
-      element: <Settings />
-    },
-    {
-      path: "/instructor/courses",
-      element: <Courses />
-    },
-    {
-      path: "/instructor/team",
-      element: <Team />
-    },
-    {
-      path: "/instructor/team/add",
-      element: <AddInstructor />
-    },
-    {
-      path: "/instructor/courses/manage",
-      element: <ManageCourse /> // this tag is for test only
-    },
-    {
-      path: "/userprofileediting",
-      element: <UserProfileEditing />,
-    },
-    {
-      path: "/account-security",
-      element: <AccountSecurity />,
-    },
-    {
-       path: "/view-public-profile",
-      element: <ViewPublicProfile />
-    },
-    {
-      path: "*",
-      element: <NotFoundPage />,
-    }
-  ]);
+  return (
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route
+          index
+          element={
+            <Suspense
+              fallback={
+                <CenterAligned height="screen">
+                  <CircularProgress />
+                </CenterAligned>
+              }
+            >
+              <Homepage />
+            </Suspense>
+          }
+        />
+        <Route path="/home" element={<Homepage />} />
+        <Route path="/search" element={<Search />} />
+      </Route>
+      <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
+      <Route
+        path="/signup"
+        element={!user ? <Signup /> : <Navigate to="/" />}
+      />
+      <Route path="/logout" element={<Logout />} />
 
-  return routes;
+      <Route
+        path="/instructor"
+        element={user ? <InstructorPageLayout /> : <Navigate to="/login" />}
+      >
+        <Route index element={<Courses />} />
+        <Route
+          path="courses"
+          element={
+            <Suspense
+              fallback={
+                <CenterAligned>
+                  <CircularProgress />
+                </CenterAligned>
+              }
+            >
+              <Courses />
+            </Suspense>
+          }
+        />
+        <Route path="settings" element={<Settings />} />
+        <Route
+          path="team"
+          element={
+            <Suspense
+              fallback={
+                <CenterAligned>
+                  <CircularProgress />
+                </CenterAligned>
+              }
+            >
+              <Team />
+            </Suspense>
+          }
+        />
+        <Route path="team/add" element={<AddInstructor />} />
+      </Route>
+      <Route path="/instructor/courses/manage" element={<ManageCourse />} />
+      <Route path="/*" element={<NotFoundPage />} />
+      <Route path="/user-profile-editing" element={<UserProfileEditing />} />
+      <Route path="/account-security" element={<AccountSecurity />} />
+      <Route path="/view-public-profile" element={<ViewPublicProfile />} />
+    </Routes>
+  );
 }

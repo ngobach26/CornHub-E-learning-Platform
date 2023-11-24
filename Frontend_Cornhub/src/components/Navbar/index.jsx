@@ -32,7 +32,7 @@ export default function Navbar() {
           <div className="flex-grow" />
           <div className="flex items-center">
             <div className="hidden gap-8 md:flex">
-              <Link to='/instructor' className="hidden text-base lg:block hover:text-gray-500 hover:cursor-pointer">
+              <Link to='/instructor/courses' className="hidden text-base lg:block hover:text-gray-500 hover:cursor-pointer">
                 Instructor
               </Link>
               <Link className="hidden text-base lg:block hover:text-gray-500 hover:cursor-pointer">

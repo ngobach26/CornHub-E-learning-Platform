@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 
 import { styled } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
@@ -108,7 +108,7 @@ export default function InstructorPageLayout(props) {
     {
       icon: OndemandVideoIcon,
       label: "Courses",
-      route: "/instructor",
+      route: "/instructor/courses",
     },
     {
       icon: SettingsIcon,
@@ -158,7 +158,7 @@ export default function InstructorPageLayout(props) {
       </Drawer>
       <div className="flex-grow p-6">
         <DrawerHeader />
-        {props.children}
+        <Outlet />
       </div>
     </div>
   );

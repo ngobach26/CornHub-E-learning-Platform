@@ -1,3 +1,4 @@
+import { Outlet } from "react-router-dom";
 import classnames from "classnames";
 import Footer from "../Footer";
 import CenterAligned from "../CenterAligned";
@@ -7,7 +8,7 @@ import CarouselComp from "../CarouselComp";
 import SectionList from "../SectionList";
 
 export default function Layout(props) {
-  const { containerClass, loading, error } = props;
+  const { loading, error } = props;
 
   if (loading) {
     return (
@@ -28,15 +29,9 @@ export default function Layout(props) {
   return (
     <>
       <Navbar />
-      <main
-        className={classnames(
-          { 'xl: pb-10': !containerClass },
-          containerClass
-        )}
-      >
-        {props.children}
+      <main>
+        <Outlet />
       </main>
-      <Footer />
     </>
   );
 }

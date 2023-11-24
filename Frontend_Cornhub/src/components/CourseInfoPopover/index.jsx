@@ -2,8 +2,7 @@ import React from "react";
 import { styled } from "@mui/material/styles";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import DoneIcon from "@mui/icons-material/Done";
-
-// import CourseCTA from 'src/components/CourseCTA';
+import CourseCTA from "../CourseCTA";
 
 const Info = styled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -45,14 +44,15 @@ const CourseInfoPopover = (props) => {
   const renderInfo = () => {
     return (
       <div className="flex flex-col gap-1">
-        {/* <h3 className="text-xl font-bold">{course.title}</h3> */}
-        <h3 className="text-xl font-bold">title</h3>
-        {/* <p className="text-sm text-labelText">{course.level}</p> */}
-        <p className="text-sm text-labelText">level</p>
-        {/* <p className="text-sm">{course.subtitle}</p> */}
-        <p className="text-sm">subtitle</p>
-        {/* {renderHighlights()} */}
+        <h3 className="text-xl font-bold">{course.title}</h3>
+        {/* <h3 className="text-xl font-bold">title</h3> */}
+        <p className="text-sm text-gray-200">{course.level}</p>
+        {/* <p className="text-sm text-gray-200">level</p> */}
+        <p className="text-sm">{course.subtitle}</p>
+        {/* <p className="text-sm">subtitle</p> */}
+        {renderHighlights()}
         {/* <CourseCTA course={course} /> */}
+        <CourseCTA />
       </div>
     );
   };

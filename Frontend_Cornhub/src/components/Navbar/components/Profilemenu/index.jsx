@@ -26,6 +26,7 @@ export default function Profilemenu() {
     if (route) {
       navigate(route); 
     }
+    
   };
 
   const menuItems = [

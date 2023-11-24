@@ -27,11 +27,11 @@ export default function Search() {
   };
 
   return (
-    <Layout>
+    <>
       <div className="px-10 my-10 xl:px-0">
         <p className="mb-5 text-2xl font-semibold">title, category</p>
       </div>
       {renderContent()}
-    </Layout>
+    </>
   );
 }
