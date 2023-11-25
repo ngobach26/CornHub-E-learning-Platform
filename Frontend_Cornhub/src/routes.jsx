@@ -13,9 +13,9 @@ const Courses = React.lazy(() =>
 );
 import Settings from "./pages/Instructor/Settings";
 const Team = React.lazy(() => delayForDemo(import("./pages/Instructor/Team")));
-import UserProfileEditing from "./pages/UserProfileEditing";
-import AccountSecurity from "./pages/AccountSecurity";
-import ViewPublicProfile from "./pages/ViewPublicProfile";
+import UserProfileEditing from "./pages/Profile/UserProfileEditing";
+import AccountSecurity from "./pages/Profile/AccountSecurity";
+import ViewPublicProfile from "./pages/Profile/ViewPublicProfile";
 import AddInstructor from "./pages/Instructor/Team/AddInstructor";
 import ManageCourse from "./components/ManageCourse"; // test only
 import Layout from "./components/Layout";
