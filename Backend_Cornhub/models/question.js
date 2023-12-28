@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
+
 const questionSchema = Schema(
   {
     question: {
@@ -28,6 +29,11 @@ const questionSchema = Schema(
       type: String,
       required: true,
     },
+    belongedCourse: {
+      type: Schema.Types.ObjectId,
+      ref: "Course"
+    }
+
   },
   { timestamps: true }
 );

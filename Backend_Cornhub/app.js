@@ -13,6 +13,9 @@ app.use(express.urlencoded({ extended: true }));
 const authRouter = require("./routes/Auth")
 app.use("/api/auth", authRouter);
 
+const courseRouter = require("./routes/Course")
+app.use("/api/instructor", courseRouter);
+
 app.listen(process.env.PORT, () => {
     console.log(`Listening on port ${process.env.PORT}`);
     db();

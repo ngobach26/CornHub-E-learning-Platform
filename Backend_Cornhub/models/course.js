@@ -1,10 +1,11 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const Section = require("./section");
+const Comments = require("./comments");
 
 const courseSchema = Schema(
     {
-        name: {
+        courseTitle: {
             type: String,
             required: true,
         },
@@ -12,7 +13,16 @@ const courseSchema = Schema(
             type: String,
             default: "",
         },
-        category: [
+        status:{
+            type: String,
+            enum: ['waiting','published'],
+        },
+        category:{
+            type: String,
+            default: "",
+            required: true
+        },
+        subcategory: [
             {
                 type: String
             }
@@ -41,9 +51,10 @@ const courseSchema = Schema(
             default: 0,
         },
         studentsEnrolled: {
-            type: Number,
-            default: 0,
+            type: Schema.Types.ObjectId,
+            ref: "User"
         },
+        comments:[Comments.schema],
         objectives: {
             type: String,
         },

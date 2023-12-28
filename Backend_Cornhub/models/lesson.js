@@ -24,7 +24,8 @@ const lessonSchema = Schema(
       default: 0,
     },
     data: {
-      type: Object
+      type: Object,
+      required: true,
     }
   },
   { timestamps: true }
