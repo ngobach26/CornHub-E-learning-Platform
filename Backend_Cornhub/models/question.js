@@ -29,11 +29,6 @@ const questionSchema = Schema(
       type: String,
       required: true,
     },
-    belongedCourse: {
-      type: Schema.Types.ObjectId,
-      ref: "Course"
-    }
-
   },
   { timestamps: true }
 );

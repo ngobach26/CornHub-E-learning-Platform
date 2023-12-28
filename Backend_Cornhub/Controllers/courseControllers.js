@@ -24,7 +24,10 @@ const createCourse = async (req, res) => {
         res.status(201).json(newCourse);
     } catch (error) {
         console.error('Error creating course:', error);
-        res.status(500).json("error");
+        res.status(500).json({
+            message: error.message,
+            error: error.name
+        });
     }
 };
 module.exports = { createCourse };
