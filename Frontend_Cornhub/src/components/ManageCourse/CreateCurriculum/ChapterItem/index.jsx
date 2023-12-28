@@ -47,7 +47,7 @@ export default function ChapterItem(props) {
           )}
           <p className="break-all">{lecture.title}</p>
         </div>
-        <p className="text-sm text-labelText">{lecture?.duration}</p>
+        <p className="text-sm text-gray-400">{lecture?.duration}</p>
       </div>
       <div className="flex gap-3">
         <IconButton aria-label="edit" size="small">

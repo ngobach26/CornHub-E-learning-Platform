@@ -23,7 +23,7 @@ export default function Navbar() {
       <div className="w-full shadow-lg lg:px-6 md:w-auto">
         <div className="flex items-center h-20">
           <div className="text-3xl font-semibold hover:cursor-pointer">
-            <Logo variant='header' />
+            <Logo variant="header" />
           </div>
           <div className="items-center hidden w-1/2 md:flex">
             <Submenu />
@@ -31,49 +31,58 @@ export default function Navbar() {
           </div>
           <div className="flex-grow" />
           <div className="flex items-center">
-            <div className="hidden gap-8 md:flex">
-              <Link to='/instructor/courses' className="hidden text-base lg:block hover:text-gray-500 hover:cursor-pointer">
-                Instructor
-              </Link>
-              <Link className="hidden text-base lg:block hover:text-gray-500 hover:cursor-pointer">
-                Learning
-              </Link>
-            </div>
-            <div className="flex gap-2 mx-5">
-              <IconButton
-                style={{ color: '#0077FF' }}
-                size="large"
-                aria-label="shopping cart"
-                color="inherit"
-              >
-                <Badge color="primary">
-                  <ShoppingCartOutlinedIcon />
-                </Badge>
-              </IconButton>
-              <IconButton
-                style={{ color: '#0077FF' }}
-                size="large"
-                aria-label="favorite"
-                color="inherit"
-              >
-                <Badge color="primary">
-                  <FavoriteBorderIcon />
-                </Badge>
-              </IconButton>
-              <IconButton
-                style={{ color: '#0077FF' }}
-                size="large"
-                color="inherit"
-              >
-                <Badge color="error">
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton>
-            </div>
             {user ? (
-              <div className="hidden gap-3 md:flex">
-                <Profilemenu />
-              </div>
+              <>
+                <div className="hidden gap-8 md:flex">
+                  <Link
+                    to="/instructor/courses"
+                    className="hidden text-base lg:block hover:text-gray-500 hover:cursor-pointer"
+                  >
+                    Instructor
+                  </Link>
+                  <Link className="hidden text-base lg:block hover:text-gray-500 hover:cursor-pointer">
+                    Learning
+                  </Link>
+                </div>
+                <div className="flex gap-2 mx-5">
+                  <Link to="/cart">
+                    <IconButton
+                      style={{ color: "#0077FF" }}
+                      size="large"
+                      aria-label="shopping cart"
+                      color="inherit"
+                    >
+                      <Badge color="primary">
+                        <ShoppingCartOutlinedIcon />
+                      </Badge>
+                    </IconButton>
+                  </Link>
+                  <Link to="/wishlist">
+                    <IconButton
+                      style={{ color: "#0077FF" }}
+                      size="large"
+                      aria-label="favorite"
+                      color="inherit"
+                    >
+                      <Badge color="primary">
+                        <FavoriteBorderIcon />
+                      </Badge>
+                    </IconButton>
+                  </Link>
+                  <IconButton
+                    style={{ color: "#0077FF" }}
+                    size="large"
+                    color="inherit"
+                  >
+                    <Badge color="error">
+                      <NotificationsIcon />
+                    </Badge>
+                  </IconButton>
+                </div>
+                <div className="hidden gap-3 md:flex">
+                  <Profilemenu />
+                </div>
+              </>
             ) : (
               <div className="hidden gap-3 md:flex">
                 <Button

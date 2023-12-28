@@ -30,29 +30,36 @@ export default function CourseDetails() {
             name="subtitle"
             autoFocus
           />
-          <TextField
-            className="w-full"
-            margin="normal"
-            required
-            fullWidth
-            id="description"
-            label="Description"
-            name="description"
-            autoFocus
-          />
         </div>
-        {/* <RichTextEditor /> */}
+        <TextField
+          className="w-full"
+          margin="normal"
+          required
+          fullWidth
+          id="description"
+          label="Description"
+          name="description"
+          autoFocus
+          multiline
+          rows={4}
+        />
         <div>
           <h3 className="mb-1 font-semibold">Basic information</h3>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {/* dropdownInput */}
-            <DropdownInput label="Language" data={languages} valueExtractor={(datum) => datum.title}
-                    labelExtractor={(datum) => datum.title} required />
+            <DropdownInput
+              label="Language"
+              data={languages}
+              valueExtractor={(datum) => datum.title}
+              labelExtractor={(datum) => datum.title}
+              required
+            />
             <DropdownInput
               label="Level"
               data={["Beginner", "Intermediate", "Expert", "All Levels"]}
               valueExtractor={(datum) => datum.title}
-                    labelExtractor={(datum) => datum.title} required
+              labelExtractor={(datum) => datum.title}
+              required
             />
             <DropdownInput label="Category" required />
             <DropdownInput label="Subcategory" required />
@@ -77,5 +84,4 @@ export default function CourseDetails() {
       {renderForm()}
     </FormPageLayout>
   );
-};
-
+}
