@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 const authRouter = require("./routes/Auth")
 app.use("/api/auth", authRouter);
 
-const courseRouter = require("./routes/Course")
+const courseRouter = require("./routes/Instructor")
 app.use("/api/instructor", courseRouter);
 
 const userRouter = require("./routes/User")
