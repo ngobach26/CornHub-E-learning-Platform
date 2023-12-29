@@ -23,7 +23,6 @@ export default function CourseDetails() {
           <TextField
             className="w-full"
             margin="normal"
-            required
             fullWidth
             id="subtitle"
             label="Subtitle"

@@ -12,19 +12,38 @@ import DialogActions from "@mui/material/DialogActions";
 import TextField from "@mui/material/TextField";
 import RemoveIcon from "@mui/icons-material/Remove";
 
+import { useAuthContext } from "../../../hooks/useAuthContext";
 import CenterAligned from "../../../components/CenterAligned";
 import Button from "../../../components/Button";
 import CourseCard from "../../../components/CourseCard";
 
+import api from "../../../services/instructorAPI";
+
 export default function Courses() {
   const navigate = useNavigate();
+  const { user } = useAuthContext();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [title, setTitle] = useState("");
+  const [courseTitle, setcourseTitle] = useState("");
   const [category, setCategory] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [courses, setCourses] = useState([]);
+  const coverImage = "/courses/fullstack-webdev.jpg"
+  const price = 300;
 
+  // const handleCreate = async () => {
+  //   try {
+  //     const data = {
+  //       courseTitle,
+  //       category,
+  //     };
+  //     const createdCourse = await api.createCourse(data);
+  //     // localStorage.setItem("course", JSON.stringify(createdCourse));
+  //     console.log("Course created successfully:", createdCourse);
+  //   } catch (error) {
+  //     console.error("Error creating course:", error);
+  //   }
+  // };
   const handleOpenDialog = () => {
     setIsDialogOpen(true);
   };
@@ -32,33 +51,34 @@ export default function Courses() {
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
     setError("");
-    setTitle("");
+    setcourseTitle("");
     setCategory("");
   };
 
-  const handleCreateCourse = () => {
-    setLoading(true);
-
-    setTimeout(() => {
-      if (!title && !category) {
+  const handleCreateCourse = async () => {
+    try {
+      if (!courseTitle && !category) {
         setError("Please fill in the Title and Category.");
-      } else if (!title) {
+      } else if (!courseTitle) {
         setError("Please fill in the Title");
-      } else if (title.length < 3 || title.length > 100) {
+      } else if (courseTitle.length < 3 || courseTitle.length > 100) {
         setError("Title must be between 3 and 100 characters.");
       } else if (!category) {
         setError("Please fill in the Category.");
       } else {
-        const newCourse = { title, category };
+        const newCourse = { courseTitle, category, price, coverImage};
         setCourses((prevCourses) => [...prevCourses, newCourse]);
+        const createdCourse = await api.createCourse(user.token, newCourse);
+        console.log("Course created successfully:", createdCourse);
         handleCloseDialog();
       }
-      setLoading(false);
-    }, 400);
+    } catch (error) {
+      console.error("Error creating course:", error);
+    }
   };
 
   const handleCourseClick = (course) => {
-    navigate(`/instructor/courses/manage/?tab=d&id=${course.id}`);
+    navigate(`/instructor/courses/manage/?tab=d&id=${course.courseTitle}`);
   };
 
   const renderCourses = () => {
@@ -95,14 +115,14 @@ export default function Courses() {
             Create a new course
           </div>
         </DialogTitle>
-        <DialogContent>
-          <form>
+        <form>
+          <DialogContent>
             <TextField
               label="Title"
               required
               fullWidth
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              value={courseTitle}
+              onChange={(e) => setcourseTitle(e.target.value)}
               margin="normal"
             />
             <TextField
@@ -113,22 +133,22 @@ export default function Courses() {
               onChange={(e) => setCategory(e.target.value)}
               margin="normal"
             />
-          </form>
-        </DialogContent>
+            <DialogActions>
+              <Button
+                label="Cancel"
+                variant="outlined"
+                onClick={handleCloseDialog}
+              />
+              <Button label="Create" onClick={handleCreateCourse} />
+            </DialogActions>
+          </DialogContent>
+        </form>
         {error && (
           <Alert severity="error">
             <AlertTitle>Error</AlertTitle>
             <div>{error}</div>
           </Alert>
         )}
-        <DialogActions>
-          <Button
-            label="Cancel"
-            variant="outlined"
-            onClick={handleCloseDialog}
-          />
-          <Button label="Create" onClick={handleCreateCourse} />
-        </DialogActions>
       </Dialog>
       {renderCourses()}
     </>
