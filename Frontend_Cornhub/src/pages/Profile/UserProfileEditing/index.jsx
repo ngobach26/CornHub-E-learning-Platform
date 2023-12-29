@@ -1,12 +1,45 @@
-import React from "react";
+import React,{ useState, useEffect } from "react";
 import Footer from "../../../components/Footer";
 import Navbar from "../../../components/Navbar";
-import { Avatar } from "@mui/material";
+import { Avatar, stepContentClasses } from "@mui/material";
 import { useAuthContext } from "../../../hooks/useAuthContext";
-// import Sidebar from "../../components/Navbar/components/Sidebar";
+import api from "../../../services/userAPI";
 
 export default function UserProfileEditing() {
-  const { user } = useAuthContext();
+  const { user, dispatch } = useAuthContext();
+
+  let [FormerData, UpdateData] = useState({
+    firstName: user.firstName, lastName: user.lastName, currentjob: user.currentjob, 
+    introduction: user.introduction,
+    website: user.website, twitter: user.twitter, facebook: user.facebook, linkedin: user.linkedin
+  });
+
+  const handleChange = (event) => {
+    let value = event.target.value;
+    let name = event.target.name;
+
+    UpdateData((prevalue) => {
+      return {
+        ...prevalue,
+        [name]: value
+      };
+    });
+  };
+
+  const handleSaveClick = async () => {
+    try{
+      const updatedUser = await api.updateProfile(user.token, FormerData);
+
+      // Update the user context with the updated user data if needed
+      // UpdateData(updatedUser); 
+      dispatch({ type: "UPDATE_PROFILE", payload: updatedUser });
+      
+      console.log('Profile updated successfully:', updatedUser);
+    } catch(error){
+      console.error('Error updating profile:', error);
+    }
+  };
+  
   return (
     <>
       <Navbar />
@@ -30,7 +63,7 @@ export default function UserProfileEditing() {
                   {user.firstName} {user.lastName}
                 </div>
                 <div className="pb-3 text-sm italic">
-                  Computer Science Student
+                  {user.currentjob}
                 </div>
                 <ul className="space-y-2 font-medium">
                   <li>
@@ -122,18 +155,21 @@ export default function UserProfileEditing() {
                       className="w-full h-10 px-3 my-2 border border-black "
                       type="text"
                       placeholder={user.firstName}
+                      onChange={handleChange} name = "firstName"
                     />
                     <br />
                     <input
                       className="w-full h-10 px-3 my-2 border border-black "
                       type="text"
                       placeholder={user.lastName}
+                      onChange={handleChange} name="lastName"
                     />
                     <br />
                     <input
                       className="w-full h-10 px-3 my-2 border border-black "
                       type="text"
-                      placeholder="Current Job Position"
+                      placeholder={user.currentjob}
+                      onChange={handleChange} name="currentjob"
                     />
                     <span className="text-xs font-semibold">
                       *Add a professional title, or a job position
@@ -141,7 +177,7 @@ export default function UserProfileEditing() {
                     <div
                       contenteditable="true"
                       className="w-full h-20 px-3 my-2 border border-black "
-                      type="text"
+                      type="text" onChange={handleChange} name="introduction"
                     >
                       <p>
                         <br />
@@ -160,27 +196,31 @@ export default function UserProfileEditing() {
                     <input
                       className="w-full h-10 px-3 my-2 border border-black "
                       type="text"
-                      placeholder="Website (http(s)://..)"
+                      placeholder={user.website}
+                      onChange={handleChange} name="website"
                     />
                     <input
                       className="w-full h-10 px-3 my-2 border border-black "
                       type="text"
-                      placeholder="Twitter"
+                      placeholder={user.twitter}
+                      onChange={handleChange} name="twitter"
                     />
                     <input
                       className="w-full h-10 px-3 my-2 border border-black "
                       type="text"
-                      placeholder="Facebook"
+                      placeholder={user.facebook}
+                      onChange={handleChange} name="facebook"
                     />
                     <input
                       className="w-full h-10 px-3 my-2 border border-black "
                       type="text"
-                      placeholder="LinkedIn"
+                      placeholder={user.linkedin}
+                      onChange={handleChange} name="linkedin"
                     />
                   </form>
                   <span className="p-5">
                     <button className="px-4 py-2 font-bold text-white bg-gray-500 border rounded hover:bg-blue"
-                    
+                    onClick={handleSaveClick}
                     >
                       Save
                     </button>
@@ -195,3 +235,4 @@ export default function UserProfileEditing() {
     </>
   );
 }
+
