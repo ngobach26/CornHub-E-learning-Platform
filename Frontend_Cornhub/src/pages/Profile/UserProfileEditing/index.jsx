@@ -179,7 +179,9 @@ export default function UserProfileEditing() {
                     />
                   </form>
                   <span className="p-5">
-                    <button className="px-4 py-2 font-bold text-white bg-gray-500 border rounded hover:bg-blue">
+                    <button className="px-4 py-2 font-bold text-white bg-gray-500 border rounded hover:bg-blue"
+                    
+                    >
                       Save
                     </button>
                   </span>
