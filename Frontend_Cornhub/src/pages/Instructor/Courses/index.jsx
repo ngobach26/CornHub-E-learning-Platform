@@ -28,8 +28,6 @@ export default function Courses() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [courses, setCourses] = useState([]);
-  const coverImage = "/courses/fullstack-webdev.jpg"
-  const price = 300;
 
   // const handleCreate = async () => {
   //   try {
@@ -66,10 +64,9 @@ export default function Courses() {
       } else if (!category) {
         setError("Please fill in the Category.");
       } else {
-        const newCourse = { courseTitle, category, price, coverImage};
+        const newCourse = { courseTitle, category };
         setCourses((prevCourses) => [...prevCourses, newCourse]);
         const createdCourse = await api.createCourse(user.token, newCourse);
-        console.log("Course created successfully:", createdCourse);
         handleCloseDialog();
       }
     } catch (error) {

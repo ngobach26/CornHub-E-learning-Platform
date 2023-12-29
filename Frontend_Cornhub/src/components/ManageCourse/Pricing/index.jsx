@@ -9,7 +9,7 @@ import api from "../../../services/instructorAPI";
 import { useAuthContext } from "../../../hooks/useAuthContext";
 
 const Pricing = () => {
-  const { user } = useAuthContext();
+  const { user, course } = useAuthContext();
   const [pricing, setPricing] = useState("Free");
   const [price, setPrice] = useState("");
 
@@ -25,8 +25,10 @@ const Pricing = () => {
     try {
       const data = {
         price: parseFloat(price),
+        // courseTitle: course.course,
+        // category: course.category,
       };
-      const createdCourse = await api.createCourse(user, data);
+      const createdCourse = await api.createCourse(user.token, data);
       // localStorage.setItem("course", JSON.stringify(createdCourse));
       console.log("Course created successfully:", createdCourse);
     } catch (error) {
