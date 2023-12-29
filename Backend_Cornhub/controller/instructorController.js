@@ -12,7 +12,7 @@ const createCourse = async (req, res) => {
 
         const course = new Course({
             ...req.body,
-            status: "waiting"
+            status: "waiting",
         });
 
         const newCourse = await course.save();

@@ -11,7 +11,6 @@ const courseSchema = Schema(
         },
         description: {
             type: String,
-            default: "",
         },
         status:{
             type: String,
@@ -19,7 +18,6 @@ const courseSchema = Schema(
         },
         category:{
             type: String,
-            default: "",
             required: true
         },
         subcategory: [
@@ -29,17 +27,13 @@ const courseSchema = Schema(
         ],
         language: {
             type: String,
-            default: "",
         },
-        createdDate: { type: Date },
-        updatedDate: { type: Date },
         level: {
             type: String,
             enum: ['Beginner', 'Intermediate', 'Expert', 'All Levels'],
           },
         price: {
             type: Number,
-            required: true,
         },
         contents: [Section.schema],
         totalRating: {
@@ -60,7 +54,6 @@ const courseSchema = Schema(
         },
         coverImage: {
             type: String,
-            required: true,
         },
         totalLengthSeconds: {
             type: Number,

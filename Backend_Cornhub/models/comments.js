@@ -15,6 +15,7 @@ const commentsSchema = new Schema({
         ref: "User"
     },
     replies:[this]
-  });
+  },
+  { timestamps: true });
 
   module.exports = mongoose.model("Comments", commentsSchema);
