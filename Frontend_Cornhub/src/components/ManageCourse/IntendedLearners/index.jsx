@@ -70,7 +70,7 @@ export default function IntendedLearners() {
     e.preventDefault();
     console.log(formData);
   };
-  
+
   const renderForm = () => {
     return (
       <div>
@@ -84,7 +84,7 @@ export default function IntendedLearners() {
               outcomes that learners can expect to achieve after finishing your
               course.
             </p>
-            {formData.details.highlights.map((index) => (
+            {formData.details.highlights.map((item, index) => (
               <div key={index} className="flex items-center gap-2">
                 <TextField
                   className="w-full"
@@ -96,7 +96,7 @@ export default function IntendedLearners() {
                   placeholder="Example: Define the roles and responsibilities of a project manager"
                 />
                 <IconButton
-                  aria-label="delete" 
+                  aria-label="delete"
                   onClick={() => handleRemoveField("highlights", index)}
                 >
                   <DeleteIcon />
@@ -124,7 +124,7 @@ export default function IntendedLearners() {
               If there are no prerequisites, take advantage of this space to
               make the course more accessible for beginners.
             </p>
-            {formData.details.prerequisites.map((index) => (
+            {formData.details.prerequisites.map((item, index) => (
               <div key={index} className="flex items-center gap-2">
                 <TextField
                   className="w-full"
@@ -161,7 +161,7 @@ export default function IntendedLearners() {
               <br />
               This will help you attract the right learners to your course.
             </p>
-            {formData.details.targetAudience.map((index) => (
+            {formData.details.targetAudience.map((item, index) => (
               <div key={index} className="flex items-center gap-2">
                 <TextField
                   className="w-full"
