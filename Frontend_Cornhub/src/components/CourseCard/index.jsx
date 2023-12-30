@@ -9,7 +9,7 @@ const CourseCard = (props) => {
       <div className="overflow-hidden border border-solid rounded-md cursor-pointer border-border">
         <DefaultCourse />
         <div className="px-2 py-2 pb-3">
-          <h2 className="text-left">{course.title}</h2>
+          <h2 className="text-left">{course.courseTitle}</h2>
           <p className="text-left text-gray-600">{course.category}</p>
         </div>
       </div>

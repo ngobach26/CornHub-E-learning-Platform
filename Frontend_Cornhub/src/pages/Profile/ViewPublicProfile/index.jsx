@@ -22,7 +22,6 @@ export default function ViewPublicProfile() {
               {user.firstName} {user.lastName}
             </span>
             <br />
-            <span className="ml-20 text-md">Work hard, play harder!</span>
           </div>
           <div className="z-20 flex h-screen mx-10 my-2">
             {" "}
@@ -37,13 +36,13 @@ export default function ViewPublicProfile() {
                   className="items-center mx-20"
                 />
                 <div className="py-10 space-x-2">
-                  <a href="/notfound">
+                  <a href={user.twitter}>
                     <TwitterIcon style={{ width: "2rem", height: "2rem" }} />
                   </a>
-                  <a href="/notfound">
+                  <a href={user.facebook}>
                     <FacebookIcon style={{ width: "2rem", height: "2rem" }} />
                   </a>
-                  <a href="/notfound">
+                  <a href={user.linkedin}>
                     <LinkedInIcon style={{ width: "2rem", height: "2rem" }} />
                   </a>
                 </div>
@@ -52,9 +51,7 @@ export default function ViewPublicProfile() {
             <div className="w-full h-screen">
               <div className="p-10 text-left ml-300 ">
                 <span className="text-lg ">
-                  I seek for courses that relates to CS as well as AI, which is
-                  my area of research. Furthermore, I am willing to learn about
-                  time management, leadership and communication as well..
+                  {user.introduction}
                 </span>
               </div>
             </div>
