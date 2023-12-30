@@ -138,7 +138,7 @@ userSchema.statics.updateprofile = async function (userId, data) {
     }
   };
 
-userSchema.statics.changepw = async function () {
+userSchema.methods.changepw = async function () {
 this.password = await bcrypt.hash(this.password, 10);
 };
 
