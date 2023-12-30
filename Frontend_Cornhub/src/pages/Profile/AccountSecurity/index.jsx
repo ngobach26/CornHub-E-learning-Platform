@@ -1,10 +1,38 @@
-import React from "react";
+import React, {useState} from "react";
 import Footer from "../../../components/Footer";
 import Navbar from "../../../components/Navbar";
 import { Avatar } from "@mui/material";
-// import Sidebar from "../../components/Navbar/components/Sidebar";
+import { useAuthContext } from "../../../hooks/useAuthContext";
 
-export default function UserProfileEditing() {
+export default function AccountSecurity() {
+  const {user, dispatch} = useAuthContext();
+  let [password, setPassword] = useState({// initial state of password
+    new: '', retype: ''
+  });
+
+  const handleNewPassword = (event) => {
+    let value = event.target.value;
+    let name = event.target.name;
+
+    setPassword((prevalue) => { // simply set new value to password, 
+      //new password will be stored in `password` variable
+      return {
+        ...prevalue,
+        [name]: value
+      }
+    });
+  };
+
+  const handleChangeClick = async () => {// 
+    try {
+      
+      console.log("Password changed successfully");
+    }
+    catch(err){
+      console.log("Error updating password");
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -25,10 +53,10 @@ export default function UserProfileEditing() {
                   className="items-center mx-20"
                 />
                 <div className="py-3 font-bold text-center text-md">
-                  Nguyen Chan Hung
+                  {user.firstName} {user.lastName}
                 </div>
                 <div className="pb-3 text-sm italic">
-                  Computer Science Student
+                  {user.currentjob}
                 </div>
                 <ul className="space-y-2 font-medium">
                   <li>
@@ -43,7 +71,7 @@ export default function UserProfileEditing() {
                   </li>
                   <li>
                     <a
-                      href="/userprofileediting"
+                      href="/user-profile-editing"
                       className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                     >
                       <span className="flex-1 ml-3 whitespace-nowrap">
@@ -116,36 +144,25 @@ export default function UserProfileEditing() {
               </div>
               <div className="border">
                 <div className="p-5 text-left">
-                  <span className="my-3 text-base font-bold">Emails:</span>
-                  <form action="" className="p-5">
-                    <input
-                      className="w-full h-10 px-3 mx-2 my-2 border border-black "
-                      type="text"
-                      placeholder="Your email address is set by default hung.nc215209@sis.hust.edu.vn"
-                    />
-                    <br />
-                  </form>
-                </div>
-              </div>
-              <div className="border">
-                <div className="p-5 text-left">
                   <span className="my-3 text-base font-bold">
                     Modify password:
                   </span>
                   <form action="" className="p-5">
                     <input
                       className="items-center w-full h-10 px-3 mx-2 my-2 border border-black"
-                      type="text"
-                      placeholder="Enter new password"
+                      type="password"
+                      placeholder="Enter new password"  onChange={handleNewPassword} name='new'
                     />
                     <input
                       className="items-center w-full h-10 px-3 mx-2 my-2 border border-black"
-                      type="text"
-                      placeholder="Re-type new password"
+                      type="password"
+                      placeholder="Re-type new password" onChange={handleNewPassword} name='retype'
                     />
                   </form>
                   <span className="p-5">
-                    <button className="px-4 py-2 font-bold text-white bg-black border rounded hover:bg-blue">
+                    <button className="px-4 py-2 font-bold text-white bg-black border rounded hover:bg-blue"
+                    onClick={handleChangeClick}
+                    >
                       Change
                     </button>
                   </span>
