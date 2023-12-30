@@ -52,4 +52,3 @@ const changepw = async (req, res) => {
 };
 module.exports = {updateprofile, changepw};
 
-//hello e bop
