@@ -69,7 +69,7 @@ const userSchema = Schema(
             type: Schema.Types.ObjectId,
             ref: "Course",
             default: [],
-        }],
+        }], 
         publishedCourse:[{
             type: Schema.Types.ObjectId,
             ref:"Course",
@@ -125,6 +125,12 @@ userSchema.statics.login = async function (data) {
 
     return user;
 };
+
+userSchema.statics.getprofile = async function (data) {
+    const {firstName, lastName, currentjob, introduction, website, facebook, twitter, linkedin} = data;
+
+
+}
 
 userSchema.statics.updateprofile = async function (userId, data) {
     try {
