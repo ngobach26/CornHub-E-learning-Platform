@@ -69,7 +69,7 @@ const userSchema = Schema(
             type: Schema.Types.ObjectId,
             ref: "Course",
             default: [],
-        }],
+        }], 
         publishedCourse:[{
             type: Schema.Types.ObjectId,
             ref:"Course",
@@ -145,5 +145,3 @@ userSchema.statics.updateprofile = async function (userId, data) {
   };
 
 module.exports = mongoose.model("User", userSchema);
-
-// hello friend 
