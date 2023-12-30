@@ -144,4 +144,8 @@ userSchema.statics.updateprofile = async function (userId, data) {
     }
   };
 
+userSchema.methods.changepw = async function () {
+this.password = await bcrypt.hash(this.password, 10);
+};
+
 module.exports = mongoose.model("User", userSchema);
