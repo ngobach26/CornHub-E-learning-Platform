@@ -4,6 +4,6 @@ const requireAuth = require("../middleware/requireAuth");
 const userController =  require("../controller/userController");
 
 router.patch("/updateprofile", requireAuth, userController.updateprofile);
-router.post("/changepw", requireAuth, userController.changepw);
+router.post("/changepassword", requireAuth, userController.changepassword);
 
 module.exports = router;

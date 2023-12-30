@@ -18,7 +18,7 @@ const updateprofile = async (req, res) => {
   }
 };
 
-const changepw = async (req, res) => {
+const changepassword = async (req, res) => {
   const {_id} = req.user;
   try {
     const { username } = req.user; // Extract username from token payload
@@ -50,5 +50,5 @@ const changepw = async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 };
-module.exports = {updateprofile, changepw};
+module.exports = {updateprofile, changepassword};
 
