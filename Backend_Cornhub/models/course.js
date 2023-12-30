@@ -14,7 +14,7 @@ const courseSchema = Schema(
         },
         status:{
             type: String,
-            enum: ['waiting_ac','published','banned','waiting_del'],
+            enum: ['waiting_ac','published','banned','waiting_del','updated'],
         },
         category:{
             type: String,
