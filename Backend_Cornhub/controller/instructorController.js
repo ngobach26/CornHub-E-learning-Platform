@@ -12,7 +12,7 @@ const createCourse = async (req, res) => {
 
         const course = new Course({
             ...req.body,
-            status: "waiting",
+            status: "waiting_ac",
         });
 
         const newCourse = await course.save();
@@ -30,4 +30,6 @@ const createCourse = async (req, res) => {
         });
     }
 };
-module.exports = { createCourse };
+
+
+module.exports = { createCourse,getPublishedCourse, deleteCourse };
