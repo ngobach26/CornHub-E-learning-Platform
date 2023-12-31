@@ -50,10 +50,11 @@ const getPublishedCourse = async (req, res) => {
             return res.status(400).json({ message: "User not found" });
         }
 
-        // Populate the publishedCourse array with Course data
+        // Populate the publishedCourse array with Course data and select only basic fields
         const userWithCourses = await req.user.populate({
             path: 'publishedCourse',
-            model: 'Course'
+            model: 'Course',
+            select: '_id courseTitle description status category level totalRating coverImage totalLengthSeconds' // Adjust the fields as per your requirements
         });
 
         // Check if user has published courses
@@ -70,7 +71,8 @@ const getPublishedCourse = async (req, res) => {
             error: error.name
         });
     }
-}
+};
+
 
 const deleteCourse = async (req, res) => {
     try {
@@ -171,7 +173,6 @@ const updateCourse = async (req, res) => {
 
         if (additions && additions.contents) {
             additions.contents.forEach(addition => {
-                let sectionIndex;
                 let existingSection = course.contents.find((section, index) => {
                     if (section.sectionTitle === addition.sectionTitle) {
                         sectionIndex = index;
@@ -256,5 +257,28 @@ const updateCourse = async (req, res) => {
     }
 };
 
+const getCourseById = async (req, res) => {
+    try {
+        const courseId = req.params.id; // Assuming the ID is passed as a URL parameter
 
-module.exports = { createCourse, getPublishedCourse, deleteCourse, updateCourse };
+        // Fetch the course from the database
+        const course = await Course.findById(courseId);
+
+        // Check if the course was found
+        if (!course) {
+            return res.status(404).json({ message: "Course not found" });
+        }
+
+        // Return the course data
+        res.status(200).json(course);
+    } catch (error) {
+        console.error('Error fetching course:', error);
+        res.status(500).json({
+            message: "An error occurred while retrieving the course",
+            error: error.message
+        });
+    }
+};
+
+
+module.exports = { createCourse, getPublishedCourse, deleteCourse, updateCourse, getCourseById };
