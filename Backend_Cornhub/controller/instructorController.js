@@ -76,7 +76,7 @@ const getPublishedCourse = async (req, res) => {
 
 const deleteCourse = async (req, res) => {
     try {
-        const courseID = req.body._id;
+        const courseID = req.params.id;
 
         // Check if the course is published by the user
         const isCoursePublishedByUser = req.user.publishedCourse.some(course => course.equals(courseID));
@@ -111,7 +111,7 @@ const deleteCourse = async (req, res) => {
 
 const updateCourse = async (req, res) => {
     try {
-        const courseID = req.body._id;
+        const courseID = req.params.id;
         const updates = req.body.updates;
         const deletions = req.body.delete;
         const additions = req.body.add; // Assuming additions are provided in this field

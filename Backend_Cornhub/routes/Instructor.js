@@ -6,7 +6,7 @@ const courseController =  require("../controller/instructorController");
 router.post("/createcourse",requireAuth, courseController.createCourse);
 router.get("/getpublishedcourse",requireAuth, courseController.getPublishedCourse);
 router.get("/getcourse/:id",requireAuth, courseController.getCourseById);
-router.patch("/deletecourse",requireAuth, courseController.deleteCourse);
-router.patch("/updatecourse",requireAuth, courseController.updateCourse);
+router.patch("/deletecourse/:id",requireAuth, courseController.deleteCourse);
+router.patch("/updatecourse/:id",requireAuth, courseController.updateCourse);
 
 module.exports = router;
