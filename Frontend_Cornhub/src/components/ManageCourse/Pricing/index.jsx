@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -8,8 +8,8 @@ import FormPageLayout from "../../FormPageLayout";
 import api from "../../../services/instructorAPI";
 import { useAuthContext } from "../../../hooks/useAuthContext";
 
-const Pricing = () => {
-  const { user, course } = useAuthContext();
+const Pricing = ({ courseID }) => {
+  const { user } = useAuthContext();
   const [pricing, setPricing] = useState("Free");
   const [price, setPrice] = useState("");
 
@@ -20,6 +20,24 @@ const Pricing = () => {
   const handlePriceChange = (event) => {
     setPrice(event.target.value);
   };
+
+  useEffect(() => {
+    // Fetch pricing details based on the courseId
+    const fetchPricingDetails = async () => {
+      try {
+        // Replace this with your actual API call to get pricing details
+        const response = await api.getPublishedCourse(user.token);
+        setPricing(response.pricing || "Free");
+        setPrice(response.price || "");
+      } catch (error) {
+        console.error("Error fetching pricing details:", error);
+      }
+    };
+
+    if (courseID) {
+      fetchPricingDetails();
+    }
+  }, [courseID]);
 
   const handleCreatePrice = async () => {
     try {
@@ -70,9 +88,13 @@ const Pricing = () => {
   };
 
   return (
-    <FormPageLayout title="Pricing" containerClass="pb-10" handleSave={handleCreatePrice}>
+    <>
+      <div className="flex justify-between p-6 pt-0 mb-8 border-b border-labelText">
+        <h1 className="text-2xl font-bold">Pricing</h1>
+        <Button label="Save" type="submit" />
+      </div>
       {renderForm()}
-    </FormPageLayout>
+    </>
   );
 };
 

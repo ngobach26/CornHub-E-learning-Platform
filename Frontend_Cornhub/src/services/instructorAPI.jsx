@@ -20,4 +20,20 @@ const createCourse = async (token, data) => {
   }
 };
 
-export default { createCourse };
+const getPublishedCourse = async (token) => {
+  try {
+    const response = await axios.get(`${baseUrl}/getpublishedcourse`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("Course information:", response.data);
+    return response.data;
+    // localStorage.setItem("user", JSON.stringify(response));
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export default { createCourse, getPublishedCourse };

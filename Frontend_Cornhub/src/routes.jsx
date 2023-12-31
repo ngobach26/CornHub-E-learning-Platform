@@ -5,6 +5,7 @@ import { useAuthContext } from "./hooks/useAuthContext";
 import ManageCourse from "./components/ManageCourse"; // test only
 import Layout from "./components/Layout";
 import InstructorPageLayout from "./components/InstructorPageLayout";
+import FormPageLayout from "./components/FormPageLayout";
 import CenterAligned from "./components/CenterAligned";
 import Login from "./pages/Login";
 import Logout from "./pages/logout";
@@ -24,6 +25,11 @@ import AccountSecurity from "./pages/Profile/AccountSecurity";
 import ViewPublicProfile from "./pages/Profile/ViewPublicProfile";
 import AddInstructor from "./pages/Instructor/Team/AddInstructor";
 import CourseLandingPage from "./pages/CourseLandingPage";
+import CourseDetails from "./components/ManageCourse/CourseDetails";
+import CreateCurriculum from "./components/ManageCourse/CreateCurriculum";
+import IntendedLearners from "./components/ManageCourse/IntendedLearners";
+import Pricing from "./components/ManageCourse/Pricing";
+import Setting from "./components/ManageCourse/Setting"
 
 async function delayForDemo(promise) {
   await new Promise((resolve) => {
@@ -127,7 +133,14 @@ export default function Router() {
         />
         <Route path="team/add" element={<AddInstructor />} />
       </Route>
-      <Route path="/instructor/courses/manage" element={<ManageCourse />} />
+      <Route path="/instructor/courses/manage" element={<FormPageLayout />} >
+        <Route index element={<CourseDetails />} />
+        <Route path=":id/d" element={<CourseDetails />}/>
+        <Route path=":id/c" element={<CreateCurriculum />}/>
+        <Route path=":id/l" element={<IntendedLearners />}/>
+        <Route path=":id/p" element={<Pricing />} />
+        <Route path=":id/s" element={<Setting />} /> 
+      </Route>
       <Route path="/*" element={<NotFoundPage />} />
       <Route path="/user-profile-editing" element={<UserProfileEditing />} />
       <Route path="/account-security" element={<AccountSecurity />} />

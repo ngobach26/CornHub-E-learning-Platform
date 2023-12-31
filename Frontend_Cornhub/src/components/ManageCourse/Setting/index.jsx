@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Switch from "@mui/material/Switch";
 import { TextField } from "@mui/material";
+import Button from "../../Button";
 
 import DropdownInput from "../../DropdownInput";
 import FormPageLayout from "../../FormPageLayout";
 
-const Settings = () => {
+const Setting = () => {
   const renderField = (label, Component) => {
     return (
       <div className="grid items-center md:grid-cols-2">
@@ -32,7 +33,15 @@ const Settings = () => {
     );
   };
 
-  return <FormPageLayout title="Settings">{renderForm()}</FormPageLayout>;
+  return (
+    <>
+      <div className="flex justify-between p-6 pt-0 mb-8 border-b border-labelText">
+        <h1 className="text-2xl font-bold">Settings</h1>
+        <Button label="Save" type="submit" />
+      </div>
+      {renderForm()}
+    </>
+  );
 };
 
-export default Settings;
+export default Setting;
