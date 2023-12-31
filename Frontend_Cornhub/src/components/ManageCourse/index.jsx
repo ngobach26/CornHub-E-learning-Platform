@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import CircularProgress from "@mui/material/CircularProgress";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
@@ -14,11 +14,29 @@ import CourseDetails from "./CourseDetails";
 import CreateCurriculum from "./CreateCurriculum";
 import IntendedLearners from "./IntendedLearners";
 import Pricing from "./Pricing";
-import Settings from "./Settings";
+import Settings from "./Setting";
+
+import api from "../../services/instructorAPI";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 export default function ManageCourse() {
+  const { user } = useAuthContext();
   const location = useLocation();
   const activePath = new URLSearchParams(location.search).get("tab");
+  const [courseId, setCourseId] = useState(null);
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const courseData = await api.getPublishedCourse(user.token);
+        setCourseId(courseData._id); 
+      } catch (error) {
+        console.error("Error fetching course data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
   
   const menu = [
     {
@@ -77,8 +95,8 @@ export default function ManageCourse() {
       </div>
       <div className="flex flex-col gap-5 px-3 lg:flex-row lg:px-12 lg:py-5">
         <div className="grid justify-between grid-cols-2 gap-3 mt-5 sm:grid-cols-4 lg:w-1/6 lg:flex lg:flex-col lg:mt-14 h-max">
-          {menu.map((item, index) => (
-            <Link key={index} to={`/instructor/courses/manage/?tab=${item.query}`}>
+          {menu.map((item, index, course) => (
+            <Link key={index} to={`/instructor/courses/manage/?tab=${item.query}&id=${course._id}`}>
               <div
                key={index}
                 className={`flex gap-3 cursor-pointer p-2 hover:bg-blue-200 ${
@@ -91,7 +109,9 @@ export default function ManageCourse() {
             </Link>
           ))}
         </div>
-        <div className="w-full p-3 shadow-lg lg:p-5">{renderBody()}</div>
+        {/* <div className="w-full p-3 shadow-lg lg:p-5">{renderBody()}</div> */}
+        <div className="w-full p-3 shadow-lg lg:p-5"></div>
+
       </div>
     </>
   );

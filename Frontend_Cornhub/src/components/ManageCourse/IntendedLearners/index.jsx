@@ -196,7 +196,11 @@ export default function IntendedLearners() {
   };
 
   return (
-    <FormPageLayout title="Intended learners" containerClass="pb-10">
+    <>
+      <div className="flex justify-between p-6 pt-0 mb-8 border-b border-labelText">
+        <h1 className="text-2xl font-bold">Intended Learners</h1>
+        <Button label="Save" type="submit" />
+      </div>
       <div className="flex flex-col gap-5">
         <div className="flex items-start">
           <p className="mb-5 mr-4 text-left">
@@ -208,6 +212,6 @@ export default function IntendedLearners() {
         </div>
       </div>
       {renderForm()}
-    </FormPageLayout>
+    </>
   );
 }

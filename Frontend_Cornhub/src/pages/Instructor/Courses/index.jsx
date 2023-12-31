@@ -29,19 +29,6 @@ export default function Courses() {
   const [loading, setLoading] = useState(true);
   const [courses, setCourses] = useState([]);
 
-  // const handleCreate = async () => {
-  //   try {
-  //     const data = {
-  //       courseTitle,
-  //       category,
-  //     };
-  //     const createdCourse = await api.createCourse(data);
-  //     // localStorage.setItem("course", JSON.stringify(createdCourse));
-  //     console.log("Course created successfully:", createdCourse);
-  //   } catch (error) {
-  //     console.error("Error creating course:", error);
-  //   }
-  // };
   const handleOpenDialog = () => {
     setIsDialogOpen(true);
   };
@@ -73,9 +60,22 @@ export default function Courses() {
       console.error("Error creating course:", error);
     }
   };
-
+  
+  useEffect(() => {
+    const fetchPublishedCourses = async () => {
+      try {
+        const publishedCourses = await api.getPublishedCourse(user.token);
+        setCourses(publishedCourses);
+      } catch (error) {
+        console.error("Error fetching published courses:", error);
+      }
+    };
+    
+    fetchPublishedCourses();
+  }, []);
+  
   const handleCourseClick = (course) => {
-    navigate(`/instructor/courses/manage/?tab=d&id=${course.courseTitle}`);
+    navigate(`/instructor/courses/manage/:${course._id}/d`);
   };
 
   const renderCourses = () => {
