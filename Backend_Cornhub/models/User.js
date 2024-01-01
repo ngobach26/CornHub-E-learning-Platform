@@ -79,6 +79,8 @@ const userSchema = Schema(
     { timestamps: true }
 );
 
+courseSchema.index({ email: "text"});
+
 userSchema.statics.signup = async function (data) {
     const { email, password } = data;
 

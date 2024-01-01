@@ -19,6 +19,9 @@ app.use("/api/instructor", courseRouter);
 const userRouter = require("./routes/User")
 app.use("/api/user", userRouter);
 
+const cartRouter = require("./routes/Cart")
+app.use("/api/cart", authRouter);
+
 app.listen(process.env.PORT, () => {
     console.log(`Listening on port ${process.env.PORT}`);
     db();
