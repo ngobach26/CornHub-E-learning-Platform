@@ -8,15 +8,16 @@ const courseSchema = Schema(
         courseTitle: {
             type: String,
             required: true,
+            unique: true
         },
         description: {
             type: String,
         },
-        status:{
+        status: {
             type: String,
-            enum: ['waiting_ac','published','banned','waiting_del','updated'],
+            enum: ['waiting_ac', 'published', 'banned', 'waiting_del', 'updated'],
         },
-        category:{
+        category: {
             type: String,
             required: true
         },
@@ -31,7 +32,7 @@ const courseSchema = Schema(
         level: {
             type: String,
             enum: ['Beginner', 'Intermediate', 'Expert', 'All Levels'],
-          },
+        },
         price: {
             type: Number,
         },
@@ -44,11 +45,13 @@ const courseSchema = Schema(
             type: Number,
             default: 0,
         },
-        studentsEnrolled: {
-            type: Schema.Types.ObjectId,
-            ref: "User"
-        },
-        comments:[Comments.schema],
+        studentsEnrolled: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "User"
+            }
+        ],
+        comments: [Comments.schema],
         objectives: {
             type: String,
         },
@@ -58,10 +61,29 @@ const courseSchema = Schema(
         totalLengthSeconds: {
             type: Number,
         },
+        outcomes: [
+            {
+                type: String
+            }
+        ],
+        prerequisites: [
+            {
+                type: String
+            }
+        ],
+        target_audience: [
+            {
+                type: String
+            }
+        ],
+        author: {
+            type: Schema.Types.ObjectId,
+            ref: "User"
+        }
     },
     { timestamps: true }
 );
 
-courseSchema.index({ name: "text", description: "text" });
+courseSchema.index({ courseTitle: "text", description: "text" });
 
 module.exports = mongoose.model("Course", courseSchema);

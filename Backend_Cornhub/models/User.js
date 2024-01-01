@@ -79,6 +79,11 @@ const userSchema = Schema(
     { timestamps: true }
 );
 
+userSchema.index({ email: "text"});
+userSchema.virtual('fullName').get(function() {
+    return `${this.firstName} ${this.lastName}`;
+});
+
 userSchema.statics.signup = async function (data) {
     const { email, password } = data;
 

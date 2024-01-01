@@ -3,6 +3,7 @@ const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
 
+
 //Profile Route
 const updateprofile = async (req, res) => {
     const { _id } = req.user;
@@ -18,22 +19,20 @@ const updateprofile = async (req, res) => {
   }
 };
 
+const getprofile = async (req, res) => {
+  const {email, firstName, lastName, birthday, currentjob, website, twitter, facebook, linkedin, interests, introduction} = req.user;
+  res.status(200).json({email, firstName, lastName, birthday, currentjob, website, twitter, facebook, linkedin, interests, introduction});
+};
+
 const changepassword = async (req, res) => {
-  const {_id} = req.user;
+  const {_id, password} = req.user;
   try {
-    const { username } = req.user; // Extract username from token payload
     const { oldPassword, newPassword } = req.body;
 
-    // Find the user by username
-    const user = await User.findOne({ username });
-    if (!user) {
-      return res.status(404).send('User not found');
-    }
-
     // Check if old password is correct
-    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    const isMatch = await bcrypt.compare(oldPassword, password);
     if (!isMatch) {
-      return res.status(400).send('Old password is incorrect');
+      return res.status(400).json({error: "Old password is incorrect"});
     }
 
     // Hash the new password
@@ -41,14 +40,14 @@ const changepassword = async (req, res) => {
     const hashedPassword = await bcrypt.hash(newPassword, salt);
 
     // Update the user's password
-    user.password = hashedPassword;
-    await user.save();
+    req.user.password = hashedPassword;
+    await req.user.save();
 
-    res.send('Password changed successfully');
+    res.status(200).json({success: 'Password changed successfully'});
   } catch (error) {
     console.error(error);
-    res.status(500).send('Internal Server Error');
+    res.status(500).json({error: 'Internal Server Error'});
   }
 };
-module.exports = {updateprofile, changepassword};
+module.exports = {getprofile, updateprofile, changepassword};
 
