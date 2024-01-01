@@ -8,13 +8,11 @@ const createCourse = async (token, data) => {
   try {
     const response = await axios.post(`${baseUrl}/createcourse`, data, {
       headers: {
-        // "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     });
     console.log("Course created successfully:", response.data);
     return response.data;
-    // localStorage.setItem("user", JSON.stringify(response));
   } catch (err) {
     console.log(err);
   }
@@ -30,7 +28,6 @@ const getPublishedCourse = async (token) => {
     });
     console.log("Course information:", response.data);
     return response.data;
-    // localStorage.setItem("user", JSON.stringify(response));
   } catch (err) {
     console.log(err);
   }
@@ -44,7 +41,7 @@ const getCourseById = async (token, id) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log("Course information:", response.data);
+    // console.log("Course information:", response.data);
     return response.data;
   } catch (err) {
     console.log(err);
@@ -53,27 +50,43 @@ const getCourseById = async (token, id) => {
 
 const deleteCourse = async (token, id) => {
   try {
-    const response = await axios.get(`${baseUrl}/deletecourse/${id}`, {
+    const response = await axios.patch(`${baseUrl}/deletecourse/${id}`, {}, {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log("Deleted course:", response.data);
+
+    console.log('Course marked for deletion:', response.data);
     return response.data;
   } catch (err) {
-    console.log(err);
+    console.error('Error marking course for deletion:', err);
+    throw err; 
   }
 };
 
-const updateCourse = async (token, id) => {
+const updateCourse = async (
+  token,
+  id,
+  updateContent,
+  deleteContent,
+  addContent
+) => {
   try {
-    const response = await axios.get(`${baseUrl}/updatecourse/${id}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+    const response = await axios.patch(
+      `${baseUrl}/updatecourse/${id}`,
+      {
+        updates: updateContent,
+        deletions: deleteContent,
+        additions: addContent,
       },
-    });
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     console.log("New update course information:", response.data);
     return response.data;
   } catch (err) {

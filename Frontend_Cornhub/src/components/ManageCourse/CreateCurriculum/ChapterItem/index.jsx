@@ -1,68 +1,39 @@
-import { useDispatch } from "react-redux";
+import React from "react";
 import PropTypes from "prop-types";
-
 import IconButton from "@mui/material/IconButton";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import OndemandVideoOutlinedIcon from "@mui/icons-material/OndemandVideoOutlined";
 import QuizOutlinedIcon from "@mui/icons-material/QuizOutlined";
 
-import {
-  deleteLecture,
-  setCurrChapterIndex,
-  setCurrLectureData,
-  setCurrLectureIndex,
-  setIsEditMode,
-  setRenderLectureForm,
-} from "redux/slice/course";
-
-export default function ChapterItem(props) {
-  const { lecture, chapterIndex, lectureIndex } = props;
-  const dispatch = useDispatch();
-
-  const handleEditClick = (e) => {
-    e.stopPropagation();
-    dispatch(setCurrChapterIndex(chapterIndex));
-    dispatch(setCurrLectureIndex(lectureIndex));
-    dispatch(setCurrLectureData(lecture));
-    dispatch(setIsEditMode(true));
-    dispatch(setRenderLectureForm());
-  };
-
-  const handleDeleteClick = (e) => {
-    e.stopPropagation();
-    dispatch(
-      deleteLecture({ chapterIndex: chapterIndex, lectureIndex: lectureIndex })
-    );
-  };
-
+export default function ChapterItem({
+  lectureTitle,
+  duration,
+  lectureType,
+  deleteLecture
+}) {
+  console.log("lectureType:", lectureType);
   return (
     <div className="flex gap-5 ml-6">
       <div className="flex items-center justify-between w-full gap-5">
         <div className="flex items-center gap-5">
-          {lecture.class === "Lecture" ? (
-            <OndemandVideoOutlinedIcon />
-          ) : (
-            <QuizOutlinedIcon />
-          )}
-          <p className="break-all">{lecture.title}</p>
+          {lectureType === "Lecture" && <OndemandVideoOutlinedIcon />}
+          {lectureType === "Quiz" && <QuizOutlinedIcon />}
+          <p className="break-all">{lectureTitle}</p>
         </div>
-        <p className="text-sm text-gray-400">{lecture?.duration}</p>
+        <p className="text-sm text-gray-400">{duration}</p>
       </div>
       <div className="flex gap-3">
-        <IconButton aria-label="edit" size="small">
-          <EditOutlinedIcon fontSize="small" onClick={handleEditClick} />
-        </IconButton>
-        <IconButton aria-label="delete" size="small">
-          <DeleteOutlinedIcon fontSize="small" onClick={handleDeleteClick} />
+        <IconButton aria-label="delete" size="small" onClick={deleteLecture}>
+          <DeleteOutlinedIcon fontSize="small" />
         </IconButton>
       </div>
     </div>
   );
 }
 
-ChapterItem.propTypes = {
-  lecture: PropTypes.object.isRequired,
-  chapterIndex: PropTypes.number.isRequired,
-  lectureIndex: PropTypes.number.isRequired,
-};
+// ChapterItem.propTypes = {
+//   title: PropTypes.string.isRequired,
+//   duration: PropTypes.string.isRequired,
+//   lectureType: PropTypes.oneOf(["Lecture", "Quiz"]).isRequired,
+//   deleteLecture: PropTypes.func.isRequired,
+// };
