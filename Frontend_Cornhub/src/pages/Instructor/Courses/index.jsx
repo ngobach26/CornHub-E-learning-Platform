@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import AddIcon from "@mui/icons-material/Add";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -10,16 +10,19 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import TextField from "@mui/material/TextField";
+import { Snackbar } from "@mui/material";
+import WarningIcon from "@mui/icons-material/Warning";
+import Checkbox from "@mui/material/Checkbox";
 import RemoveIcon from "@mui/icons-material/Remove";
 
 import { useAuthContext } from "../../../hooks/useAuthContext";
-import CenterAligned from "../../../components/CenterAligned";
 import Button from "../../../components/Button";
 import CourseCard from "../../../components/CourseCard";
 
 import api from "../../../services/instructorAPI";
 
 export default function Courses() {
+  const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuthContext();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -28,9 +31,22 @@ export default function Courses() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [courses, setCourses] = useState([]);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [selectedCourse, setSelectedCourse] = useState(null);
+  const [courseStatus, setCourseStatus] = useState("");
 
   const handleOpenDialog = () => {
     setIsDialogOpen(true);
+  };
+
+  const handleCheckboxChange = (course) => {
+    setSelectedCourse((prevSelectedCourse) =>
+      prevSelectedCourse && prevSelectedCourse._id === course._id
+        ? null
+        : course
+    );
+    console.log("Chosen");
   };
 
   const handleCloseDialog = () => {
@@ -38,6 +54,10 @@ export default function Courses() {
     setError("");
     setcourseTitle("");
     setCategory("");
+  };
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
   };
 
   const handleCreateCourse = async () => {
@@ -60,7 +80,7 @@ export default function Courses() {
       console.error("Error creating course:", error);
     }
   };
-  
+
   useEffect(() => {
     const fetchPublishedCourses = async () => {
       try {
@@ -70,25 +90,75 @@ export default function Courses() {
         console.error("Error fetching published courses:", error);
       }
     };
-    
+
     fetchPublishedCourses();
   }, []);
-  
+
+  const deleteCourse = async () => {
+    try {
+      if (selectedCourse) {
+        if (selectedCourse.status === "waiting_del") {
+          setSnackbarMessage("This course is already marked for deletion.");
+          setSnackbarOpen(true);
+        } else {
+          await api.deleteCourse(user.token, selectedCourse._id);
+          setSnackbarMessage(
+            "Course has been marked for deletion successfully. The request will be reviewed!"
+          );
+          setSnackbarOpen(true);
+          setCourseStatus("waiting_del");
+        }
+      }
+    } catch (error) {
+      console.error("Error marking deleted course:", error);
+      setSnackbarMessage("Requesting deletion failed.");
+      setSnackbarOpen(true);
+    }
+  };
+
   const handleCourseClick = (course) => {
-    navigate(`/instructor/courses/manage/:${course._id}/d`);
+    navigate(`/instructor/courses/manage/course-detail/${course._id}`);
   };
 
   const renderCourses = () => {
     return (
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 sm:gap-10">
-        {courses.map((course, index) => (
-          <CourseCard
-            key={index}
-            course={course}
-            handleClick={() => handleCourseClick(course)}
-            hoverText="Manage course"
-          />
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 sm:gap-1">
+        {courses.map((course) => (
+          <div key={course._id}>
+            <CourseCard
+              course={course}
+              handleClick={() => handleCourseClick(course)}
+              hoverText="Edit / Manage course"
+            />
+            <Checkbox
+              checked={selectedCourse && selectedCourse._id === course._id}
+              onChange={() => handleCheckboxChange(course)}
+              color="primary"
+              inputProps={{ "aria-label": "primary checkbox" }}
+            />
+          </div>
         ))}
+      </div>
+    );
+  };
+  const renderDeletedCourses = () => {
+    const deletedCourses = courses.filter(
+      (course) => course.status === "waiting_del"
+    );
+    if (deletedCourses.length === 0) {
+      return null;
+    }
+
+    return (
+      <div className="py-4 text-left">
+        <h2 className="flex items-center mb-2 text-xl font-medium">
+          <WarningIcon sx={{ marginRight: 1 }} /> Courses Marked for Deletion:
+        </h2>
+        <ul className="pl-6 list-disc">
+          {deletedCourses.map((course) => (
+            <li key={course._id}>{course.courseTitle}</li>
+          ))}
+        </ul>
       </div>
     );
   };
@@ -103,7 +173,11 @@ export default function Courses() {
             startIcon={<AddIcon />}
             onClick={handleOpenDialog}
           />
-          <Button label="Remove" startIcon={<RemoveIcon />} />
+          <Button
+            label="Remove"
+            startIcon={<RemoveIcon />}
+            onClick={deleteCourse}
+          />
         </div>
       </div>
       <Dialog fullWidth={true} open={isDialogOpen} onClose={handleCloseDialog}>
@@ -148,6 +222,14 @@ export default function Courses() {
         )}
       </Dialog>
       {renderCourses()}
+      {renderDeletedCourses()}
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        message={snackbarMessage}
+      />
     </>
   );
 }

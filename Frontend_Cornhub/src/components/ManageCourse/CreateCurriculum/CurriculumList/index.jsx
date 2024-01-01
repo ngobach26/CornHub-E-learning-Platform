@@ -10,12 +10,11 @@ import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 
 import Button from "../../../Button";
-// import ChapterItem from "../ChapterItem";
+import ChapterItem from "../ChapterItem";
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
 ))({
-  // border: `1px solid ${theme.palette.divider}`,
   "&:not(:last-child)": {
     borderBottom: 0,
   },
@@ -48,43 +47,85 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   borderTop: "1px solid rgba(0, 0, 0, .125)",
 }));
 
-export default function CurriculumList() {
-  return (
-    <div className="border border-solid border-black-400">
+const renderLecture = (lectures, deleteLecture) => {
+  return lectures.map((lecture, index) => (
+    <AccordionDetails
+      className="cursor-pointer"
+      id={index}
+      onClick={(event) => event.stopPropagation()}
+      key={index}
+    >
+      <ChapterItem
+        lectureTitle={lecture.lectureTitle}
+        duration={lecture.duration}
+        lectureType={lecture.classType}
+        deleteLecture={() => deleteLecture(index)}
+      />
+    </AccordionDetails>
+  ));
+};
+
+const renderChapter = (
+  curriculumItems,
+  deleteChapter,
+  toggleLectureForm,
+  lectureItems,
+  deleteLecture
+) => {
+  return curriculumItems.map((chapter, index) => (
+    <React.Fragment key={index}>
       <Accordion TransitionProps={{ unmountOnExit: true }}>
         <AccordionSummary>
           <div className="flex items-center justify-between w-full gap-5 mr-5">
             <p className="font-semibold break-all text-body">
-              chaper title
-              {/* {chapter.chapterTitle} */}
+              {chapter.chapterTitle}
             </p>
-            {/* <p className='text-sm text-labelText'>{chapter?.duration}</p> */}
-            <p className="text-sm text-gray-400"> duration </p>
+            <p className="text-sm text-gray-400">{chapter.duration}</p>
           </div>
           <div className="flex gap-3">
             <IconButton aria-label="edit" size="small">
-              <EditOutlinedIcon
-                fontSize="small"
-                // onClick={handleEditChapter}
-              />
+              <EditOutlinedIcon fontSize="small" />
             </IconButton>
-            <IconButton aria-label="delete" size="small">
-              <DeleteOutlinedIcon
-                fontSize="small"
-                // onClick={handleDeleteChapter}
-              />
+            <IconButton
+              aria-label="delete"
+              size="small"
+              onClick={() => deleteChapter(index)}
+            >
+              <DeleteOutlinedIcon fontSize="small" />
             </IconButton>
           </div>
-          {/* <div>chapter content</div> */}
         </AccordionSummary>
+        {lectureItems.length > 0 && renderLecture(lectureItems, deleteLecture)}
       </Accordion>
       <Button
         label="Add Chapter Item"
         variant="transparent"
         className="w-full"
         startIcon={<AddIcon />}
-        // onClick={handleAddChapterItem}
+        onClick={toggleLectureForm}
       />
+    </React.Fragment>
+  ));
+};
+
+export default function CurriculumList({
+  curriculumItems,
+  deleteChapter,
+  toggleLectureForm,
+  lectureItems,
+  deleteLecture,
+}) {
+  const [chapterItems, setChapterItems] = useState([]);
+  
+  return (
+    <div className="border border-solid border-black-400">
+      {renderChapter(
+        curriculumItems,
+        deleteChapter,
+        toggleLectureForm,
+        lectureItems,
+        deleteLecture
+      )}
     </div>
   );
 }

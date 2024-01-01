@@ -134,12 +134,12 @@ export default function Router() {
         <Route path="team/add" element={<AddInstructor />} />
       </Route>
       <Route path="/instructor/courses/manage" element={<FormPageLayout />} >
-        <Route index element={<CourseDetails />} />
-        <Route path=":id/d" element={<CourseDetails />}/>
-        <Route path=":id/c" element={<CreateCurriculum />}/>
-        <Route path=":id/l" element={<IntendedLearners />}/>
-        <Route path=":id/p" element={<Pricing />} />
-        <Route path=":id/s" element={<Setting />} /> 
+        {/* <Route index element={<CourseDetails />} /> */}
+        <Route path="course-detail/:id" element={<CourseDetails />}/>
+        <Route path="create-curriculum/:id" element={<CreateCurriculum />}/>
+        <Route path="intended-learners/:id" element={<IntendedLearners />}/>
+        <Route path="pricing/:id" element={<Pricing />} />
+        <Route path="setting/:id" element={<Setting />} /> 
       </Route>
       <Route path="/*" element={<NotFoundPage />} />
       <Route path="/user-profile-editing" element={<UserProfileEditing />} />

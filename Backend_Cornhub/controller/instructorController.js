@@ -115,7 +115,7 @@ const updateCourse = async (req, res) => {
         const updates = req.body.updates;
         const deletions = req.body.delete;
         const additions = req.body.add; // Assuming additions are provided in this field
-        const updatableFields = ['courseTitle', 'description', 'price', 'level', 'language', 'category', 'subcategory', 'objectives', 'coverImage'];
+        const updatableFields = ['courseTitle', 'description', 'price', 'level', 'language', 'category', 'subcategory', 'objectives', 'coverImage', 'totalLengthSeconds', 'status'];
 
         // Fetch the course to be updated
         const course = await Course.findById(courseID);
