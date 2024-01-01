@@ -19,7 +19,7 @@ const addToCart = async (req, res) => {
         user.cart.push(courseId); // Assuming 'cart' is an array of course IDs in the User model
         await user.save();
 
-        res.status(200).json({ message: "Course added to cart", cart: user.cart });
+        res.status(200).json({ message: "Course added to cart"});
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -48,12 +48,36 @@ const removeFromCart =  async (req, res) => {
 
 const viewCart = async (req, res) => {
     try {
-        const user = req.user.populate('cart');
-        res.status(200).json({ cart: user.cart });
+        const user = await req.user.populate({
+            path: 'cart',
+            select: '_id courseTitle description price category language author',
+            populate: {
+                path: 'author',
+                select: 'firstName lastName' // Necessary to calculate fullName
+            }
+        });
+
+        // Map cart items and include author's full name
+        const cartItems = user.cart.map(course => ({
+            _id: course._id,
+            courseTitle: course.courseTitle,
+            description: course.description,
+            price: course.price,
+            category: course.category,
+            language: course.language,
+            authorName: course.author ? course.author.fullName : 'Unknown' // Using the virtual 'fullName'
+        }));
+
+        res.status(200).json({ cart: cartItems });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
-}
+};
+
+
+
+
+
 
 const checkout = async (req, res) => {
     try {
