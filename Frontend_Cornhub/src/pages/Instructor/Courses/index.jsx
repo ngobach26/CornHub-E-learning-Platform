@@ -14,6 +14,7 @@ import { Snackbar } from "@mui/material";
 import WarningIcon from "@mui/icons-material/Warning";
 import Checkbox from "@mui/material/Checkbox";
 import RemoveIcon from "@mui/icons-material/Remove";
+import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 
 import { useAuthContext } from "../../../hooks/useAuthContext";
 import Button from "../../../components/Button";
@@ -30,11 +31,12 @@ export default function Courses() {
   const [category, setCategory] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
-  const [courses, setCourses] = useState([]);
+  const [activeCourses, setActiveCourses] = useState([]);
+  const [deletedCourses, setDeletedCourses] = useState([]);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [selectedCourse, setSelectedCourse] = useState(null);
-  const [courseStatus, setCourseStatus] = useState("");
+  const categories = ["Information Technology", "Business", "Finance and accouting", "Editing and design", "Music", "Fitness", "Self development"]
 
   const handleOpenDialog = () => {
     setIsDialogOpen(true);
@@ -72,8 +74,8 @@ export default function Courses() {
         setError("Please fill in the Category.");
       } else {
         const newCourse = { courseTitle, category };
-        setCourses((prevCourses) => [...prevCourses, newCourse]);
         const createdCourse = await api.createCourse(user.token, newCourse);
+        setActiveCourses([...activeCourses, createdCourse]);
         handleCloseDialog();
       }
     } catch (error) {
@@ -84,8 +86,9 @@ export default function Courses() {
   useEffect(() => {
     const fetchPublishedCourses = async () => {
       try {
-        const publishedCourses = await api.getPublishedCourse(user.token);
-        setCourses(publishedCourses);
+        const courses = await api.getPublishedCourse(user.token);
+        setActiveCourses(courses.filter((course)=>course.status != 'waiting_del'))
+        setDeletedCourses(courses.filter((course)=>course.status == 'waiting_del'))
       } catch (error) {
         console.error("Error fetching published courses:", error);
       }
@@ -106,7 +109,8 @@ export default function Courses() {
             "Course has been marked for deletion successfully. The request will be reviewed!"
           );
           setSnackbarOpen(true);
-          setCourseStatus("waiting_del");
+          setActiveCourses(activeCourses.filter(course => course._id !== selectedCourse._id));
+          setDeletedCourses([...deletedCourses, selectedCourse]);
         }
       }
     } catch (error) {
@@ -120,10 +124,10 @@ export default function Courses() {
     navigate(`/instructor/courses/manage/course-detail/${course._id}`);
   };
 
-  const renderCourses = () => {
+  const renderActiveCourses = () => {
     return (
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 sm:gap-1">
-        {courses.map((course) => (
+        {activeCourses.map((course) => (
           <div key={course._id}>
             <CourseCard
               course={course}
@@ -142,21 +146,18 @@ export default function Courses() {
     );
   };
   const renderDeletedCourses = () => {
-    const deletedCourses = courses.filter(
-      (course) => course.status === "waiting_del"
-    );
-    if (deletedCourses.length === 0) {
-      return null;
-    }
-
     return (
       <div className="py-4 text-left">
         <h2 className="flex items-center mb-2 text-xl font-medium">
           <WarningIcon sx={{ marginRight: 1 }} /> Courses Marked for Deletion:
         </h2>
-        <ul className="pl-6 list-disc">
+        <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 sm:gap-1">
           {deletedCourses.map((course) => (
-            <li key={course._id}>{course.courseTitle}</li>
+            <div key={course._id}>
+              <CourseCard
+                course={course}
+              />
+            </div>
           ))}
         </ul>
       </div>
@@ -196,14 +197,19 @@ export default function Courses() {
               onChange={(e) => setcourseTitle(e.target.value)}
               margin="normal"
             />
-            <TextField
-              label="Category"
-              required
-              fullWidth
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              margin="normal"
-            />
+            <FormControl fullWidth>
+              <InputLabel>Category</InputLabel>
+                <Select
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                >
+                  {categories.map((category) => (
+                    <MenuItem key={category} value={category}>
+                      {category}
+                    </MenuItem>
+                  ))}
+                </Select>
+            </FormControl>
             <DialogActions>
               <Button
                 label="Cancel"
@@ -221,7 +227,7 @@ export default function Courses() {
           </Alert>
         )}
       </Dialog>
-      {renderCourses()}
+      {renderActiveCourses()}
       {renderDeletedCourses()}
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "center" }}

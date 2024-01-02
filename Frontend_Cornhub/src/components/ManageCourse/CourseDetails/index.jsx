@@ -24,6 +24,8 @@ export default function CourseDetails() {
     subcategory: "",
   });
 
+  const categories = ["Information Technology", "Business", "Finance and accouting", "Editing and design", "Music", "Fitness", "Self development"]
+
   useEffect(() => {
     const fetchCourseDetails = async () => {
       try {
@@ -70,6 +72,7 @@ export default function CourseDetails() {
       ...prevDetails,
       [fieldName]: value,
     }));
+    console.log(courseDetail)
   };
 
   const renderForm = () => {
@@ -136,17 +139,21 @@ export default function CourseDetails() {
                 <MenuItem value="All Levels">All Levels</MenuItem>
               </Select>
             </FormControl>
-            <TextField
-              className="w-full"
-              margin="normal"
-              fullWidth
-              id="category"
-              label="Category"
-              name="category"
-              value={courseDetail.category}
-              onChange={(e) => handleInputChange("category", e.target.value)}
-              autoFocus
-            />
+            <FormControl margin="normal">
+              <InputLabel>Category</InputLabel>
+              <Select
+                className="text-left"
+                value={courseDetail.category}
+                label="Category"
+                onChange={(e) => handleInputChange("category", e.target.value)}
+              >
+                {categories.map((category) => (
+                  <MenuItem key={category} value={category}>
+                    {category}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             <TextField
               className="w-full"
               margin="normal"

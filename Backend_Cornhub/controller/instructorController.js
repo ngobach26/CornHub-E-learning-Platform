@@ -59,9 +59,9 @@ const getPublishedCourse = async (req, res) => {
         });
 
         // Check if user has published courses
-        if (!userWithCourses.publishedCourse.length) {
-            return res.status(404).json({ message: "No published courses found" });
-        }
+        // if (!userWithCourses.publishedCourse.length) {
+        //     return res.status(404).json({ message: "No published courses found" });
+        // }
 
         // Send the populated data as response
         res.status(200).json(userWithCourses.publishedCourse);

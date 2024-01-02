@@ -88,6 +88,9 @@ const Pricing = () => {
           <TextField
             label="Price (in $)"
             type="number"
+            inputProps={{
+              min: 0, // Set the minimum value here
+            }}
             value={price.price}
             onChange={(e) => handleInputChange("price", e.target.value)}
             fullWidth

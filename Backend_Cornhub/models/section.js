@@ -10,7 +10,7 @@ const sectionSchema = new Schema({
       maxLength: 80,
       required: true,
     },
-    duration: String,
+    duration: Number,
     content: [Lesson.schema],
   },
   );

@@ -47,7 +47,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   borderTop: "1px solid rgba(0, 0, 0, .125)",
 }));
 
-const renderLecture = (lectures, deleteLecture) => {
+const renderLecture = (chapterIndex, lectures, deleteLecture) => {
   return lectures.map((lecture, index) => (
     <AccordionDetails
       className="cursor-pointer"
@@ -59,7 +59,7 @@ const renderLecture = (lectures, deleteLecture) => {
         lectureTitle={lecture.lectureTitle}
         duration={lecture.duration}
         lectureType={lecture.classType}
-        deleteLecture={() => deleteLecture(index)}
+        deleteLecture={() => deleteLecture(chapterIndex, index)}
       />
     </AccordionDetails>
   ));
@@ -69,7 +69,6 @@ const renderChapter = (
   curriculumItems,
   deleteChapter,
   toggleLectureForm,
-  lectureItems,
   deleteLecture
 ) => {
   return curriculumItems.map((chapter, index) => (
@@ -95,14 +94,14 @@ const renderChapter = (
             </IconButton>
           </div>
         </AccordionSummary>
-        {lectureItems.length > 0 && renderLecture(lectureItems, deleteLecture)}
+        {chapter.content.length > 0 && renderLecture(index, chapter.content, deleteLecture)}
       </Accordion>
       <Button
         label="Add Chapter Item"
         variant="transparent"
         className="w-full"
         startIcon={<AddIcon />}
-        onClick={toggleLectureForm}
+        onClick={() => toggleLectureForm(index)}
       />
     </React.Fragment>
   ));
@@ -112,8 +111,7 @@ export default function CurriculumList({
   curriculumItems,
   deleteChapter,
   toggleLectureForm,
-  lectureItems,
-  deleteLecture,
+  deleteLecture
 }) {
   const [chapterItems, setChapterItems] = useState([]);
   
@@ -123,7 +121,6 @@ export default function CurriculumList({
         curriculumItems,
         deleteChapter,
         toggleLectureForm,
-        lectureItems,
         deleteLecture
       )}
     </div>

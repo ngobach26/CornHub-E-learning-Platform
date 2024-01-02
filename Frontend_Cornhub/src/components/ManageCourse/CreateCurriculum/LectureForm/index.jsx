@@ -53,6 +53,7 @@ const LectureForm = ({ onAddLecture, initialLectures }) => {
     e.preventDefault();
     if (validateLectureTitle()) {
       onAddLecture(lectureTitle, classType, duration, embedUrl);
+      console.log("add lecture successfully")
       setLectureTitle("");
       setClassType("");
       setDuration("");
@@ -116,7 +117,7 @@ const LectureForm = ({ onAddLecture, initialLectures }) => {
           autoFocus
         />
 
-        <Button label="Add" className="ml-auto w-min" type="submit" />
+        <Button label="Add" className="ml-auto w-min" type="submit" onClick={handleSubmit}/>
       </form>
     </div>
   );

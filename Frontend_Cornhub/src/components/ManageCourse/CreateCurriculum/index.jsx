@@ -12,40 +12,47 @@ const CreateCurriculum = () => {
   const [showLectureForm, setShowLectureForm] = useState(false);
   const [showChapterItemForm, setShowChapterItemForm] = useState(false);
   const [curriculumItems, setCurriculumItems] = useState([]);
-  const [lectureItems, setLectureItems] = useState([]);
   const [currentChapterIndex, setCurrentChapterIndex] = useState(null);
   
   const toggleChapterForm = () => {
+    console.log(curriculumItems)
     setShowChapterForm(!showChapterForm);
     setShowLectureForm(false);
   };
   const addChapter = (chapterTitle, duration) => {
-    setCurriculumItems([...curriculumItems, { chapterTitle, duration }]);
+    setCurriculumItems([...curriculumItems, { chapterTitle, duration, content: [] }]);
   };
 
   const toggleLectureForm = (chapterIndex) => {
+    setCurrentChapterIndex(chapterIndex);
     setShowLectureForm(!showLectureForm);
     setShowChapterForm(false);
   };
 
-  const addLecture = (lectureTitle, classType, duration, embedUrl) => {
-    setLectureItems([
-      ...lectureItems,
-      { lectureTitle, classType, duration, embedUrl },
-    ]);
+  const addLecture = (chapterIndex, lectureTitle, classType, duration, embedUrl) => {
+    const newCurriculumItems = [...curriculumItems];
+    const chapter = newCurriculumItems[chapterIndex];
+    if (chapter) {
+      chapter.content = [...(chapter.content || []), { lectureTitle, classType, duration, embedUrl }];
+    }
+    setCurriculumItems(newCurriculumItems);
   };
   
+  const deleteLecture = (chapterIndex, lectureIndex) => {
+    const newCurriculumItems = [...curriculumItems];
+    const chapter = newCurriculumItems[chapterIndex];
+    if (chapter && chapter.content) {
+      chapter.content.splice(lectureIndex, 1);
+    }
+    setCurriculumItems(newCurriculumItems);
+  };
+
   const deleteChapter = (index) => {
     const updatedCurriculumItems = [...curriculumItems];
     updatedCurriculumItems.splice(index, 1);
     setCurriculumItems(updatedCurriculumItems);
   };
 
-  const deleteLecture = (index) => {
-    const updatedLectureItems = [...lectureItems];
-    updatedLectureItems.splice(index, 1);
-    setLectureItems(updatedLectureItems);
-  };
 
   return (
     <div>
@@ -60,7 +67,11 @@ const CreateCurriculum = () => {
       <div className="flex flex-col gap-5 mt-5 lg:flex-row">
         <div className="order-last w-full p-3 lg:w-7/12 bg-formBg h-min lg:order-first bg-slate-50">
           {showChapterForm && <ChapterForm onAddChapter={addChapter} />}
-          {showLectureForm && <LectureForm onAddLecture={addLecture} />}
+          {showLectureForm && (
+            <LectureForm onAddLecture={(lectureTitle, classType, duration, embedUrl) => 
+              addLecture(currentChapterIndex, lectureTitle, classType, duration, embedUrl)} 
+            />
+          )}
         </div>
         <div
           className="flex flex-col w-full gap-5 p-3 lg:w-5/12 bg-slate-50"
@@ -69,7 +80,6 @@ const CreateCurriculum = () => {
           <div className="overflow-auto h-5/6">
             <CurriculumList
               curriculumItems={curriculumItems}
-              lectureItems={lectureItems}
               deleteChapter={deleteChapter}
               deleteLecture={deleteLecture}
               toggleLectureForm={toggleLectureForm}
