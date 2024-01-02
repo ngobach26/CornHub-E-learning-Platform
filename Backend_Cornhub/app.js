@@ -20,7 +20,7 @@ const userRouter = require("./routes/User")
 app.use("/api/user", userRouter);
 
 const cartRouter = require("./routes/Cart")
-app.use("/api/cart", authRouter);
+app.use("/api/cart", cartRouter);
 
 const searchRouter = require("./routes/Search")
 app.use("/api/course", searchRouter);

@@ -1,6 +1,7 @@
 import React from "react";
 import classnames from "classnames";
-import { Link, useLocation, Outlet, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useLocation, Outlet, useNavigate, useParams } from "react-router-dom";
 
 import CircularProgress from "@mui/material/CircularProgress";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
@@ -9,37 +10,56 @@ import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlin
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-
+import api from "../../services/instructorAPI";
 import Button from "../Button";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 export default function FormPageLayout(props) {
   // const { title, loading, handleSave, containerClass } = props;
+  const { user } = useAuthContext(); 
+  const { id } = useParams();
   const navigate = useNavigate();
+  const [courseDetail, setCourseDetails] = useState({
+    courseTitle: "",
+  });
+  useEffect(() => {
+    const fetchCourseDetails = async () => {
+      try {
+        const getCourse = await api.getCourseById(user.token, id);
+        setCourseDetails({
+          courseTitle: getCourse.courseTitle || "",
+        });
+      } catch (error) {
+        console.error("Error fetching course details:", error);
+      }
+    };
+    fetchCourseDetails();
+  }, [id, user.token]);
   const menu = [
     {
       icon: InfoOutlinedIcon,
       label: "Course Details",
-      route: ":id/d",
+      route: `course-detail/${id}`,
     },
     {
       icon: TocOutlinedIcon,
       label: "Curriculum",
-      route: ":id/c",
+      route: `create-curriculum/${id}`,
     },
     {
       icon: PeopleOutlinedIcon,
       label: "Intended learners",
-      route: ":id/l",
+      route: `intended-learners/${id}`,
     },
     {
       icon: MonetizationOnOutlinedIcon,
       label: "Pricing",
-      route: ":id/p",
+      route: `pricing/${id}`,
     },
     {
       icon: SettingsOutlinedIcon,
       label: "Settings",
-      route: ":id/s",
+      route: `setting/${id}`,
     },
   ];
   const handleMenuClick = (route) => {
@@ -55,7 +75,7 @@ export default function FormPageLayout(props) {
           <Link to="/instructor/courses">
             <ArrowBackIcon className="cursor-pointer" />
           </Link>
-          <h2 className="text-lg font-semibold">Course title</h2>
+          <h2 className="text-lg font-semibold">{courseDetail.courseTitle}</h2>
         </div>
       </div>
       <div className="flex flex-col gap-5 px-3 lg:flex-row lg:px-12 lg:py-5">

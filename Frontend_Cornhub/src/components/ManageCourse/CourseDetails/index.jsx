@@ -1,11 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { TextField } from "@mui/material";
-import FormPageLayout from "../../FormPageLayout";
-import DropdownInput from "../../DropdownInput";
+import { useParams } from "react-router-dom";
+import { TextField, Snackbar } from "@mui/material";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 import Button from "../../Button";
 import { languages } from "../../../fakedata/languages";
+import { useAuthContext } from "../../../hooks/useAuthContext";
+import api from "../../../services/instructorAPI";
 
-export default function CourseDetails({ courseID }) {
+export default function CourseDetails() {
+  const { id } = useParams();
+  const { user } = useAuthContext();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
   const [courseDetail, setCourseDetails] = useState({
     courseTitle: "",
     description: "",
@@ -16,29 +25,52 @@ export default function CourseDetails({ courseID }) {
   });
 
   useEffect(() => {
-    // Fetch course details based on the courseId
     const fetchCourseDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/getCoursebyID/${courseID}`);
-        const courseData = await response.json();
-
+        const getCourse = await api.getCourseById(user.token, id);
         setCourseDetails({
-          courseTitle: courseData.courseTitle || "",
-          description: courseData.description || "",
-          language: courseData.language || "English",
-          level: courseData.level || "",
-          category: courseData.category || "",
-          subcategory: courseData.subcategory || "",
+          courseTitle: getCourse.courseTitle || "",
+          description: getCourse.description || "",
+          language: getCourse.language || "English",
+          level: getCourse.level || "",
+          category: getCourse.category || "",
+          subcategory: getCourse.subcategory || "",
         });
       } catch (error) {
         console.error("Error fetching course details:", error);
       }
     };
+    fetchCourseDetails();
+  }, [id, user.token]);
 
-    if (courseID) {
-      fetchCourseDetails();
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
+  const updateCourseDetails = async () => {
+    try {
+      await api.updateCourse(
+        user.token,
+        id,
+        courseDetail,
+        courseDetail,
+        courseDetail
+      );
+      setSnackbarMessage("Course details updated successfully!");
+      setSnackbarOpen(true);
+    } catch (error) {
+      console.error("Error updating course details:", error);
+      setSnackbarMessage("Failed to update course details");
+      setSnackbarOpen(true);
     }
-  }, [courseID]);
+  };
+
+  const handleInputChange = (fieldName, value) => {
+    setCourseDetails((prevDetails) => ({
+      ...prevDetails,
+      [fieldName]: value,
+    }));
+  };
 
   const renderForm = () => {
     return (
@@ -53,7 +85,8 @@ export default function CourseDetails({ courseID }) {
             label="Title"
             name="title"
             placeholder="Course Name"
-            defaultValue={courseDetail.courseTitle}
+            value={courseDetail.courseTitle}
+            onChange={(e) => handleInputChange("courseTitle", e.target.value)}
             autoFocus
           />
         </div>
@@ -65,7 +98,8 @@ export default function CourseDetails({ courseID }) {
           id="description"
           label="Description"
           name="description"
-          defaultValue={courseDetail.description}
+          value={courseDetail.description}
+          onChange={(e) => handleInputChange("description", e.target.value)}
           autoFocus
           multiline
           rows={4}
@@ -73,28 +107,35 @@ export default function CourseDetails({ courseID }) {
         <div>
           <h3 className="mb-1 font-semibold">Basic information</h3>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {/* dropdownInput */}
-            <TextField
-              className="w-full"
-              margin="normal"
-              fullWidth
-              id="langauge"
-              label="Language"
-              name="language"
-              defaultValue={courseDetail.language}
-              autoFocus
-            />
-            <TextField
-              className="w-full"
-              margin="normal"
-              fullWidth
-              id="level"
-              label="Level"
-              placeholder="'Beginner', 'Intermediate', 'Expert', 'All Levels'"
-              name="level"
-              defaultValue={courseDetail.level}
-              autoFocus
-            />
+            <FormControl margin="normal">
+              <InputLabel>Language</InputLabel>
+              <Select
+                className="text-left"
+                value={courseDetail.language}
+                label="Language"
+                onChange={(e) => handleInputChange("language", e.target.value)}
+              >
+                {languages.map((language) => (
+                  <MenuItem key={language.code} value={language.name}>
+                    {language.nativeName}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl margin="normal">
+              <InputLabel>Level</InputLabel>
+              <Select
+                className="text-left"
+                value={courseDetail.level}
+                label="Level"
+                onChange={(e) => handleInputChange("level", e.target.value)}
+              >
+                <MenuItem value="Beginner">Beginner</MenuItem>
+                <MenuItem value="Intermediate">Intermediate</MenuItem>
+                <MenuItem value="Expert">Expert</MenuItem>
+                <MenuItem value="All Levels">All Levels</MenuItem>
+              </Select>
+            </FormControl>
             <TextField
               className="w-full"
               margin="normal"
@@ -102,7 +143,8 @@ export default function CourseDetails({ courseID }) {
               id="category"
               label="Category"
               name="category"
-              defaultValue={courseDetail.category}
+              value={courseDetail.category}
+              onChange={(e) => handleInputChange("category", e.target.value)}
               autoFocus
             />
             <TextField
@@ -112,7 +154,8 @@ export default function CourseDetails({ courseID }) {
               id="subcategory"
               label="Subcategory"
               name="subcategory"
-              defaultValue={courseDetail.subcategory}
+              value={courseDetail.subcategory}
+              onChange={(e) => handleInputChange("subcategory", e.target.value)}
               autoFocus
             />
           </div>
@@ -123,16 +166,18 @@ export default function CourseDetails({ courseID }) {
 
   return (
     <>
-    <div className="flex justify-between p-6 pt-0 mb-8 border-b border-labelText">
+      <div className="flex justify-between p-6 pt-0 mb-8 border-b border-labelText">
         <h1 className="text-2xl font-bold">Course Details</h1>
-        <Button
-          label="Save"
-          type="submit"
-        />
+        <Button label="Save" type="submit" onClick={updateCourseDetails} />
       </div>
       {renderForm()}
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        message={snackbarMessage}
+      />
     </>
-    // <FormPageLayout title="Course Details" containerClass="pb-10">
-    // </FormPageLayout>
   );
 }

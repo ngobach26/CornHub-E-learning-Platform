@@ -4,13 +4,13 @@ const DefaultCourse = () => {
   return (
     <svg
       width="250"
-      height="130"
+      height="115"
       viewBox="0 0 581 319"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className="w-full h-full"
     >
-      <g clip-path="url(#clip0)">
+      <g clipPath="url(#clip0)">
         <path
           d="M108.257 165.573C108.257 224.885 60.073 272.971 0.640625 272.971V58.1738C60.073 58.1738 108.257 106.26 108.257 165.573Z"
           fill="#353D44"

@@ -1,56 +1,68 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { TextField } from "@mui/material";
+import { TextField, Snackbar } from "@mui/material";
 import Button from "../../Button";
 import FormPageLayout from "../../FormPageLayout";
 import api from "../../../services/instructorAPI";
 import { useAuthContext } from "../../../hooks/useAuthContext";
 
-const Pricing = ({ courseID }) => {
+const Pricing = () => {
   const { user } = useAuthContext();
+  const { id } = useParams();
   const [pricing, setPricing] = useState("Free");
-  const [price, setPrice] = useState("");
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [price, setPrice] = useState({ price: "" });
 
   const handlePricingChange = (event) => {
     setPricing(event.target.value);
+
+    // Set price to 0 when the user chooses the "Free" option
+    if (event.target.value === "Free") {
+      setPrice({ price: 0 });
+    }
   };
 
-  const handlePriceChange = (event) => {
-    setPrice(event.target.value);
+  const handleInputChange = (fieldName, value) => {
+    setPrice((prevDetails) => ({
+      ...prevDetails,
+      [fieldName]: value,
+    }));
   };
-
+  
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+  
   useEffect(() => {
     // Fetch pricing details based on the courseId
     const fetchPricingDetails = async () => {
       try {
         // Replace this with your actual API call to get pricing details
-        const response = await api.getPublishedCourse(user.token);
-        setPricing(response.pricing || "Free");
-        setPrice(response.price || "");
+        const getPrice = await api.getCourseById(user.token, id);
+        setPrice({ price: getPrice.price || "" });
       } catch (error) {
         console.error("Error fetching pricing details:", error);
       }
     };
 
-    if (courseID) {
+    if (id) {
       fetchPricingDetails();
     }
-  }, [courseID]);
+  }, [id]);
 
-  const handleCreatePrice = async () => {
+  const updateCoursePrice = async () => {
     try {
-      const data = {
-        price: parseFloat(price),
-        // courseTitle: course.course,
-        // category: course.category,
-      };
-      const createdCourse = await api.createCourse(user.token, data);
-      // localStorage.setItem("course", JSON.stringify(createdCourse));
-      console.log("Course created successfully:", createdCourse);
+      await api.updateCourse(user.token, id, price, price, price);
+      setSnackbarMessage("Course price updated successfully!");
+      setSnackbarOpen(true);
     } catch (error) {
-      console.error("Error creating course:", error);
+      console.error("Error updating course price:", error);
+      setSnackbarMessage("Failed to update course price");
+      setSnackbarOpen(true);
     }
   };
 
@@ -76,8 +88,8 @@ const Pricing = ({ courseID }) => {
           <TextField
             label="Price (in $)"
             type="number"
-            value={price}
-            onChange={handlePriceChange}
+            value={price.price}
+            onChange={(e) => handleInputChange("price", e.target.value)}
             fullWidth
             variant="outlined"
             className="mt-3"
@@ -91,9 +103,16 @@ const Pricing = ({ courseID }) => {
     <>
       <div className="flex justify-between p-6 pt-0 mb-8 border-b border-labelText">
         <h1 className="text-2xl font-bold">Pricing</h1>
-        <Button label="Save" type="submit" />
+        <Button label="Save" type="submit" onClick={updateCoursePrice}/>
       </div>
       {renderForm()}
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        message={snackbarMessage}
+      />
     </>
   );
 };

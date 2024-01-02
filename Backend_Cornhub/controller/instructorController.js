@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const Course = require("../models/course");
 const Section = require("../models/section");
 const Lesson = require("../models/lesson");
+const validFields = ['courseTitle', 'description', 'price', 'level', 'language', 'category', 'subcategory', 'objectives', 'coverImage', 'contents', 'outcomes', 'prerequisites', 'target_audience'];
 
 const createCourse = async (req, res) => {
     try {
@@ -13,15 +14,15 @@ const createCourse = async (req, res) => {
         }
 
         // Define a list of fields that can be set by the user
-        const creatableFields = ['courseTitle', 'description', 'price', 'level', 'language', 'category', 'subcategory', 'objectives', 'coverImage', 'contents'];
 
         // Create a new course object with only the allowed fields
         let courseData = {};
-        creatableFields.forEach(field => {
+        validFields.forEach(field => {
             if (req.body[field] !== undefined) {
                 courseData[field] = req.body[field];
             }
         });
+        courseData.author = req.user._id;
 
         // Set the status to "waiting_ac"
         courseData.status = "waiting_ac";
@@ -115,7 +116,7 @@ const updateCourse = async (req, res) => {
         const updates = req.body.updates;
         const deletions = req.body.delete;
         const additions = req.body.add; // Assuming additions are provided in this field
-        const updatableFields = ['courseTitle', 'description', 'price', 'level', 'language', 'category', 'subcategory', 'objectives', 'coverImage'];
+        const updatableFields = ['courseTitle', 'description', 'price', 'level', 'language', 'category', 'subcategory', 'objectives', 'coverImage', 'totalLengthSeconds', 'status', 'target_audience', 'prerequisites', 'outcomes'];
 
         // Fetch the course to be updated
         const course = await Course.findById(courseID);
@@ -135,7 +136,7 @@ const updateCourse = async (req, res) => {
         // Handle top-level course field updates
         if (updates) {
             Object.keys(updates).forEach(key => {
-                if (updatableFields.includes(key) && updates[key] !== undefined) {
+                if (validFields.includes(key) && updates[key] !== undefined) {
                     course[key] = updates[key];
                 }
             });
@@ -180,7 +181,7 @@ const updateCourse = async (req, res) => {
                     }
                     return false;
                 });
-        
+
                 if (existingSection) {
                     // Handle ordered addition of new lessons
                     if (addition.content) {
@@ -209,9 +210,9 @@ const updateCourse = async (req, res) => {
                     }
                 }
             });
-        
+
         }
-        
+
 
         // Handle deletions
         if (deletions) {
@@ -224,7 +225,7 @@ const updateCourse = async (req, res) => {
                     }
                 });
             }
-        
+
             // Delete specific lessons in multiple sections
             if (deletions.sectionLessons) {
                 deletions.sectionLessons.forEach(sectionLesson => {
@@ -240,10 +241,10 @@ const updateCourse = async (req, res) => {
                 });
             }
         }
-        
+
         // Mark the contents array as modified
         course.markModified('contents');
-        
+
         // Save the updated course
         course.status = 'updated';
         await course.save();
@@ -279,6 +280,5 @@ const getCourseById = async (req, res) => {
         });
     }
 };
-
 
 module.exports = { createCourse, getPublishedCourse, deleteCourse, updateCourse, getCourseById };
