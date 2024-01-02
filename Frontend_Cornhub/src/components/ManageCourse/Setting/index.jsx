@@ -26,8 +26,6 @@ const Setting = () => {
           status: getCourse.status || "updated",
           totalLengthSeconds: getCourse.totalLengthSeconds || 0,
         });
-        console.log(getCourse.totalLengthSeconds);
-        console.log(getCourse.status);
       } catch (error) {
         console.error("Error fetching course setting:", error);
       }
@@ -37,12 +35,13 @@ const Setting = () => {
 
   const updateSettingDetail = async () => {
     try {
+      const datum = { totalLengthSeconds: settingDetail.totalLengthSeconds, status: settingDetail.status }
       await api.updateCourse(
         user.token,
         id,
-        settingDetail,
-        settingDetail,
-        settingDetail
+        datum,
+        datum,
+        datum
       );
       setSnackbarMessage("Course setting updated successfully!");
       setSnackbarOpen(true);

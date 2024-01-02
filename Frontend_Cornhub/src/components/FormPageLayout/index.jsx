@@ -16,9 +16,25 @@ import { useAuthContext } from "../../hooks/useAuthContext";
 
 export default function FormPageLayout(props) {
   // const { title, loading, handleSave, containerClass } = props;
+  const { user } = useAuthContext(); 
   const { id } = useParams();
   const navigate = useNavigate();
-  
+  const [courseDetail, setCourseDetails] = useState({
+    courseTitle: "",
+  });
+  useEffect(() => {
+    const fetchCourseDetails = async () => {
+      try {
+        const getCourse = await api.getCourseById(user.token, id);
+        setCourseDetails({
+          courseTitle: getCourse.courseTitle || "",
+        });
+      } catch (error) {
+        console.error("Error fetching course details:", error);
+      }
+    };
+    fetchCourseDetails();
+  }, [id, user.token]);
   const menu = [
     {
       icon: InfoOutlinedIcon,
@@ -59,7 +75,7 @@ export default function FormPageLayout(props) {
           <Link to="/instructor/courses">
             <ArrowBackIcon className="cursor-pointer" />
           </Link>
-          <h2 className="text-lg font-semibold">Course title</h2>
+          <h2 className="text-lg font-semibold">{courseDetail.courseTitle}</h2>
         </div>
       </div>
       <div className="flex flex-col gap-5 px-3 lg:flex-row lg:px-12 lg:py-5">
