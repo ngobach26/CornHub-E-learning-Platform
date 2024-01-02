@@ -22,6 +22,9 @@ app.use("/api/user", userRouter);
 const cartRouter = require("./routes/Cart")
 app.use("/api/cart", authRouter);
 
+const searchRouter = require("./routes/Search")
+app.use("/api/course", searchRouter);
+
 app.listen(process.env.PORT, () => {
     console.log(`Listening on port ${process.env.PORT}`);
     db();
