@@ -46,7 +46,6 @@ export default function Courses() {
         ? null
         : course
     );
-    console.log("Chosen");
   };
 
   const handleCloseDialog = () => {
@@ -117,7 +116,12 @@ export default function Courses() {
   };
 
   const handleCourseClick = (course) => {
-    navigate(`/instructor/courses/manage/course-detail/${course._id}`);
+    if (course.status === "waiting_del") {
+      setSnackbarMessage("This course is marked for deletion and cannot be edited.");
+      setSnackbarOpen(true);
+    } else {
+      navigate(`/instructor/courses/manage/course-detail/${course._id}`);
+    }
   };
 
   const renderCourses = () => {

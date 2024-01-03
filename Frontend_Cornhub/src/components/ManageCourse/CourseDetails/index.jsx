@@ -53,8 +53,8 @@ export default function CourseDetails() {
         user.token,
         id,
         courseDetail,
-        courseDetail,
-        courseDetail
+        {},
+        {}
       );
       setSnackbarMessage("Course details updated successfully!");
       setSnackbarOpen(true);
