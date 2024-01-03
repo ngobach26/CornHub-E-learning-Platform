@@ -12,19 +12,33 @@ const Setting = () => {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [switchState, setSwitchState] = useState({
     status: "updated",
-  })
-  const [settingDetail, setSettingDetail] = useState({
-    status: "updated",
-    totalLengthSeconds: 0,
   });
+  const [courseDetail, setCourseDetails] = useState({
+    totalLengthSeconds: "",
+    status: "",
+  });
+  
+  const handleInputChange = (fieldName, value) => {
+    setCourseDetails((prevDetails) => ({
+      ...prevDetails,
+      [fieldName]: value,
+    }));
+  };
+
+  const handleSwitchChange = () => {
+    setCourseDetails((prevDetails) => ({
+      ...prevDetails,
+      status: prevDetails.status === "updated" ? "waiting_ac" : "updated",
+    }));
+  };
 
   useEffect(() => {
     const fetchCourseDetails = async () => {
       try {
         const getCourse = await api.getCourseById(user.token, id);
-        setSettingDetail({
-          status: getCourse.status || "updated",
-          totalLengthSeconds: getCourse.totalLengthSeconds || 0,
+        setCourseDetails({
+          totalLengthSeconds: getCourse.totalLengthSeconds || "",
+          status: getCourse.status || "",
         });
       } catch (error) {
         console.error("Error fetching course setting:", error);
@@ -33,21 +47,18 @@ const Setting = () => {
     fetchCourseDetails();
   }, [id, user.token]);
 
-  const updateSettingDetail = async () => {
+  const updateCourseDetails = async () => {
     try {
-      const datum = { totalLengthSeconds: settingDetail.totalLengthSeconds, status: settingDetail.status }
       await api.updateCourse(
         user.token,
         id,
-        datum,
-        datum,
-        datum
+        courseDetail, {}, {}
       );
-      setSnackbarMessage("Course setting updated successfully!");
+      setSnackbarMessage("Course details updated successfully!");
       setSnackbarOpen(true);
     } catch (error) {
-      console.error("Error updating setting details:", error);
-      setSnackbarMessage("Failed to update course setting");
+      console.error("Error updating course details:", error);
+      setSnackbarMessage("Failed to update course details");
       setSnackbarOpen(true);
     }
   };
@@ -56,73 +67,50 @@ const Setting = () => {
     setSnackbarOpen(false);
   };
 
-  const handleInputChange = (fieldName, value) => {
-    setSettingDetail((prevDetails) => ({
-      ...prevDetails,
-      [fieldName]: value,
-    }));
-  };
-
-  const renderField = (label, Component) => {
-    return (
-      <div className="grid items-center md:grid-cols-2">
-        <p className="mb-1 text-left text-gray-600 md:mb-0">{label}</p>
-        {Component}
-      </div>
-    );
-  };
-
-  const handleSwitchChange = () => {
-    setSettingDetail((prevDetails) => ({
-      ...prevDetails,
-      status: prevDetails.status === "updated" ? "waiting_ac" : "updated",
-    }));
-  };
-  
   const renderForm = () => {
     return (
-      <form className="flex flex-col gap-8">
-        {renderField(
-          "Instructor",
-          <TextField
-            type="text"
-            // onChange={(e) =>
-            //   handleInputChange("", e.target.value)
-            // }
-          />
-        )}
-        {renderField(
-          "Total course duration",
-          <TextField
-            type="number"
-            onChange={(e) =>
-              handleInputChange("totalLengthSeconds", e.target.value)
-            }
-            value={settingDetail.totalLengthSeconds}
-          />
-        )}
-        {renderField(
-          "Course status",
-          <div className="flex items-center gap-1">
-            <p>Unpublished</p>
-            <Switch
-              checked={settingDetail.status === "waiting_ac"}
-              onChange={handleSwitchChange}
-              value={settingDetail.status ? "waiting_ac" : "updated"}
+      <div>
+        <div className="flex justify-between p-6 pt-0 mb-8 border-b border-labelText">
+          <h1 className="text-2xl font-bold">Settings</h1>
+          <Button label="Save" type="submit" onClick={updateCourseDetails} />
+        </div>
+        <div className="flex flex-col gap-8">
+          {/* <div className="grid items-center md:grid-cols-2">
+            <p className="mb-1 text-left text-gray-600 md:mb-0">Instructor</p>
+            <TextField type="text" />
+          </div> */}
+          <div className="grid items-center md:grid-cols-2">
+            <p className="mb-1 text-left text-gray-600 md:mb-0">
+              Total course duration
+            </p>
+            <TextField
+              type="number"
+              value={courseDetail.totalLengthSeconds}
+              onChange={(e) =>
+                handleInputChange("totalLengthSeconds", e.target.value)
+              }
             />
-            <p>Request Published</p>
           </div>
-        )}
-      </form>
+          <div className="grid items-center md:grid-cols-2">
+            <p className="mb-1 text-left text-gray-600 md:mb-0">
+              Course status
+            </p>
+            <div className="flex items-center gap-1">
+              <p>Unpublished</p>
+              <Switch
+                checked={courseDetail.status === "waiting_ac"}
+                onChange={handleSwitchChange}
+              />
+              <p>Request Published</p>
+            </div>
+          </div>
+        </div>
+      </div>
     );
   };
 
   return (
     <>
-      <div className="flex justify-between p-6 pt-0 mb-8 border-b border-labelText">
-        <h1 className="text-2xl font-bold">Settings</h1>
-        <Button label="Save" type="submit" onClick={updateSettingDetail} />
-      </div>
       {renderForm()}
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
