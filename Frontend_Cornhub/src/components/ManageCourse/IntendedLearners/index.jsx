@@ -100,8 +100,7 @@ export default function IntendedLearners() {
         token,
         id,
         datum,
-        datum,
-        datum
+        {}, {}
       );
       setSnackbarMessage("Course details updated successfully!");
       setSnackbarOpen(true);

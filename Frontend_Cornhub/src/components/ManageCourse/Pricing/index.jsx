@@ -19,8 +19,6 @@ const Pricing = () => {
 
   const handlePricingChange = (event) => {
     setPricing(event.target.value);
-
-    // Set price to 0 when the user chooses the "Free" option
     if (event.target.value === "Free") {
       setPrice({ price: 0 });
     }
@@ -38,10 +36,8 @@ const Pricing = () => {
   };
   
   useEffect(() => {
-    // Fetch pricing details based on the courseId
     const fetchPricingDetails = async () => {
       try {
-        // Replace this with your actual API call to get pricing details
         const getPrice = await api.getCourseById(user.token, id);
         setPrice({ price: getPrice.price || "" });
       } catch (error) {
@@ -56,7 +52,7 @@ const Pricing = () => {
 
   const updateCoursePrice = async () => {
     try {
-      await api.updateCourse(user.token, id, price, price, price);
+      await api.updateCourse(user.token, id, price, {}, {});
       setSnackbarMessage("Course price updated successfully!");
       setSnackbarOpen(true);
     } catch (error) {
@@ -88,6 +84,9 @@ const Pricing = () => {
           <TextField
             label="Price (in $)"
             type="number"
+            inputProps={{
+              min: 0, // Set the minimum value here
+            }}
             value={price.price}
             onChange={(e) => handleInputChange("price", e.target.value)}
             fullWidth

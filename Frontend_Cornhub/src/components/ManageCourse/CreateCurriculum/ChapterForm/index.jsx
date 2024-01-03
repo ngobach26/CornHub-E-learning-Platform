@@ -4,7 +4,7 @@ import { TextField } from "@mui/material";
 
 export default function ChapterForm({ onAddChapter }) {
   const [chapterTitle, setChapterTitle] = useState("");
-  const [duration, setDuration] = useState("");
+  const [duration, setDuration] = useState(0);
   const [chapterTitleError, setChapterTitleError] = useState("");
   const [durationError, setDurationError] = useState("");
 
@@ -33,7 +33,7 @@ export default function ChapterForm({ onAddChapter }) {
     if (validateChapterTitle(chapterTitle)) {
       onAddChapter(chapterTitle, duration);
       setChapterTitle("");
-      setDuration("");
+      setDuration(0);
     }
   };
 
@@ -52,9 +52,12 @@ export default function ChapterForm({ onAddChapter }) {
             onChange={handleTitleChange}
           />
           <TextField
-            type="text"
-            label="Duration"
-            placeholder="1 hour 30 minutes"
+            type="number"
+            inputProps={{
+              min: 0, // Set the minimum value here
+            }}
+            label="Duration (mins)"
+            placeholder="0 minutes"
             className="sm:w-1/4"
             value={duration}
             onChange={handleDurationChange}

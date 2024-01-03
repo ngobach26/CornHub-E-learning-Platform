@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const Course = require("../models/course");
 const Section = require("../models/section");
 const Lesson = require("../models/lesson");
-const validFields = ['courseTitle', 'description', 'price', 'level', 'language', 'category', 'subcategory', 'objectives', 'coverImage', 'contents', 'outcomes', 'prerequisites', 'target_audience'];
+const validFields = ['courseTitle', 'description', 'price', 'level', 'language', 'category', 'subcategory', 'objectives', 'coverImage', 'contents','totalLengthSeconds', 'status', 'outcomes', 'prerequisites', 'target_audience'];
 
 const createCourse = async (req, res) => {
     try {
@@ -59,9 +59,9 @@ const getPublishedCourse = async (req, res) => {
         });
 
         // Check if user has published courses
-        if (!userWithCourses.publishedCourse.length) {
-            return res.status(404).json({ message: "No published courses found" });
-        }
+        // if (!userWithCourses.publishedCourse.length) {
+        //     return res.status(404).json({ message: "No published courses found" });
+        // }
 
         // Send the populated data as response
         res.status(200).json(userWithCourses.publishedCourse);
@@ -116,8 +116,7 @@ const updateCourse = async (req, res) => {
         const updates = req.body.updates;
         const deletions = req.body.delete;
         const additions = req.body.add; // Assuming additions are provided in this field
-        const updatableFields = ['courseTitle', 'description', 'price', 'level', 'language', 'category', 'subcategory', 'objectives', 'coverImage', 'totalLengthSeconds', 'status', 'target_audience', 'prerequisites', 'outcomes'];
-
+        console.log(req.body)
         // Fetch the course to be updated
         const course = await Course.findById(courseID);
         if (!course) {
