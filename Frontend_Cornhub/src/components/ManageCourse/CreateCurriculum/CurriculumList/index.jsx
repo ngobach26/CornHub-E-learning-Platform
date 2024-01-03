@@ -56,9 +56,9 @@ const renderLecture = (chapterIndex, lectures, deleteLecture) => {
       key={index}
     >
       <ChapterItem
-        lectureTitle={lecture.lectureTitle}
+        lectureTitle={lecture.lessonTitle}
         duration={lecture.duration}
-        lectureType={lecture.classType}
+        lectureType={lecture.type}
         deleteLecture={() => deleteLecture(chapterIndex, index)}
       />
     </AccordionDetails>
@@ -77,9 +77,9 @@ const renderChapter = (
         <AccordionSummary>
           <div className="flex items-center justify-between w-full gap-5 mr-5">
             <p className="font-semibold break-all text-body">
-              {chapter.chapterTitle}
+              {chapter.sectionTitle}
             </p>
-            <p className="text-sm text-gray-400">{chapter.duration}</p>
+            <p className="text-sm text-gray-400">{chapter.duration} minutes</p>
           </div>
           <div className="flex gap-3">
             <IconButton aria-label="edit" size="small">

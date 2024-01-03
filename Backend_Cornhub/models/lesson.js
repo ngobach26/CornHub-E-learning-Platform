@@ -6,7 +6,7 @@ const Question = require("./question");
 
 const lessonSchema = Schema(
   {
-    name: {
+    lessonTitle: {
       type: String,
       required: true,
     },
@@ -18,13 +18,16 @@ const lessonSchema = Schema(
     description: {
       type: String,
     },
-    lengthSeconds: {
+    duration: {
       type: Number,
       min: 0,
       default: 0,
     },
     data: {
-      type: Object,
+      type: Object
+    }, 
+    embedUrl: {
+      type: String,
       required: true,
     }
   },

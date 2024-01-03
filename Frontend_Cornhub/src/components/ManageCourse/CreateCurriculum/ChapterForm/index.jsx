@@ -55,6 +55,7 @@ export default function ChapterForm({ onAddChapter }) {
             type="number"
             inputProps={{
               min: 0, // Set the minimum value here
+              max: 10000
             }}
             label="Duration (mins)"
             placeholder="0 minutes"

@@ -11,16 +11,15 @@ export default function ChapterItem({
   lectureType,
   deleteLecture
 }) {
-  console.log("lectureType:", lectureType);
   return (
     <div className="flex gap-5 ml-6">
       <div className="flex items-center justify-between w-full gap-5">
         <div className="flex items-center gap-5">
-          {lectureType === "Lecture" && <OndemandVideoOutlinedIcon />}
-          {lectureType === "Quiz" && <QuizOutlinedIcon />}
+          {lectureType === "video" && <OndemandVideoOutlinedIcon />}
+          {lectureType === "quiz" && <QuizOutlinedIcon />}
           <p className="break-all">{lectureTitle}</p>
         </div>
-        <p className="text-sm text-gray-400">{duration}</p>
+        <p className="text-sm text-gray-400">{duration} minutes</p>
       </div>
       <div className="flex gap-3">
         <IconButton aria-label="delete" size="small" onClick={deleteLecture}>

@@ -9,7 +9,7 @@ import Select from "@mui/material/Select";
 const LectureForm = ({ onAddLecture, initialLectures }) => {
   const [lectureTitle, setLectureTitle] = useState("");
   const [classType, setClassType] = useState("");
-  const [duration, setDuration] = useState("");
+  const [duration, setDuration] = useState(0);
   const [embedUrl, setEmbedUrl] = useState("");
   const [lectureTitleError, setLectureTitleError] = useState("");
   const [lectures, setLectures] = useState("");
@@ -89,15 +89,18 @@ const LectureForm = ({ onAddLecture, initialLectures }) => {
               label="Class Type"
               onChange={handleClassTypeChange}
             >
-              <MenuItem value="Lecture">Lecture</MenuItem>
-              <MenuItem value="Quiz">Quiz</MenuItem>
+              <MenuItem value="video">Lecture</MenuItem>
+              <MenuItem value="quiz">Quiz</MenuItem>
             </Select>
           </FormControl>
           <TextField
-            type="text"
-            required
-            label="Duration"
-            placeholder="1 hour 30 minutes"
+            type="number"
+            inputProps={{
+              min: 0, // Set the minimum value here
+              max: 10000
+            }}
+            label="Duration (mins)"
+            placeholder="0 minutes"
             className="sm:w-1/4"
             value={duration}
             onChange={handleDurationChange}
