@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const Course = require("../models/course");
 const Section = require("../models/section");
 const Lesson = require("../models/lesson");
-const validFields = ['courseTitle', 'description', 'price', 'level', 'language', 'category', 'subcategory', 'objectives', 'coverImage', 'contents','totalLengthSeconds', 'status', 'outcomes', 'prerequisites', 'target_audience'];
+const validFields = ['courseTitle', 'description', 'price', 'level', 'language', 'category', 'subcategory', 'objectives', 'contents','totalLengthSeconds', 'status', 'outcomes', 'prerequisites', 'target_audience'];
 
 const createCourse = async (req, res) => {
     try {
@@ -109,6 +109,51 @@ const deleteCourse = async (req, res) => {
     }
 };
 
+const updateWithImage = async (req, res) => {
+    try {
+        console.log(req.file);
+        console.log(req.body);
+        
+        const courseID = req.params.id;
+        const course = await Course.findById(courseID);
+        const updates = req.body;
+        if (!course) {
+            return res.status(404).json({ message: "Course not found" });
+        }
+        if (course.status == "banned" || course.status == "waiting_del") {
+            return res.status(403).json({ message: "Course is banned or waiting delete" });
+        }
+
+        // Check if the course is published by the user
+        const isCoursePublishedByUser = req.user.publishedCourse.some(course => course.equals(courseID));
+        if (!isCoursePublishedByUser) {
+            return res.status(403).json({ message: "Unauthorized to update this course" });
+        }
+
+        // Handle top-level course field updates
+        if (updates) {
+            Object.keys(updates).forEach(key => {
+                if (validFields.includes(key) && updates[key] !== undefined) {
+                    course[key] = updates[key];
+                }
+            });
+        }
+
+        if (req.file){
+            course.coverImage = req.file.filename;
+        }
+
+        course.status = 'updated';
+        await course.save();
+        res.status(200).json({ message: "Course updated successfully", course });
+    } catch (error) {
+        console.error('Error updating course:', error);
+        res.status(500).json({
+            message: error.message,
+            error: error.name
+        });
+    }
+}
 
 const updateCourse = async (req, res) => {
     try {
@@ -280,4 +325,4 @@ const getCourseById = async (req, res) => {
     }
 };
 
-module.exports = { createCourse, getPublishedCourse, deleteCourse, updateCourse, getCourseById };
+module.exports = { createCourse, getPublishedCourse, deleteCourse, updateWithImage, updateCourse, getCourseById };

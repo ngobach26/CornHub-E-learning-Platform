@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const db = require('./database');
+const path = require('path')
 const cors = require('cors');
 require("dotenv").config();
 
@@ -9,6 +10,7 @@ app.use(cors({
 }))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const authRouter = require("./routes/Auth")
 app.use("/api/auth", authRouter);
