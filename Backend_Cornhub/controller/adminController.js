@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 
-const listUsers = async (req, res) => {
+const listusers = async (req, res) => {
         try {
             const users = await User.find({}); // Modify as per your user model
             res.status(200).json(users);
@@ -13,6 +13,5 @@ const listUsers = async (req, res) => {
     };
 
     // Other admin operations like deleting a user, editing user roles, etc.
-    // ...
 
-module.exports = listUsers;
+module.exports = {listusers};

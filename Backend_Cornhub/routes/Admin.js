@@ -4,5 +4,5 @@ const adminController = require('../controller/adminController');
 const requireAuth = require('../middleware/requireAuth'); 
 const isAdmin = require('../middleware/isAdmin');
 
-router.get('/users', requireAuth, isAdmin, adminController.listUsers);
+router.get('/users', requireAuth, isAdmin, adminController.listusers);
 module.exports = router;
