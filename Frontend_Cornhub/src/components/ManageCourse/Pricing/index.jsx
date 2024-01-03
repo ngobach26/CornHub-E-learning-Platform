@@ -15,20 +15,21 @@ const Pricing = () => {
   const [pricing, setPricing] = useState("Free");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
-  const [price, setPrice] = useState({ price: "" });
+  const [price, setPrice] = useState({ price: 0 });
+  const [lastPrice, setLastPrice] = useState(0);
 
   const handlePricingChange = (event) => {
     setPricing(event.target.value);
     if (event.target.value === "Free") {
       setPrice({ price: 0 });
+    } else {
+      setPrice({ price: lastPrice});
     }
   };
 
-  const handleInputChange = (fieldName, value) => {
-    setPrice((prevDetails) => ({
-      ...prevDetails,
-      [fieldName]: value,
-    }));
+  const handleInputChange = (price) => {
+    setPrice({price});
+    if (price>0) setLastPrice(price);
   };
   
   const handleSnackbarClose = () => {
@@ -39,7 +40,8 @@ const Pricing = () => {
     const fetchPricingDetails = async () => {
       try {
         const getPrice = await api.getCourseById(user.token, id);
-        setPrice({ price: getPrice.price || "" });
+        setPrice({ price: getPrice.price || 0 });
+        setLastPrice(getPrice.price || 0);
       } catch (error) {
         console.error("Error fetching pricing details:", error);
       }
@@ -48,7 +50,7 @@ const Pricing = () => {
     if (id) {
       fetchPricingDetails();
     }
-  }, [id]);
+  }, [id, user.token]);
 
   const updateCoursePrice = async () => {
     try {
@@ -88,7 +90,7 @@ const Pricing = () => {
               min: 0, // Set the minimum value here
             }}
             value={price.price}
-            onChange={(e) => handleInputChange("price", e.target.value)}
+            onChange={(e) => handleInputChange(e.target.value)}
             fullWidth
             variant="outlined"
             className="mt-3"
