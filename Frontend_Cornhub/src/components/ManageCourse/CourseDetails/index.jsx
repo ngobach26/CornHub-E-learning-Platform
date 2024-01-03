@@ -22,7 +22,10 @@ export default function CourseDetails() {
     level: "",
     category: "",
     subcategory: "",
+    coverImage: ""
   });
+  const [coverImage, setCoverImage] = useState();
+  const baseURL = 'http://localhost:3000/uploads/'
 
   const categories = ["Information Technology", "Business", "Finance and accouting", "Editing and design", "Music", "Fitness", "Self development"]
 
@@ -37,6 +40,7 @@ export default function CourseDetails() {
           level: getCourse.level || "",
           category: getCourse.category || "",
           subcategory: getCourse.subcategory || "",
+          imageName: getCourse.coverImage || ""
         });
       } catch (error) {
         console.error("Error fetching course details:", error);
@@ -50,13 +54,16 @@ export default function CourseDetails() {
   };
 
   const updateCourseDetails = async () => {
+    const formData = new FormData();
+    Object.keys(courseDetail).forEach((key) => {
+      formData.append(key, courseDetail[key]);
+    });
+    formData.append("coverImage", coverImage);
     try {
-      await api.updateCourse(
+      await api.updateWithImage(
         user.token,
         id,
-        courseDetail,
-        {},
-        {}
+        formData
       );
       setSnackbarMessage("Course details updated successfully!");
       setSnackbarOpen(true);
@@ -74,6 +81,11 @@ export default function CourseDetails() {
     }));
     console.log(courseDetail)
   };
+
+  const handleImage = (e) => {
+    console.log(e.target.files[0]);
+    setCoverImage(e.target.files[0]);
+  }
 
   const renderForm = () => {
     return (
@@ -106,6 +118,16 @@ export default function CourseDetails() {
           autoFocus
           multiline
           rows={4}
+        />
+        {courseDetail.imageName && <img src={baseURL+courseDetail.imageName}/>}
+        <TextField
+          type="file"
+          className="w-full"
+          margin="normal"
+          fullWidth
+          id="image"
+          name="image"
+          onChange={handleImage}
         />
         <div>
           <h3 className="mb-1 font-semibold">Basic information</h3>
