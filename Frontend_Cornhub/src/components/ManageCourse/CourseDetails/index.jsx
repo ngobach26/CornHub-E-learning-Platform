@@ -79,7 +79,6 @@ export default function CourseDetails() {
       ...prevDetails,
       [fieldName]: value,
     }));
-    console.log(courseDetail)
   };
 
   const handleImage = (e) => {

@@ -1,6 +1,5 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-// import { Navigation } from "swiper";
 
 import CourseInfoCard from "../CourseInfoCard";
 import ShimmerBlock from "../ShimmerBlock";
@@ -10,18 +9,19 @@ const CourseCarousel = (props) => {
 
   const renderSlides = () => {
     // if (loading) {
-    //   return new Array(5).fill(1).map((item, id) => (
-    //     <SwiperSlide key={id}>
-    //       <ShimmerBlock className="w-full h-36" />
-    //     </SwiperSlide>
-    //   ));
+      return new Array(5).fill(1).map((item, id) => (
+        <SwiperSlide key={id}>
+          {/* <ShimmerBlock className="w-full h-36" /> */}
+          <CourseInfoCard />
+        </SwiperSlide>
+      ));
     // }
 
-    return data?.map((course, index) => (
-      <SwiperSlide key={index}>
-        <CourseInfoCard course={course} />
-      </SwiperSlide>
-    ));
+    // return data?.map((course, index) => (
+    //   <SwiperSlide key={index}>
+    //     <CourseInfoCard course={course} />
+    //   </SwiperSlide>
+    // ));
   };
 
   const renderTitle = () => {
@@ -30,7 +30,9 @@ const CourseCarousel = (props) => {
     //     return <ShimmerBlock className="h-6 rounded w-72" />;
     //   }
 
-      return <p className="text-2xl font-semibold">{`${title} Courses`}</p>;
+      // return <p className="text-2xl font-semibold">{`${title} Courses`}</p>;
+      return <p className="px-8 text-2xl font-semibold text-left"> course title </p>;
+
     // }
   };
 
@@ -38,35 +40,9 @@ const CourseCarousel = (props) => {
     return (
       <div className="my-8">
         <div className="mb-3">{renderTitle()}</div>
-        <Swiper
-          breakpoints={{
-            // when window width is >= 600px
-            600: {
-              slidesPerView: 2,
-              spaceBetween: 20,
-            },
-            700: {
-              slidesPerView: 3,
-              spaceBetween: 20,
-            },
-            980: {
-              slidesPerView: 4,
-              spaceBetween: 20,
-            },
-            1200: {
-              slidesPerView: 5,
-              spaceBetween: 20,
-            },
-          }}
-          pagination={{
-            clickable: true,
-          }}
-          navigation={true}
-          // modules={[Navigation]}
-          className="mySwiper"
-        >
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 sm:gap-1">
           {renderSlides()}
-        </Swiper>
+        </div>
       </div>
     );
   };
