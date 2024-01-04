@@ -2,6 +2,8 @@ import React, { useState, useEffect} from "react";
 import CarouselComp from "../../components/CarouselComp";
 import Brand from "../../assets/image/Brand";
 import Footer from "../../components/Footer";
+import CourseInfoCard from "../../components/CourseInfoCard";
+import CourseCarousel from "../../components/CourseCarousel";
 // import SectionList from "../../components/SectionList";
 
 function Homepage() {
@@ -37,7 +39,9 @@ function Homepage() {
           every month
         </h3>
       </div>
-      <div className="px-10 my-10 xl:px-0">for section rendering</div>
+      <div className="px-10 my-10 xl:px-0">
+        <CourseCarousel />
+      </div>
       <div className="flex items-center justify-center w-full h-auto text-gray-900 bg-gray-100">
         <div className="flex flex-col items-center justify-center w-4/5 h-full my-8">
           <h2 className="text-[2rem] font-semibold">Trusted by the best</h2>

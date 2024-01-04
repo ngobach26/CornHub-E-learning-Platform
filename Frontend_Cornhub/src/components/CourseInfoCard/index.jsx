@@ -6,18 +6,20 @@ const CourseInfoCard = (props) => {
   const { course } = props;
   
   return (
-    <CourseInfoPopover course={course}>
+    // <CourseInfoPopover course={course}>
+    <CourseInfoPopover>
       {/* <div onClick={handleClick} className='cursor-pointer'> */}
       <div className="cursor-pointer">
         <DefaultCourse />
-        <div className="pb-3 text-base">
-          <h2>{course.title}</h2>
-          {/* <h2>Course title</h2> */}
+        <div className="pb-3 mx-5 text-base text-left">
+          {/* <h2>{course.title}</h2> */}
+          <h2>Course title</h2>
           <p className="text-sm text-gray-400">Lorem ipsum dolor sit amet</p>
           <p className="font-medium">
-            {course?.pricing === 'Free'
+            {/* {course?.pricing === 'Free'
               ? 'Free'
-              : `${course.currency} ${course.price}`}
+              : `${course.currency} ${course.price}`} */}
+              Free
           </p>
         </div>
       </div>
