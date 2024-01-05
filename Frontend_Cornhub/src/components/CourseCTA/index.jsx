@@ -6,26 +6,25 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 import Button from "../Button";
 // only demo, no interaction yet
-const CourseCTA = () => {
+const CourseCTA = ({isPurchased}) => {
   return (
     <div className="flex gap-3 my-3">
-      <Button
-        label="Go to course"
-        className="w-full py-3 font-semibold"
-        //   onClick={handleLearnClick}
-      />
-      {/* <Button
-        label="Add to cart"
-        className="w-full py-3 font-semibold"
-        //   loading={addRemoveCartLoading}
-        //   onClick={handleAddToCart}
-      />
-      <Button
-        label="Go to cart"
-        className="w-full py-3 font-semibold"
-        //   loading={addRemoveCartLoading}
-        //   onClick={handleGotoCart}
-      /> */}
+      {
+        isPurchased ? (
+          <Button
+            label="Go to course"
+            className="w-full py-3 font-semibold"
+            // onClick={handleLearnClick}
+          />
+        ) : (
+          <Button
+            label="Add to cart"
+            className="w-full py-3 font-semibold"
+            // loading={addRemoveCartLoading}
+            // onClick={handleAddToCart}
+          />
+        )
+      }
       {/* <Button
         variant="outlined"
         //   onClick={handleAddToWishlist}

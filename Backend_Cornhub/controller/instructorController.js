@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const Course = require("../models/course");
 const Section = require("../models/section");
 const Lesson = require("../models/lesson");
-const validFields = ['courseTitle', 'description', 'price', 'level', 'language', 'category', 'subcategory', 'objectives', 'contents','totalLengthSeconds', 'status', 'outcomes', 'prerequisites', 'target_audience'];
+const validFields = ['courseTitle', 'description', 'price', 'level', 'language', 'category', 'subcategory', 'objectives', 'contents','totalLengthSeconds', 'status', 'outcomes', 'prerequisites', 'target_audience', 'demoVideo'];
 
 const createCourse = async (req, res) => {
     try {
@@ -307,7 +307,10 @@ const getCourseById = async (req, res) => {
         const courseId = req.params.id; // Assuming the ID is passed as a URL parameter
 
         // Fetch the course from the database
-        const course = await Course.findById(courseId);
+        const course = await Course.findById(courseId).populate({
+            path: 'author',
+            select: 'firstName lastName'
+        });;
 
         // Check if the course was found
         if (!course) {
