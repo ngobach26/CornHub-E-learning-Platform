@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt');
 
 //Profile Route
 const updateprofile = async (req, res) => {
-    const { _id } = req.user;
+    const { _id } = req.User;
   try {
     // Use findByIdAndUpdate to update user's information
     const user = await User.findByIdAndUpdate(_id, req.body, { new: true });
@@ -20,12 +20,12 @@ const updateprofile = async (req, res) => {
 };
 
 const getprofile = async (req, res) => {
-  const {email, firstName, lastName, birthday, currentjob, website, twitter, facebook, linkedin, interests, introduction} = req.user;
+  const {email, firstName, lastName, birthday, currentjob, website, twitter, facebook, linkedin, interests, introduction} = req.User;
   res.status(200).json({email, firstName, lastName, birthday, currentjob, website, twitter, facebook, linkedin, interests, introduction});
 };
 
 const changepassword = async (req, res) => {
-  const {_id, password} = req.user;
+  const {_id, password} = req.User;
   try {
     const { oldPassword, newPassword } = req.body;
 
@@ -41,7 +41,7 @@ const changepassword = async (req, res) => {
 
     // Update the user's password
     req.user.password = hashedPassword;
-    await req.user.save();
+    await req.User.save();
 
     res.status(200).json({success: 'Password changed successfully'});
   } catch (error) {
