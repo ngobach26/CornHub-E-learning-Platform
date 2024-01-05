@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
+const Course = require("../models/course");
 const jwt = require("jsonwebtoken");
 
 const listusers = async (req, res) => {
@@ -12,6 +13,12 @@ const listusers = async (req, res) => {
         }
     };
 
-    // Other admin operations like deleting a user, editing user roles, etc.
-//
-module.exports = {listusers};
+const listcourses = async (req, res) => {
+    try {
+        const courses = await Course.find({});
+        res.status(200).json(courses);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+}
+module.exports = {listusers, listcourses};
