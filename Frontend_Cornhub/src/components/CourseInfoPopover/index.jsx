@@ -43,7 +43,7 @@ const CourseInfoPopover = (props) => {
         {topHighlights.map((outcome, index) => (
           <p key={index} className="flex gap-3">
             <span>
-              <DoneIcon fontSize="small" />
+              <DoneIcon fontSize="small" color='success'/>
             </span>
 
             {JSON.parse(outcome).points}
