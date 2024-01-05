@@ -17,7 +17,7 @@ export default function ChapterItem({
         <div className="flex items-center gap-5">
           {lectureType === "video" && <OndemandVideoOutlinedIcon />}
           {lectureType === "quiz" && <QuizOutlinedIcon />}
-          <p className="break-all">{lectureTitle}</p>
+          <p className="text-sm break-all">{lectureTitle}</p>
         </div>
         <p className="text-sm text-gray-400">{duration} minutes</p>
       </div>

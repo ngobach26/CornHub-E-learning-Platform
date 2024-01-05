@@ -87,7 +87,7 @@ export default function Router() {
             </Suspense>
           }
         />
-      <Route path="/course" element={<CourseLandingPage />}/>
+        <Route path="/course/:id" element={<CourseLandingPage />}/>
 
       </Route>
       <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />

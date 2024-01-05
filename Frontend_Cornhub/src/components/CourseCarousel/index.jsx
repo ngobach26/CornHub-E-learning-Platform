@@ -4,32 +4,23 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import CourseInfoCard from "../CourseInfoCard";
 import ShimmerBlock from "../ShimmerBlock";
 
-const CourseCarousel = (props) => {
-  const { data, title, loading } = props;
+const CourseCarousel = ({ data }) => {
+  // const { data } = props;
 
   const renderSlides = () => {
-    // if (loading) {
-      return new Array(5).fill(1).map((item, id) => (
-        <SwiperSlide key={id}>
-          {/* <ShimmerBlock className="w-full h-36" /> */}
-          <CourseInfoCard />
-        </SwiperSlide>
-      ));
-    // }
-
-    // return data?.map((course, index) => (
-    //   <SwiperSlide key={index}>
-    //     <CourseInfoCard course={course} />
-    //   </SwiperSlide>
-    // ));
+    const coursesArray = Object.values(data.courses || {});
+    return (
+      <>
+        {coursesArray.map(course => (
+          <SwiperSlide key={course._id}>
+            <CourseInfoCard course={course} />
+          </SwiperSlide>
+        ))}
+      </>
+    );
   };
 
   const renderTitle = () => {
-    // if (title) {
-    //   if (loading) {
-    //     return <ShimmerBlock className="h-6 rounded w-72" />;
-    //   }
-
       // return <p className="text-2xl font-semibold">{`${title} Courses`}</p>;
       return <p className="px-8 text-2xl font-semibold text-left"> course title </p>;
 
@@ -48,13 +39,7 @@ const CourseCarousel = (props) => {
   };
 
   const renderContent = () => {
-    // if (loading || data?.length) {
-      return renderSwiper();
-    // }
-
-    // if (!loading && !data?.length) {
-    //   return null;
-    // }
+    return renderSwiper();
   };
 
   return renderContent();
