@@ -105,7 +105,7 @@ const checkout = async (req, res) => {
       );
       if (!isCourseJoined) {
         user.joinedCourses.push({ courseId });
-        coursesCheckedOut.push({ courseId });
+        coursesCheckout.push({ courseId });
       }
     });
     const order = {
