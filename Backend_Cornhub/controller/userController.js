@@ -20,7 +20,7 @@ const updateprofile = async (req, res) => {
 };
 
 const getprofile = async (req, res) => {
-  const {email, firstName, lastName, birthday, currentjob, website, twitter, facebook, linkedin, interests, introduction} = req.User;
+  const {email, firstName, lastName, birthday, currentjob, website, twitter, facebook, linkedin, interests, introduction} = req.user;
   res.status(200).json({email, firstName, lastName, birthday, currentjob, website, twitter, facebook, linkedin, interests, introduction});
 };
 
