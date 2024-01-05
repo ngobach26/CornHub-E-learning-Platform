@@ -81,7 +81,7 @@ const updateWithImage = async (
       }
     );
     console.log("New update course information:", response.data);
-    return response.data;
+    return response.data.course;
   } catch (err) {
     console.log(err);
   }

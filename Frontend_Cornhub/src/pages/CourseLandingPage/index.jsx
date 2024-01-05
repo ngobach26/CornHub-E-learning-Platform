@@ -30,6 +30,8 @@ export default function CourseLandingPage() {
     level: "",
     category: "",
     subcategory: "",
+    demoVideo: "",
+    author: "",
     details: {
       outcomes: [{ points: "" }],
       prerequisites: [{ points: "" }],
@@ -63,6 +65,8 @@ export default function CourseLandingPage() {
           level: courseData.level || "",
           category: courseData.category || "",
           subcategory: courseData.subcategory || "",
+          demoVideo: courseData.demoVideo || "",
+          author: `${courseData.author.firstName} ${courseData.author.lastName}`,
           details: {
             outcomes: JSON.parse(courseData.outcomes) || [{ points: "" }],
             prerequisites: JSON.parse(courseData.prerequisites) || [
@@ -100,10 +104,10 @@ export default function CourseLandingPage() {
               <p>
                 Course Creator:{" "}
                 {/* <span className="font-bold">{getInstructors(course)}</span> */}
-                <span className="font-bold">name</span>
+                <span className="font-bold">{courseDetail.author}</span>
               </p>
               <p className="flex items-center gap-2 pl-3">
-                <LanguageIcon fontSize="small" /> English
+                <LanguageIcon fontSize="small" />{courseDetail.language}
               </p>
             </div>
             <div className="block mt-8 lg:hidden">
@@ -120,7 +124,7 @@ export default function CourseLandingPage() {
   const renderSidebar = () => {
     return (
       <div className="hidden text-black lg:block w-96">
-        <VideoPlayer url={exampleCourse.courseurlPreview} />
+        <VideoPlayer url={courseDetail.demoVideo ? courseDetail.demoVideo : "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"} />
         {/* video can be added later */}
         <div className="px-6 py-8 bg-white shadow-md">
           {/* <CourseCTA course={course} /> */}

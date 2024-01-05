@@ -3,20 +3,6 @@ import { styled } from "@mui/material/styles";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import DoneIcon from "@mui/icons-material/Done";
 import CourseCTA from "../CourseCTA";
-import { json } from "react-router-dom";
-
-const sampleCourse = {
-  title: "Sample Course",
-  level: "Intermediate",
-  subtitle: "A sample subtitle for the course",
-  highlights: [
-    { points: "Highlight 1" },
-    { points: "Highlight 2" },
-    { points: "Highlight 3" },
-    { points: "Highlight 4" },
-    // ... add more highlights as needed
-  ],
-};
 
 const Info = styled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -25,8 +11,9 @@ const Info = styled(({ className, ...props }) => (
     backgroundColor: "#fff",
     color: "#000",
     maxWidth: 350,
-    padding: "1.3rem",
-    boxShadow: "0px 4px 40px 0px #00000029",
+    padding: "1rem",
+    boxShadow: "0px 4px 20px 0px rgba(0, 0, 0, 0.1)",
+    borderRadius: "4px",
   },
   [`& .${tooltipClasses.arrow}`]: {
     color: theme.palette.body,
@@ -34,19 +21,17 @@ const Info = styled(({ className, ...props }) => (
 }));
 
 const CourseInfoPopover = (props) => {
-  const { children, course } = props;
+  const { children, course, isPurchased } = props;
+
   const renderHighlights = () => {
     if (!course.outcomes[0]) return null;
     const topHighlights = course.outcomes[0].replace(/\[|\]/g, "").split(",");
     return (
       <div className="flex flex-col gap-2 mt-2 text-sm">
         {topHighlights.map((outcome, index) => (
-          <p key={index} className="flex gap-3">
-            <span>
-              <DoneIcon fontSize="small" color='success'/>
-            </span>
-
-            {JSON.parse(outcome).points}
+          <p key={index} className="flex gap-2 items-center">
+            <DoneIcon fontSize="small" color="success" />
+            <span>{JSON.parse(outcome).points}</span>
           </p>
         ))}
       </div>
@@ -56,11 +41,10 @@ const CourseInfoPopover = (props) => {
   const renderInfo = () => {
     return (
       <div className="flex flex-col gap-1">
-        <h3 className="text-xl font-bold">{course.courseTitle}</h3>
+        <h3 className="text-lg font-semibold">{course.courseTitle}</h3>
         <p className="text-sm text-gray-400">{course.level}</p>
-        {/* <CourseCTA course={course} /> */}
         {renderHighlights()}
-        <CourseCTA />
+        <CourseCTA isPurchased={isPurchased} />
       </div>
     );
   };
@@ -69,7 +53,7 @@ const CourseInfoPopover = (props) => {
     <Info
       title={renderInfo()}
       arrow
-      interactive="true"
+      interactive
       placement="right"
       PopperProps={{
         popperOptions: {
@@ -89,5 +73,6 @@ const CourseInfoPopover = (props) => {
     </Info>
   );
 };
+
 
 export default CourseInfoPopover;
