@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import CartCard from "../../components/CartCard";
 import Button from "../../components/Button";
 import CenterAligned from "../../components/CenterAligned";
+import { viewCart, checkout } from "../../services/cartAPI";
 
 const exampleCourses = [
   {
@@ -29,17 +30,52 @@ const exampleCourses = [
 ];
 
 export default function Cart() {
+  const [cartItems, setCartItems] = useState([]);
+
+  useEffect(() => {
+    viewCart().then((cart) => {
+      console.log(cart);
+      setCartItems(cart);
+    });
+  }, [viewCart]);
+
+  const handleRemoveCartItem = (courseId) => {
+    console.log(courseId, cartItems);
+    setCartItems((items) => {
+      const newCart = [...items];
+
+      return newCart.filter((course) => course._id !== courseId);
+    });
+  };
+
+  const handleCheckout = async () =>{
+    try{
+      await checkout();
+      setCartItems([]);
+      
+    }
+    catch (error){
+      console.log(error)
+    }
+
+  };
+
   const renderPurchaseValueAndCTA = () => {
-    const total = exampleCourses.reduce((acc, course) => acc + parseFloat(course.price), 0);
+    const total = cartItems.reduce(
+      (acc, course) => acc + parseFloat(course.price),
+      0
+    );
     return (
       <div className="flex flex-col gap-5 text-left md:w-1/4">
         <div>
           <p>Total :</p>
-          <p className="text-4xl font-bold">{!total ? 'Free' : `$${total.toFixed(2)}`}</p>
+          <p className="text-4xl font-bold">
+            {!total ? "Free" : `$${total.toFixed(2)}`}
+          </p>
         </div>
         <Button
           className="w-full py-3"
-          // onClick={handleCheckout}
+          onClick={handleCheckout}
           // loading={checkoutLoading}
         >
           Checkout
@@ -52,8 +88,8 @@ export default function Cart() {
     return (
       <div className="flex flex-col justify-between gap-10 md:flex-row">
         <div className="flex flex-col gap-5">
-          {exampleCourses.map((c, i) => (
-            <CartCard course={c} key={i} />
+          {cartItems?.map((c, i) => (
+            <CartCard course={c} key={i} onRemove={handleRemoveCartItem} />
           ))}
         </div>
         {renderPurchaseValueAndCTA()}

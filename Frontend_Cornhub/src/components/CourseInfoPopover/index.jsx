@@ -20,9 +20,8 @@ const Info = styled(({ className, ...props }) => (
   },
 }));
 
-const CourseInfoPopover = (props) => {
-  const { children, course, isPurchased } = props;
-
+const CourseInfoPopover = ({ children, course, isPurchased, courseID }) => {
+  console.log(course);
   const renderHighlights = () => {
     if (!course.outcomes[0]) return null;
     const topHighlights = course.outcomes[0].replace(/\[|\]/g, "").split(",");
@@ -44,7 +43,7 @@ const CourseInfoPopover = (props) => {
         <h3 className="text-lg font-semibold">{course.courseTitle}</h3>
         <p className="text-sm text-gray-400">{course.level}</p>
         {renderHighlights()}
-        <CourseCTA isPurchased={isPurchased} />
+        <CourseCTA isPurchased={isPurchased} courseID={course.id} />
       </div>
     );
   };
@@ -73,6 +72,5 @@ const CourseInfoPopover = (props) => {
     </Info>
   );
 };
-
 
 export default CourseInfoPopover;

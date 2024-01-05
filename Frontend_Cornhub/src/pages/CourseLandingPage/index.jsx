@@ -40,7 +40,7 @@ export default function CourseLandingPage() {
     // coverImage: ""
   });
   const [curriculumItems, setCurriculumItems] = useState([]);
-  
+
   useEffect(() => {
     const fetchCourseDetails = async () => {
       try {
@@ -98,7 +98,9 @@ export default function CourseLandingPage() {
               <VideoPlayer url={exampleCourse?.courseurlPreview} />
             </div>
             <div className="flex flex-col gap-2 my-5 text-left">
-              <h1 className="text-3xl font-medium">{courseDetail?.courseTitle} </h1>
+              <h1 className="text-3xl font-medium">
+                {courseDetail?.courseTitle}{" "}
+              </h1>
             </div>
             <div className="flex gap-3 text-sm divide-x divide-solid">
               <p>
@@ -107,12 +109,13 @@ export default function CourseLandingPage() {
                 <span className="font-bold">{courseDetail.author}</span>
               </p>
               <p className="flex items-center gap-2 pl-3">
-                <LanguageIcon fontSize="small" />{courseDetail.language}
+                <LanguageIcon fontSize="small" />
+                {courseDetail.language}
               </p>
             </div>
             <div className="block mt-8 lg:hidden">
               {/* <CourseCTA course={course} /> */}
-              <CourseCTA />
+              <CourseCTA courseID={id} />
             </div>
           </div>
           {renderSidebar()}
@@ -124,11 +127,17 @@ export default function CourseLandingPage() {
   const renderSidebar = () => {
     return (
       <div className="hidden text-black lg:block w-96">
-        <VideoPlayer url={courseDetail.demoVideo ? courseDetail.demoVideo : "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"} />
+        <VideoPlayer
+          url={
+            courseDetail.demoVideo
+              ? courseDetail.demoVideo
+              : "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
+          }
+        />
         {/* video can be added later */}
         <div className="px-6 py-8 bg-white shadow-md">
           {/* <CourseCTA course={course} /> */}
-          <CourseCTA />
+          <CourseCTA courseID={id} />
           <div>
             <p className="mt-8 mb-3 font-bold text-left">
               This course includes:
@@ -159,7 +168,6 @@ export default function CourseLandingPage() {
         </p> */}
         <p className="mb-3 text-sm">
           {/* {courseDetail.numChapters} chapters &#8226; {courseDetail.duration}{" "} */}
-          
         </p>
         <CurriculumAccordion curriculumItems={curriculumItems} />
       </div>
