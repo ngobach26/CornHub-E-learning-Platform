@@ -128,6 +128,11 @@ export default function Courses() {
     }
   };
 
+  const handleDeletedCourseClick = () => {
+      setSnackbarMessage("This course is already marked for deletion.");
+      setSnackbarOpen(true);
+  }
+
   const renderActiveCourses = () => {
     return (
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 sm:gap-1">
@@ -137,6 +142,7 @@ export default function Courses() {
               course={course}
               handleClick={() => handleCourseClick(course)}
               hoverText="Edit / Manage course"
+              showHoverOpacity={true}
             />
             <Checkbox
               checked={selectedCourse && selectedCourse._id === course._id}
@@ -160,6 +166,8 @@ export default function Courses() {
             <div key={course._id}>
               <CourseCard
                 course={course}
+                showHoverOpacity={false}
+                handleClick={() => handleDeletedCourseClick()}
               />
             </div>
           ))}

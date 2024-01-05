@@ -2,7 +2,9 @@ import React from "react";
 import DefaultCourse from "../../assets/image/DefaultCourse";
 
 const CourseCard = (props) => {
-  const { course, handleClick, hoverText } = props;
+  const { course, handleClick, hoverText, showHoverOpacity } = props;
+
+  const hoverOpacityClass = showHoverOpacity ? 'hover:opacity-90' : '';
 
   return (
     <div className="relative">
@@ -14,7 +16,7 @@ const CourseCard = (props) => {
         </div>
       </div>
       <div
-        className="absolute top-0 flex items-center justify-center w-full h-full opacity-0 cursor-pointer backdrop-blur-md hover:opacity-90"
+        className={`absolute top-0 flex items-center justify-center w-full h-full opacity-0 cursor-pointer backdrop-blur-md ${hoverOpacityClass}`}
         onClick={handleClick}
       >
         <p>{hoverText}</p>

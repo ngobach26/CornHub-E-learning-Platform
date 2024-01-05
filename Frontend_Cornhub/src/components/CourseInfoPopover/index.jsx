@@ -3,13 +3,27 @@ import { styled } from "@mui/material/styles";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import DoneIcon from "@mui/icons-material/Done";
 import CourseCTA from "../CourseCTA";
+import { json } from "react-router-dom";
+
+const sampleCourse = {
+  title: "Sample Course",
+  level: "Intermediate",
+  subtitle: "A sample subtitle for the course",
+  highlights: [
+    { points: "Highlight 1" },
+    { points: "Highlight 2" },
+    { points: "Highlight 3" },
+    { points: "Highlight 4" },
+    // ... add more highlights as needed
+  ],
+};
 
 const Info = styled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
 ))(({ theme }) => ({
   [`& .${tooltipClasses.tooltip}`]: {
-    backgroundColor: theme.palette.body,
-    color: theme.palette.text.main,
+    backgroundColor: "#fff",
+    color: "#000",
     maxWidth: 350,
     padding: "1.3rem",
     boxShadow: "0px 4px 40px 0px #00000029",
@@ -21,20 +35,18 @@ const Info = styled(({ className, ...props }) => (
 
 const CourseInfoPopover = (props) => {
   const { children, course } = props;
-
   const renderHighlights = () => {
-    if (!course.highlights) return null;
-
-    const topHighlights = course.highlights.slice(0, 3);
-
+    if (!course.outcomes[0]) return null;
+    const topHighlights = course.outcomes[0].replace(/\[|\]/g, "").split(",");
     return (
       <div className="flex flex-col gap-2 mt-2 text-sm">
-        {topHighlights.map(({ points }, index) => (
+        {topHighlights.map((outcome, index) => (
           <p key={index} className="flex gap-3">
             <span>
-              <DoneIcon fontSize="small" />
+              <DoneIcon fontSize="small" color='success'/>
             </span>
-            {points}
+
+            {JSON.parse(outcome).points}
           </p>
         ))}
       </div>
@@ -44,14 +56,10 @@ const CourseInfoPopover = (props) => {
   const renderInfo = () => {
     return (
       <div className="flex flex-col gap-1">
-        <h3 className="text-xl font-bold">{course.title}</h3>
-        {/* <h3 className="text-xl font-bold">title</h3> */}
-        <p className="text-sm text-gray-200">{course.level}</p>
-        {/* <p className="text-sm text-gray-200">level</p> */}
-        <p className="text-sm">{course.subtitle}</p>
-        {/* <p className="text-sm">subtitle</p> */}
-        {renderHighlights()}
+        <h3 className="text-xl font-bold">{course.courseTitle}</h3>
+        <p className="text-sm text-gray-400">{course.level}</p>
         {/* <CourseCTA course={course} /> */}
+        {renderHighlights()}
         <CourseCTA />
       </div>
     );
@@ -61,7 +69,7 @@ const CourseInfoPopover = (props) => {
     <Info
       title={renderInfo()}
       arrow
-      interactive
+      interactive="true"
       placement="right"
       PopperProps={{
         popperOptions: {

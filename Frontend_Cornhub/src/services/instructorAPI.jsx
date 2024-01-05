@@ -65,6 +65,28 @@ const deleteCourse = async (token, id) => {
   }
 };
 
+const updateWithImage = async (
+  token,
+  id,
+  formData
+) => {
+  try {
+    const response = await axios.patch(
+      `${baseUrl}/updatewithimage/${id}`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+      }
+    );
+    console.log("New update course information:", response.data);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const updateCourse = async (
   token,
   id,
@@ -100,4 +122,5 @@ export default {
   getCourseById,
   deleteCourse,
   updateCourse,
+  updateWithImage
 };

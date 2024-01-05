@@ -7,12 +7,12 @@ const Highlights = ({ highlights }) => {
   const renderPoints = () => {
     return (
       <div className="grid grid-cols-2 gap-2 text-sm">
-        {highlights.map(({ points }, index) => (
+        {highlights.map(({ point }, index) => (
           <p key={index} className="flex gap-3">
             <span>
               <DoneIcon fontSize="small" />
             </span>
-            {points}
+            {point.points}
           </p>
         ))}
       </div>
