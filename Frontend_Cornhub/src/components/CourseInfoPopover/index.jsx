@@ -43,7 +43,7 @@ const CourseInfoPopover = ({ children, course, isPurchased, courseID }) => {
         <h3 className="text-lg font-semibold">{course.courseTitle}</h3>
         <p className="text-sm text-gray-400">{course.level}</p>
         {renderHighlights()}
-        <CourseCTA isPurchased={isPurchased} courseID={course.id} />
+        <CourseCTA isPurchased={isPurchased} courseID={course._id} />
       </div>
     );
   };
