@@ -36,18 +36,17 @@ const CourseInfoPopover = (props) => {
   const { children, course } = props;
 
   const renderHighlights = () => {
-    // if (!course.highlights) return null;
-
-    const topHighlights = sampleCourse.highlights.slice(0, 3);
+    if (!course.outcomes) return null;
+    const topHighlights = JSON.parse(course.outcomes[0]);
 
     return (
       <div className="flex flex-col gap-2 mt-2 text-sm">
-        {topHighlights.map(({ points }, index) => (
+        {topHighlights.map((outcome, index) => (
           <p key={index} className="flex gap-3">
             <span>
               <DoneIcon fontSize="small" />
             </span>
-            {points}
+            {outcome.points}
           </p>
         ))}
       </div>
@@ -57,14 +56,10 @@ const CourseInfoPopover = (props) => {
   const renderInfo = () => {
     return (
       <div className="flex flex-col gap-1">
-        {/* <h3 className="text-xl font-bold">{course.title}</h3> */}
-        <h3 className="text-xl font-bold">title</h3>
-        {/* <p className="text-sm text-gray-200">{course.level}</p> */}
-        <p className="text-sm text-gray-500">level</p>
-        {/* <p className="text-sm">{course.subtitle}</p> */}
-        <p className="text-sm">subtitle</p>
-        {renderHighlights()}
+        <h3 className="text-xl font-bold">{course.courseTitle}</h3>
+        <p className="text-sm text-gray-400">{course.level}</p>
         {/* <CourseCTA course={course} /> */}
+        {/* {renderHighlights()} */}
         <CourseCTA />
       </div>
     );
@@ -74,7 +69,7 @@ const CourseInfoPopover = (props) => {
     <Info
       title={renderInfo()}
       arrow
-      interactive
+      interactive="true"
       placement="right"
       PopperProps={{
         popperOptions: {
