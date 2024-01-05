@@ -8,7 +8,7 @@ const CourseCarousel = ({ data }) => {
   // const { data } = props;
 
   const renderSlides = () => {
-    const coursesArray = Object.values(data.courses || {});
+    const coursesArray = data.courses ? data.courses : [];
     return (
       <>
         {coursesArray.map(course => (

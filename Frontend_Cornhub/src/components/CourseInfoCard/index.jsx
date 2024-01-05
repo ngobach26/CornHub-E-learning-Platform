@@ -14,15 +14,12 @@ const CourseInfoCard = (props) => {
   
   return (
     <CourseInfoPopover course={course}>
-    {/* <CourseInfoPopover> */}
       <div onClick={handleClick} className='cursor-pointer'>
-      {/* <div className="cursor-pointer"> */}
         <DefaultCourse />
         <div className="pb-3 mx-5 text-base text-left">
           <h2>{course.courseTitle}</h2>
-          {/* <h2>Course title</h2> */}
           {/* <p className="text-sm text-gray-400">Lecturer insert here</p> */}
-          <p className="font-medium">
+          <p className="text-sm font-medium">
             {course.price === 0 ? "Free" : `$ ${course.price}`}
           </p>
         </div>

@@ -3,6 +3,7 @@ import { styled } from "@mui/material/styles";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import DoneIcon from "@mui/icons-material/Done";
 import CourseCTA from "../CourseCTA";
+import { json } from "react-router-dom";
 
 const sampleCourse = {
   title: "Sample Course",
@@ -21,8 +22,8 @@ const Info = styled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
 ))(({ theme }) => ({
   [`& .${tooltipClasses.tooltip}`]: {
-    backgroundColor: "#fff", // Set the background color to white
-    color: "#000", // Set the text color to black
+    backgroundColor: "#fff",
+    color: "#000",
     maxWidth: 350,
     padding: "1.3rem",
     boxShadow: "0px 4px 40px 0px #00000029",
@@ -34,11 +35,9 @@ const Info = styled(({ className, ...props }) => (
 
 const CourseInfoPopover = (props) => {
   const { children, course } = props;
-
   const renderHighlights = () => {
-    if (!course.outcomes) return null;
-    const topHighlights = JSON.parse(course.outcomes[0]);
-
+    if (!course.outcomes[0]) return null;
+    const topHighlights = course.outcomes[0].replace(/\[|\]/g, "").split(",");
     return (
       <div className="flex flex-col gap-2 mt-2 text-sm">
         {topHighlights.map((outcome, index) => (
@@ -46,7 +45,8 @@ const CourseInfoPopover = (props) => {
             <span>
               <DoneIcon fontSize="small" />
             </span>
-            {outcome.points}
+
+            {JSON.parse(outcome).points}
           </p>
         ))}
       </div>
@@ -59,7 +59,7 @@ const CourseInfoPopover = (props) => {
         <h3 className="text-xl font-bold">{course.courseTitle}</h3>
         <p className="text-sm text-gray-400">{course.level}</p>
         {/* <CourseCTA course={course} /> */}
-        {/* {renderHighlights()} */}
+        {renderHighlights()}
         <CourseCTA />
       </div>
     );
