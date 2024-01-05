@@ -14,6 +14,14 @@ const addToCart = async (req, res) => {
       return res.status(404).json({ message: "Course not found" });
     }
 
+    // check if course is aready purchased
+    const isCoursePurchased = user.joinedCourses.some((joinedCourse) =>
+      joinedCourse.courseId.equals(courseId)
+    );
+    if (isCoursePurchased) {
+      return res.status(409).json({ message: "Course already purchased" });
+    }
+
     // Check if course is already in cart
     if (user.cart.includes(courseId)) {
       return res.status(409).json({ message: "Course already in cart" });
@@ -87,6 +95,8 @@ const checkout = async (req, res) => {
       return res.status(400).json({ message: "No items in cart to checkout" });
     }
 
+    let coursesCheckout = [];
+
     // Add cart items to joinedCourses
     user.cart.forEach((courseId) => {
       // Check if the course is already in joinedCourses
@@ -95,8 +105,14 @@ const checkout = async (req, res) => {
       );
       if (!isCourseJoined) {
         user.joinedCourses.push({ courseId });
+        coursesCheckedOut.push({ courseId });
       }
     });
+    const order = {
+      userId: user._id,
+      courses: coursesCheckout,
+      date: new Date(),
+    };
 
     user.cart = [];
     await user.save();
