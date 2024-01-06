@@ -1,6 +1,6 @@
-import Single from "../../../components/Admin/Single";
+import Single from "../components/Single";
 import React from 'react';
-// import { singleUser } from '../data';
+import { singleUser } from '../data';
 
 const User = (props) => {
 

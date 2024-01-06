@@ -3,6 +3,7 @@ import DataTable from "../../../components/Admin/DataTable";
 import Add from "../../../components/Admin/Add";
 import api from "../../../services/adminAPI";
 import { useAuthContext } from "../../../hooks/useAuthContext";
+import { Link } from "react-router-dom";
 
 const columns = [
   { 
@@ -11,7 +12,7 @@ const columns = [
     width: 50,
   },
   {
-    field: "title",
+    field: "courseTitle",
     type: "string",
     headerName: "Course Title",
     width: 100,
@@ -54,7 +55,7 @@ const columns = [
     type: "number",
     headerName: "Price",
     width: 100,
-  },
+  }
 ];
 
 const AdminCourses = () => {
@@ -77,13 +78,123 @@ const AdminCourses = () => {
     fetchCourseList();
   }, [user.token]);
 
+  const handleDelete = async (courseId) => {
+    try {
+      await api.deleteCourse(user.token, courseId);
+
+      // Reload the courses list whenever a deletion operation is executed.
+      const updatedCourses = await api.listCourses(user.token);
+      setCoursesList(updatedCourses);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleApprove = async (courseId) => {
+    try {
+      await api.acceptCourse(user.token, courseId);
+      console.log("Course is successfully approved!");
+      
+      // Reload the courses list whenever a deletion operation is executed.
+      const updatedCourses = await api.listCourses(user.token);
+      setCoursesList(updatedCourses);
+    }
+    catch(err){
+      console.log(err);
+    }
+  };
+
+  const handleBan = async (courseId) => {
+    try {
+      await api.denyCourse(user.token, courseId);
+      console.log("Course is banned!");
+
+      // Reload the courses list whenever a deletion operation is executed.
+      const updatedCourses = await api.listCourses(user.token);
+      setCoursesList(updatedCourses);
+    }
+    catch(err){
+      console.log(err);
+    }
+  };
+
+  const handleAcceptUpdateRequest = async (courseId) => {
+    try {
+      await api.acceptUpdateCourse(user.token, courseId);
+      console.log("Course is updated!");
+
+      // Reload the courses list whenever a deletion operation is executed.
+      const updatedCourses = await api.listCourses(user.token);
+      setCoursesList(updatedCourses);
+    }
+    catch(err){
+      console.error(err);
+    }
+  };
+
+  const handleDenyUpdateRequest = async (courseId) => {
+    try {
+      await api.denyUpdateCourse(user.token, courseId);
+      console.log("Course is rejected to be updated!");
+
+      // Reload the courses list whenever a deletion operation is executed.
+      const updatedCourses = await api.listCourses(user.token);
+      setCoursesList(updatedCourses);
+    }
+    catch(err){
+      console.error(err);
+    }
+  };
+
+  const actionColumn = {
+    field: "action",
+    headerName: "Action",
+    width: 150,
+    renderCell: (params) => {
+      return (
+        <div className="flex gap-4">
+          <Link to={`/courses/${params.row._id}`}>
+            <img src="/view.svg" className="w-5 h-5 cursor-pointer" />
+          </Link>
+          <div className="">
+          </div>
+          {params.row.status === 'waiting_del' && (
+            <button onClick={() => handleDelete(params.row._id)}>
+              <img src="/delete.svg" className="object-cover w-5 h-5 rounded-3xl" />
+            </button>
+          )}
+          {(params.row.status === 'waiting'  ||  params.row.status === 'waiting_ac') 
+          && (
+            <div>
+              <button onClick={() => handleApprove(params.row._id)}>
+                <img src="/accept.png" className="object-cover w-5 h-5 m-1" />
+              </button>
+              <button onClick={() => handleBan(params.row._id)}>
+                <img src="/reject.png" className="object-cover w-5 h-5 m-1" />
+              </button>
+            </div>
+          )}
+          {(params.row.status === 'updated') && (
+            <div>
+              <button onClick={() => handleAcceptUpdateRequest(params.row._id)}>
+                <img src="/accept.png" className="object-cover w-5 h-5 m-1" />
+              </button>
+              <button onClick={() => handleDenyUpdateRequest(params.row._id)}>
+                <img src="/reject.png" className="object-cover w-5 h-5 m-1" />
+              </button>
+            </div>
+          )}
+        </div>
+      );
+    },
+  };
+
   return (
     <div className="">
       <div className="">
-        <div className="mt-10 ml-10 font-mono text-3xl ">Courses Management</div>
-        <button className="p-2 mx-10 my-5 bg-red-500 rounded-lg cursor-pointer " onClick={() => setOpen(true)}>ADD COURSE</button>
+        <div className="my-10 ml-10 font-mono text-3xl ">Courses Management</div>
       </div>
-      <DataTable slug="courses" columns={columns} rows={coursesList} />
+      <DataTable slug="courses" columns={[...columns, actionColumn]} rows={coursesList} />
       
       {open && <Add slug="courses" columns={columns} setOpen={setOpen} />}
     </div>
