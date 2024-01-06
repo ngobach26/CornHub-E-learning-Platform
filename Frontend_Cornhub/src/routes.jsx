@@ -25,12 +25,12 @@ import AccountSecurity from "./pages/Profile/AccountSecurity";
 import ViewPublicProfile from "./pages/Profile/ViewPublicProfile";
 import AddInstructor from "./pages/Instructor/Team/AddInstructor";
 import CourseLandingPage from "./pages/CourseLandingPage";
+import CourseLearningPage from "./pages/CourseLearningPage";
 import CourseDetails from "./components/ManageCourse/CourseDetails";
 import CreateCurriculum from "./components/ManageCourse/CreateCurriculum";
 import IntendedLearners from "./components/ManageCourse/IntendedLearners";
 import Pricing from "./components/ManageCourse/Pricing";
 import Setting from "./components/ManageCourse/Setting";
-
 import AdminLayout from "./components/Admin/AdminLayout";
 import AdminCourse from "./pages/Admin/AdminCourse";
 import AdminCourses from "./pages/Admin/AdminCourses";
@@ -47,8 +47,6 @@ async function delayForDemo(promise) {
 
 export default function Router() {
   const { user } = useAuthContext();
-  // const { token , isAdmin } = useAuthContext();
-  // console.log(user.isAdmin);
 
   return (
     <Routes>
@@ -98,7 +96,6 @@ export default function Router() {
           }
         />
         <Route path="/course/:id" element={<CourseLandingPage />}/>
-
       </Route>
       <Route path="/admin" element={<AdminLayout />}>
         <Route path="home" element={<AdminHome /> } />
@@ -115,7 +112,7 @@ export default function Router() {
         element={!user ? <Signup /> : <Navigate to="/" />}
       />
       <Route path="/logout" element={<Logout />} />
-
+      <Route path="/course/:id/learn" element={<CourseLearningPage />}/>
       <Route
         path="/instructor"
         element={user ? <InstructorPageLayout /> : <Navigate to="/login" />}

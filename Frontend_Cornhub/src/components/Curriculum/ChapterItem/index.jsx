@@ -2,7 +2,7 @@ import OndemandVideoOutlinedIcon from "@mui/icons-material/OndemandVideoOutlined
 import QuizOutlinedIcon from "@mui/icons-material/QuizOutlined";
 
 export default function ChapterItem(props) {
-  const { lectureType, lectureTitle, duration } = props;
+  const { lectureType, lectureTitle, duration, embedUrl } = props;
   return (
     <div className="flex items-center justify-between gap-5 xl:mx-6 group">
       <div className="flex items-center gap-5">
