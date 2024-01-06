@@ -12,6 +12,7 @@ import CourseNavbar from "../../components/CourseNavbar";
 import VideoPlayer from "../../components/VideoPlayer";
 import CenterAligned from "../../components/CenterAligned";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import { useNavigate } from "react-router-dom";
 
 import api from "../../services/instructorAPI";
 
@@ -26,21 +27,27 @@ export default function CourseLearningPage() {
   const [lessonDisplay, setLessonDisplay] = useState();
   const [lessonType, setLessonType] = useState("");
   const toggleSidebar = () => setShowSidebar(!showSidebar);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCourseDetails = async () => {
       try {
-        const course = await api.getCourseById(user.token, id);
-        setCurriculumItems(course.contents);
-        setCourseTitle(course.courseTitle);
-        setCourseId(course._id);
-        console.log(courseId);
+        if (user){
+          const course = await api.getCourseById(user.token, id);
+          setCurriculumItems(course.contents);
+          setCourseTitle(course.courseTitle);
+          setCourseId(course._id);
+          console.log(courseId);
+        }
+        else {
+          navigate(`/course/${id}`);
+        }
       } catch (error) {
         console.error("Error fetching course details:", error);
       }
     };
     fetchCourseDetails();
-  }, [id, user.token]);
+  }, [id, user?.token]);
 
   const handleLessonClick = (videoUrl) => {
     setEmbedUrl(videoUrl);

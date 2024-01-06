@@ -6,6 +6,7 @@ import CourseCarousel from "../../components/CourseCarousel";
 
 import { useAuthContext } from "../../hooks/useAuthContext";
 import api from "../../services/searchAPI"
+import cartApi from "../../services/cartAPI"
 
 export default function Homepage() {
   const { applemusic, amd, mmm, github, nintendo, samsung } = Brand;
@@ -20,6 +21,7 @@ export default function Homepage() {
   const { user } = useAuthContext();
   const [publishedCourses, setPublishedCourses] = useState([]);
   const [purchasedCourses, setPurchasedCourses] = useState([]);
+  const [cart, setCart] = useState([]);
 
   useEffect(() => {
     const fetchPublishedCourses = async () => {
@@ -29,6 +31,9 @@ export default function Homepage() {
         if (user){
           const {purchasedCourses} = await api.getPurchasedCourses(user.token);
           setPurchasedCourses(purchasedCourses);
+          const getCart = await cartApi.viewCart(user.token);
+          console.log("Cart ", getCart);
+          setCart(getCart);
         }
         console.log(courses)
         console.log(purchasedCourses)
@@ -52,7 +57,7 @@ export default function Homepage() {
       </div>
       <div className="px-12 my-10 xl:px-0">
         {/* <CourseCarousel /> */}
-        <CourseCarousel publishedCourses={publishedCourses} purchasedCourses={purchasedCourses}/>
+        <CourseCarousel publishedCourses={publishedCourses} purchasedCourses={purchasedCourses} cart={cart}/>
       </div>
       <div className="flex items-center justify-center w-full h-auto text-gray-900 bg-gray-100">
         <div className="flex flex-col items-center justify-center w-4/5 h-full my-8">

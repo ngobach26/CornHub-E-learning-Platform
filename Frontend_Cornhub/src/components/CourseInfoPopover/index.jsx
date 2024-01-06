@@ -20,7 +20,7 @@ const Info = styled(({ className, ...props }) => (
   },
 }));
 
-const CourseInfoPopover = ({ children, course, isPurchased, courseID }) => {
+const CourseInfoPopover = ({ children, course, isPurchased, courseID, isInCart }) => {
   console.log(course);
   const renderHighlights = () => {
     if (!course.outcomes[0]) return null;
@@ -43,7 +43,7 @@ const CourseInfoPopover = ({ children, course, isPurchased, courseID }) => {
         <h3 className="text-lg font-semibold">{course.courseTitle}</h3>
         <p className="text-sm text-gray-400">{course.level}</p>
         {renderHighlights()}
-        <CourseCTA isPurchased={isPurchased} courseID={course._id} />
+        <CourseCTA isPurchased={isPurchased} courseID={course._id} isInCart={isInCart}/>
       </div>
     );
   };

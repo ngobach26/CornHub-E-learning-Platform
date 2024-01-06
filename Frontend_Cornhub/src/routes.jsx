@@ -31,12 +31,7 @@ import CreateCurriculum from "./components/ManageCourse/CreateCurriculum";
 import IntendedLearners from "./components/ManageCourse/IntendedLearners";
 import Pricing from "./components/ManageCourse/Pricing";
 import Setting from "./components/ManageCourse/Setting";
-import AdminLayout from "./components/Admin/AdminLayout";
-import AdminCourse from "./pages/Admin/AdminCourse";
-import AdminCourses from "./pages/Admin/AdminCourses";
-import AdminHome from "./pages/Admin/AdminHome";
-import AdminUser from "./pages/Admin/AdminUser";
-import AdminUsers from "./pages/Admin/AdminUsers";
+
 
 async function delayForDemo(promise) {
   await new Promise((resolve) => {
@@ -84,6 +79,7 @@ export default function Router() {
         <Route
           path="/cart"
           element={
+            !user ? <Login /> :
             <Suspense
               fallback={
                 <CenterAligned height="screen">
@@ -96,13 +92,6 @@ export default function Router() {
           }
         />
         <Route path="/course/:id" element={<CourseLandingPage />}/>
-      </Route>
-      <Route path="/admin" element={<AdminLayout />}>
-        <Route path="home" element={<AdminHome /> } />
-        <Route path="users" element={<AdminUsers />} />
-        <Route path="courses" element={<AdminCourses />} />
-        <Route path="users/:id" element={<AdminUser />} />
-        <Route path="courses/:id" element={<AdminCourse />} />
       </Route>
       <Route path="/login" element={!user ? <Login /> : (user?.isAdmin ? <Navigate to="/admin" /> : <Navigate to="/" />)} />
       {/* <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} /> */}
@@ -149,7 +138,7 @@ export default function Router() {
         />
         <Route path="team/add" element={<AddInstructor />} />
       </Route>
-      <Route path="/instructor/courses/manage" element={<FormPageLayout />} >
+      <Route path="/instructor/courses/manage" element={!user ? <Login /> : <FormPageLayout />} >
         {/* <Route index element={<CourseDetails />} /> */}
         <Route path="course-detail/:id" element={<CourseDetails />}/>
         <Route path="create-curriculum/:id" element={<CreateCurriculum />}/>
