@@ -5,5 +5,6 @@ const searchController =  require("../controller/searchController");
 
 router.get("/", searchController.getCourses);
 router.get("/purchasedCourses", requireAuth, searchController.getPurchasedCourses);
+router.get("/:id", searchController.getCourseById);
 
 module.exports = router;

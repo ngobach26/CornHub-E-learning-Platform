@@ -4,14 +4,14 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import CourseInfoCard from "../CourseInfoCard";
 import ShimmerBlock from "../ShimmerBlock";
 
-const CourseCarousel = ({ data, purchasedCourses }) => {
+const CourseCarousel = ({ publishedCourses, purchasedCourses }) => {
   // const { data } = props;
   const categories = ["Information Technology", "Business", "Finance and accouting", "Editing and design", "Music", "Fitness", "Self development"]
-  const coursesArray = data.courses ? data.courses : [];
+  const coursesArray = publishedCourses;
 
   const renderSlides = (filteredCourses) => {    
     const isPurchased = (id) => {
-      for (let purchasedCourse in purchasedCourses){
+      for (let purchasedCourse of purchasedCourses){
         if (purchasedCourse.courseId && purchasedCourse.courseId._id===id) return true;
       }
       return false;

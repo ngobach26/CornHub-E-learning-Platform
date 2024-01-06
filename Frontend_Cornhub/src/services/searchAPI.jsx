@@ -4,9 +4,10 @@ const VITE_APP_BASE_URL = "http://localhost:3000/api";
 
 const baseUrl = VITE_APP_BASE_URL + "/course";
 
-const getCourses = async () => {
+const getCourses = async (keyword) => {
   try {
-    const response = await axios.get(`${baseUrl}`, {
+    const endpoint = keyword ? `${baseUrl}/?keyword=${keyword}` : baseUrl;
+    const response = await axios.get(endpoint, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -34,7 +35,24 @@ const getPurchasedCourses = async (token) => {
     console.log(err);
   }
 }
+
+const getCourseById = async (id) => {
+  try {
+    const response = await axios.get(`${baseUrl}/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log("Course: ", response.data);
+    console.log(typeof response.data);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export default {
   getCourses,
-  getPurchasedCourses
+  getPurchasedCourses,
+  getCourseById
 };

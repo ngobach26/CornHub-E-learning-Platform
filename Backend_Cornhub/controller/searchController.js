@@ -12,8 +12,7 @@ const getCourses = async (req, res) => {
         let query = {}
         if (req.query.keyword) {
             query.$or = [
-              { courseTitle: { $regex: req.query.keyword, $options: 'i' } },
-              { description: { $regex: req.query.keyword, $options: 'i' } }
+              { courseTitle: { $regex: req.query.keyword, $options: 'i' } }
             ];
         }
         // Define a list of fields that can be queried by the user
@@ -85,7 +84,7 @@ const getPurchasedCourses = async (req, res) => {
             }
         ])
 
-        res.status(200).json(userWithPurchasedCourses.joinedCourses);
+        res.status(200).json({purchasedCourses: userWithPurchasedCourses.joinedCourses});
     } catch (error) {
         console.error('Error searching courses:', error);
         res.status(500).json({
@@ -95,4 +94,30 @@ const getPurchasedCourses = async (req, res) => {
     }
 }
 
-module.exports = { getCourses, getPurchasedCourses }
+const getCourseById = async (req, res) => {
+    try {
+        const courseId = req.params.id; // Assuming the ID is passed as a URL parameter
+
+        // Fetch the course from the database
+        const course = await Course.findById(courseId).populate({
+            path: 'author',
+            select: 'firstName lastName'
+        });;
+
+        // Check if the course was found
+        if (!course) {
+            return res.status(404).json({ message: "Course not found" });
+        }
+
+        // Return the course data
+        res.status(200).json(course);
+    } catch (error) {
+        console.error('Error fetching course:', error);
+        res.status(500).json({
+            message: "An error occurred while retrieving the course",
+            error: error.message
+        });
+    }
+};
+
+module.exports = { getCourses, getPurchasedCourses, getCourseById }

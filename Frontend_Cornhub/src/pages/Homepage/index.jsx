@@ -24,10 +24,14 @@ export default function Homepage() {
   useEffect(() => {
     const fetchPublishedCourses = async () => {
       try {
-        const courses = await api.getCourses();
-        const purchasedCourses = await api.getPurchasedCourses(user.token);
+        const {courses} = await api.getCourses();
         setPublishedCourses(courses);
-        setPurchasedCourses(purchasedCourses);
+        if (user){
+          const {purchasedCourses} = await api.getPurchasedCourses(user.token);
+          setPurchasedCourses(purchasedCourses);
+        }
+        console.log(courses)
+        console.log(purchasedCourses)
       } catch (error) {
         console.error("Error fetching published courses:", error);
       }
@@ -48,7 +52,7 @@ export default function Homepage() {
       </div>
       <div className="px-12 my-10 xl:px-0">
         {/* <CourseCarousel /> */}
-        <CourseCarousel data={publishedCourses} purchasedCourses={purchasedCourses}/>
+        <CourseCarousel publishedCourses={publishedCourses} purchasedCourses={purchasedCourses}/>
       </div>
       <div className="flex items-center justify-center w-full h-auto text-gray-900 bg-gray-100">
         <div className="flex flex-col items-center justify-center w-4/5 h-full my-8">

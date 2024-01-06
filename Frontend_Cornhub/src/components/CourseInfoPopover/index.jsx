@@ -52,7 +52,6 @@ const CourseInfoPopover = ({ children, course, isPurchased, courseID }) => {
     <Info
       title={renderInfo()}
       arrow
-      interactive
       placement="right"
       PopperProps={{
         popperOptions: {

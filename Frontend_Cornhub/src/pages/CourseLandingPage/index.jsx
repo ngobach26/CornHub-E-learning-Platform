@@ -13,7 +13,7 @@ import VideoPlayer from "../../components/VideoPlayer";
 import CourseCTA from "../../components/CourseCTA";
 
 import { useAuthContext } from "../../hooks/useAuthContext";
-import api from "../../services/instructorAPI";
+import api from "../../services/searchAPI"
 
 const exampleCourse = {
   courseurlPreview:
@@ -40,24 +40,21 @@ export default function CourseLandingPage() {
     // coverImage: ""
   });
   const [curriculumItems, setCurriculumItems] = useState([]);
+  const [purchasedCourses, setPurchasedCourses] = useState([]);
 
-  useEffect(() => {
-    const fetchCourseDetails = async () => {
-      try {
-        const course = await api.getCourseById(user.token, id);
-        setCurriculumItems(course.contents);
-      } catch (error) {
-        console.error("Error fetching course details:", error);
-      }
-    };
-    fetchCourseDetails();
-  }, [id, user.token]);
+  const isPurchased = (id) => {
+    for (let purchasedCourse of purchasedCourses){
+      if (purchasedCourse.courseId && purchasedCourse.courseId._id===id) return true;
+    }
+    return false;
+  }
+
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = user.token;
-        const courseData = await api.getCourseById(token, id);
+        console.log(user)
+        const courseData = await api.getCourseById(id);
         setCourseDetail({
           courseTitle: courseData.courseTitle || "",
           description: courseData.description || "",
@@ -66,7 +63,7 @@ export default function CourseLandingPage() {
           category: courseData.category || "",
           subcategory: courseData.subcategory || "",
           demoVideo: courseData.demoVideo || "",
-          author: `${courseData.author.firstName} ${courseData.author.lastName}`,
+          author: `${courseData.author?.firstName} ${courseData.author?.lastName}` || "",
           details: {
             outcomes: JSON.parse(courseData.outcomes) || [{ points: "" }],
             prerequisites: JSON.parse(courseData.prerequisites) || [
@@ -77,12 +74,17 @@ export default function CourseLandingPage() {
             ],
           },
         });
+        setCurriculumItems(courseData.contents);
+        if (user){
+          const {purchasedCourses} = await searchApi.getPurchasedCourses(user.token);
+          setPurchasedCourses(purchasedCourses);
+        }
       } catch (error) {
         console.error("Error fetching course details:", error);
       }
     };
     fetchData();
-  }, [id, user.token]);
+  }, [id, user?.token]);
 
   const renderHeader = () => {
     return (
@@ -94,9 +96,6 @@ export default function CourseLandingPage() {
               <NavigateNextIcon fontSize="small" className="text-sm" />
               {courseDetail?.subcategory}
             </p>
-            <div className="block lg:hidden">
-              <VideoPlayer url={exampleCourse?.courseurlPreview} />
-            </div>
             <div className="flex flex-col gap-2 my-5 text-left">
               <h1 className="text-3xl font-medium">
                 {courseDetail?.courseTitle}{" "}
@@ -112,10 +111,6 @@ export default function CourseLandingPage() {
                 <LanguageIcon fontSize="small" />
                 {courseDetail.language}
               </p>
-            </div>
-            <div className="block mt-8 lg:hidden">
-              {/* <CourseCTA course={course} /> */}
-              <CourseCTA courseID={id} />
             </div>
           </div>
           {renderSidebar()}
@@ -137,7 +132,7 @@ export default function CourseLandingPage() {
         {/* video can be added later */}
         <div className="px-6 py-8 bg-white shadow-md">
           {/* <CourseCTA course={course} /> */}
-          <CourseCTA courseID={id} />
+          <CourseCTA courseID={id} isPurchased={isPurchased(id)}/>
           <div>
             <p className="mt-8 mb-3 font-bold text-left">
               This course includes:
