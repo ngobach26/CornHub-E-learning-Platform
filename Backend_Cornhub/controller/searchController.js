@@ -55,7 +55,10 @@ const getCourses = async (req, res) => {
             default:
                 coursesQuery.sort({totalRating: order})
         }
-        const courses = await coursesQuery.limit(PER_PAGE).skip(PER_PAGE*(page-1));   
+        const courses = await coursesQuery.limit(PER_PAGE).skip(PER_PAGE*(page-1)).populate({
+            path: 'author',
+            select: 'firstName lastName'
+        });   
         res.json({courses})
     } catch(error) {
         console.error('Error searching courses:', error);

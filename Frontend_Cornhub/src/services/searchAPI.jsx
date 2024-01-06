@@ -19,6 +19,22 @@ const getCourses = async () => {
   }
 };
 
+const getPurchasedCourses = async (token) => {
+  try {
+    const response = await axios.get(`${baseUrl}/purchasedCourses`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("User purchased courses:", response.data);
+    console.log(typeof response.data);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+}
 export default {
   getCourses,
+  getPurchasedCourses
 };

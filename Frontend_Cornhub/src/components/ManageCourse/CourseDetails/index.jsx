@@ -22,7 +22,8 @@ export default function CourseDetails() {
     level: "",
     category: "",
     subcategory: "",
-    coverImage: ""
+    coverImage: "",
+    demoVideo: ""
   });
   const [coverImage, setCoverImage] = useState();
   const baseURL = 'http://localhost:3000/uploads/'
@@ -40,8 +41,10 @@ export default function CourseDetails() {
           level: getCourse.level || "",
           category: getCourse.category || "",
           subcategory: getCourse.subcategory || "",
-          imageName: getCourse.coverImage || ""
+          imageName: getCourse.coverImage || "",
+          demoVideo: getCourse.demoVideo || ""
         });
+        
       } catch (error) {
         console.error("Error fetching course details:", error);
       }
@@ -60,11 +63,21 @@ export default function CourseDetails() {
     });
     formData.append("coverImage", coverImage);
     try {
-      await api.updateWithImage(
+      const getCourse = await api.updateWithImage(
         user.token,
         id,
         formData
       );
+      console.log("New image: ", getCourse.coverImage);
+      setCourseDetails({
+        courseTitle: getCourse.courseTitle || "",
+        description: getCourse.description || "",
+        language: getCourse.language || "English",
+        level: getCourse.level || "",
+        category: getCourse.category || "",
+        subcategory: getCourse.subcategory || "",
+        imageName: getCourse.coverImage || ""
+      });
       setSnackbarMessage("Course details updated successfully!");
       setSnackbarOpen(true);
     } catch (error) {
@@ -82,8 +95,8 @@ export default function CourseDetails() {
   };
 
   const handleImage = (e) => {
-    console.log(e.target.files[0]);
-    setCoverImage(e.target.files[0]);
+      const image = e.target.files[0];
+      setCoverImage(image);
   }
 
   const renderForm = () => {
@@ -118,7 +131,8 @@ export default function CourseDetails() {
           multiline
           rows={4}
         />
-        {courseDetail.imageName && <img src={baseURL+courseDetail.imageName}/>}
+        <h6 className="text-left">Cover image</h6>
+        {courseDetail.imageName && <img style={{ width: 300, height: 300 }} src={baseURL+courseDetail.imageName}/>}
         <TextField
           type="file"
           className="w-full"
@@ -128,6 +142,19 @@ export default function CourseDetails() {
           name="image"
           onChange={handleImage}
         />
+        <TextField
+            className="w-full"
+            margin="normal"
+            required
+            fullWidth
+            id="demoVideo"
+            label="Demo Video Link"
+            name="demoVideo"
+            placeholder="www.youtube.vn"
+            value={courseDetail.demoVideo}
+            onChange={(e) => handleInputChange("demoVideo", e.target.value)}
+            autoFocus
+          />
         <div>
           <h3 className="mb-1 font-semibold">Basic information</h3>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
