@@ -24,6 +24,8 @@ app.use("/api/user", userRouter);
 const cartRouter = require("./routes/Cart")
 app.use("/api/cart", cartRouter);
 
+const adminRouter = require("./routes/Admin")
+app.use("/api/admin", adminRouter);
 const searchRouter = require("./routes/Search")
 app.use("/api/course", searchRouter);
 

@@ -61,6 +61,11 @@ const userSchema = Schema(
                             ref: "Lesson",
                         },
                     ],
+                    rating: {
+                        type: Number,
+                        min: 0,
+                        max: 5
+                    }
                 },
             ],
             default: [],
@@ -75,6 +80,15 @@ const userSchema = Schema(
             ref:"Course",
             default: [],
         }],
+        isAdmin: {
+            type: Boolean,
+            default: false,
+        },
+        role: {
+            type: String,
+            enum: ['user', 'admin'],
+            default: 'user'
+        }
     },
     { timestamps: true }
 );

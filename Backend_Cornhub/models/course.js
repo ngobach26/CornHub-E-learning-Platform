@@ -58,6 +58,9 @@ const courseSchema = Schema(
         coverImage: {
             type: String,
         },
+        demoVideo: {
+            type: String,
+        },
         totalLengthSeconds: {
             type: Number,
         },
