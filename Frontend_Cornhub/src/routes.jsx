@@ -29,7 +29,14 @@ import CourseDetails from "./components/ManageCourse/CourseDetails";
 import CreateCurriculum from "./components/ManageCourse/CreateCurriculum";
 import IntendedLearners from "./components/ManageCourse/IntendedLearners";
 import Pricing from "./components/ManageCourse/Pricing";
-import Setting from "./components/ManageCourse/Setting"
+import Setting from "./components/ManageCourse/Setting";
+
+import AdminLayout from "./components/Admin/AdminLayout";
+import AdminCourse from "./pages/Admin/AdminCourse";
+import AdminCourses from "./pages/Admin/AdminCourses";
+import AdminHome from "./pages/Admin/AdminHome";
+import AdminUser from "./pages/Admin/AdminUser";
+import AdminUsers from "./pages/Admin/AdminUsers";
 
 async function delayForDemo(promise) {
   await new Promise((resolve) => {
@@ -40,6 +47,9 @@ async function delayForDemo(promise) {
 
 export default function Router() {
   const { user } = useAuthContext();
+  // const { token , isAdmin } = useAuthContext();
+  // console.log(user.isAdmin);
+
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
@@ -90,7 +100,16 @@ export default function Router() {
         <Route path="/course/:id" element={<CourseLandingPage />}/>
 
       </Route>
-      <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route path="home" element={<AdminHome /> } />
+        <Route path="users" element={<AdminUsers />} />
+        <Route path="courses" element={<AdminCourses />} />
+        <Route path="users/:id" element={<AdminUser />} />
+        <Route path="courses/:id" element={<AdminCourse />} />
+      </Route>
+      <Route path="/login" element={!user ? <Login /> : (user?.isAdmin ? <Navigate to="/admin" /> : <Navigate to="/" />)} />
+      {/* <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} /> */}
+      {/* <Route path="/login" element={!user ? <Login /> : ({user.isAdmin} ? <Navigate to="/admin" /> : <Navigate to="/" />)  } /> */}
       <Route
         path="/signup"
         element={!user ? <Signup /> : <Navigate to="/" />}
