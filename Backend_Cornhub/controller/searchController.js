@@ -22,7 +22,7 @@ const getCourses = async (req, res) => {
                 query[field] = req.query[field];
             }
         })
-        query.status = {$in: ['published', 'updated']}
+        query.status = {$in: ['published', 'updated','waiting_del']}
 
         //price interval
         let minPrice = 0

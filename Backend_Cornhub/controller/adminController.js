@@ -52,4 +52,31 @@ const denycourse = async (req, res) => {
     }
 }
 
-module.exports = {listusers, listcourses, acceptcourse, denycourse};
+const deletecourse = async (req, res) => {
+    try {
+        const id = req.params.id; // the ID of the course to delete
+
+        // First, find the course by ID without deleting it
+        const course = await Course.findById(id);
+
+        if (!course) {
+            return res.status(404).json({ error: "Course not found" });
+        }
+
+        // Check if the status of the course is 'waiting_del'
+        if (course.status !== 'waiting_del') {
+            return res.status(400).json({ error: "Course cannot be deleted, incorrect status" });
+        }
+
+        // If the status is 'waiting_del', proceed to delete
+        await Course.findByIdAndDelete(id);
+
+        res.status(200).json({ message: "Course successfully deleted" });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
+
+module.exports = {listusers, listcourses, acceptcourse, denycourse, deletecourse};

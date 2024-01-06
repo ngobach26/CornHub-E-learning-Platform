@@ -37,20 +37,20 @@ const listCourses = async (token) => {
 };
 
 const acceptCourse = async (token, id) => {
-    try{
-        const response = await axios.patch(`${baseUrl}/course/accept/${id}`, {
-            headers:{
+    try {
+        const response = await axios.patch(`${baseUrl}/course/accept/${id}`, {}, {
+            headers: {
                 Authorization: `Bearer ${token}`,
             }
         });
         console.log("Course approved to be published!");
-        console.log("Hello",response.data);
+        console.log("Hello", response.data);
         return response.data;
-    }
-    catch(err){
+    } catch (err) {
         console.log(err);
     }
 };
+
 
 const denyCourse = async (token, id) => {
     try{
