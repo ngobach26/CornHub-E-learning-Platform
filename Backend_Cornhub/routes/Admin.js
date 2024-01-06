@@ -7,6 +7,6 @@ const isAdmin = require('../middleware/isAdmin');
 router.get('/users', requireAuth, isAdmin, adminController.listusers);
 router.get('/courses', requireAuth, isAdmin, adminController.listcourses);
 router.delete('/courses/:id', requireAuth, isAdmin, adminController.deletecourse);
-router.patch('/courses/:id', requireAuth, isAdmin, adminController.acceptcourse);
-router.patch('/courses/:id', requireAuth, isAdmin, adminController.denycourse);
+router.patch('/courses/:id/accept', requireAuth, isAdmin, adminController.acceptcourse);
+router.patch('/courses/:id/deny', requireAuth, isAdmin, adminController.denycourse);
 module.exports = router;
