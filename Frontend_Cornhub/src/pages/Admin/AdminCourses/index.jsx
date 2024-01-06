@@ -78,6 +78,20 @@ const AdminCourses = () => {
     fetchCourseList();
   }, [user.token]);
 
+  const handleDelete = async (courseId) => {
+    try{
+      await api.deleteCourse(user.token, courseId);
+      console.log("Course is deleted successfully!");
+
+      // Reload the courses list whenever a deletion operation is executed.
+      const updatedCourses = await api.listCourses(user.token);
+      setCoursesList(updatedCourses);
+    }
+    catch(err){
+      console.log(err);
+    }
+  };
+
   const handleApprove = async (courseId) => {
     try {
       await api.acceptCourse(user.token, courseId);
@@ -119,7 +133,7 @@ const AdminCourses = () => {
           <div className="">
           </div>
           {params.row.status === 'waiting_del' && (
-            <button onClick={() => handleBan(params.row._id)}>
+            <button onClick={() => handleDelete(params.row._id)}>
               <img src="/delete.svg" className="object-cover w-5 h-5 rounded-3xl" />
             </button>
           )}
