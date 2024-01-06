@@ -9,4 +9,7 @@ router.get('/courses', requireAuth, isAdmin, adminController.listcourses);
 router.delete('/courses/:id', requireAuth, isAdmin, adminController.deletecourse);
 router.patch('/courses/:id', requireAuth, isAdmin, adminController.acceptcourse);
 router.patch('/courses/:id', requireAuth, isAdmin, adminController.denycourse);
+router.patch('/courses/:id', requireAuth, isAdmin, adminController.acceptupdatecourse);
+router.patch('/courses/:id', requireAuth, isAdmin, adminController.denyupdatecourse);
+
 module.exports = router;
