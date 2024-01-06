@@ -42,43 +42,57 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   borderTop: "1px solid rgba(0, 0, 0, .125)",
 }));
 
-const renderLecture = (index, lectures) => {
-  return lectures.map((lecture, index) => (
-    <AccordionDetails
-      className="cursor-pointer"
-      id={index}
-      onClick={(event) => event.stopPropagation()}
-      key={index}
-    >
-      <ChapterItem
-        lectureTitle={lecture.lessonTitle}
-        duration={lecture.duration}
-        lectureType={lecture.type}
-      />
-    </AccordionDetails>
-  ));
-};
 
-const renderChapter = (curriculumItems) => {
-  return curriculumItems.map((chapter, index) => (
-    <React.Fragment key={index}>
-      <Accordion TransitionProps={{ unmountOnExit: true }}>
-        <AccordionSummary>
-          <div className="flex items-center justify-between w-full gap-5 mr-5">
-            <p className="font-semibold text-left break-all text-body">
-              {chapter.sectionTitle}
-            </p>
-            <p className="text-sm text-gray-400">{chapter.duration} minutes</p>
-          </div>
-        </AccordionSummary>
-        {chapter.content.length > 0 && renderLecture(index, chapter.content)}
-      </Accordion>
-    </React.Fragment>
-  ));
-};
 
 export default function CurriculumAccordion(props) {
-  const { curriculumItems } = props;
+  const { viewOnly, curriculumItems, handleItemClick, handleLessonDisplay, lessonTypeCheck } = props;
+  
+  const renderLecture = (index, lectures) => {
+    return lectures.map((lecture, index) => {
+      const handleClick = (event) => {
+        // event.stopPropagation() 
+        if(!viewOnly){
+          lessonTypeCheck(lecture.type)
+          handleLessonDisplay(lecture.lessonTitle);
+          handleItemClick(lecture.embedUrl);
+        }
+      };  
+      return (
+        <AccordionDetails
+          className="cursor-pointer"
+          id={index}
+          onClick={handleClick}
+          // onClick={(event) => event.stopPropagation()}
+          key={index}
+        >
+          <ChapterItem
+            lectureTitle={lecture.lessonTitle}
+            duration={lecture.duration}
+            lectureType={lecture.type}
+          />
+        </AccordionDetails>
+      )
+    });
+  };
+  
+  const renderChapter = (curriculumItems) => {
+    return curriculumItems.map((chapter, index) => (
+      <React.Fragment key={index}>
+        <Accordion TransitionProps={{ unmountOnExit: true }}>
+          <AccordionSummary>
+            <div className="flex items-center justify-between w-full gap-5 mr-5">
+              <p className="font-semibold text-left break-all text-body">
+                {chapter.sectionTitle}
+              </p>
+              <p className="text-sm text-gray-400">{chapter.duration} minutes</p>
+            </div>
+          </AccordionSummary>
+          {chapter.content.length > 0 && renderLecture(index, chapter.content)}
+        </Accordion>
+      </React.Fragment>
+    ));
+  };
+  
   return (
     <div className="border border-solid border-black-400">
       {renderChapter(curriculumItems)}
