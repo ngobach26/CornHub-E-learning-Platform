@@ -6,7 +6,7 @@ const baseUrl = VITE_APP_BASE_URL + "/admin";
 
 const listUsers = async (token) => {
     try{
-        const response = await axios.get(`${baseUrl}/listusers`, {
+        const response = await axios.get(`${baseUrl}/users`, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
@@ -22,7 +22,7 @@ const listUsers = async (token) => {
 
 const listCourses = async (token) => {
     try{
-        const response = await axios.get(`${baseUrl}/listcourses`, {
+        const response = await axios.get(`${baseUrl}/courses`, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
@@ -38,9 +38,8 @@ const listCourses = async (token) => {
 
 const acceptCourse = async (token, id) => {
     try{
-        const response = await axios.patch(`${baseUrl}/acceptcourse/${id}`, {
+        const response = await axios.patch(`${baseUrl}/courses/${id}`, {
             headers:{
-                "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             }
         });
@@ -54,7 +53,7 @@ const acceptCourse = async (token, id) => {
 
 const denyCourse = async (token, id) => {
     try{
-        const response = await axios.patch(`${baseUrl}/denycourse/${id}`, {
+        const response = await axios.patch(`${baseUrl}/courses/${id}`, {
             headers:{
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
@@ -67,4 +66,49 @@ const denyCourse = async (token, id) => {
     }
 };
 
-export default { listUsers, listCourses, acceptCourse, denyCourse };
+const deleteCourse = async (token, id) => {
+    try{
+        const response = await axios.delete(`${baseUrl}/courses/${id}`, {
+            headers:{
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            }
+        });
+        return response.data;
+    }
+    catch(err){
+        console.error(err);
+    }
+};
+
+const acceptUpdateCourse = async (token, id) => {
+    try{
+        const response = await axios.patch(`${baseUrl}/courses/${id}`, {
+            headers:{
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            }
+        });
+        return response.data;
+    }
+    catch(err){
+        console.error(err);
+    }
+};
+
+const denyUpdateCourse = async (token, id) => {
+    try{
+        const response = await axios.patch(`${baseUrl}/courses/${id}`, {
+            headers:{
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            }
+        });
+        return response.data;
+    }
+    catch(err){
+        console.error(err);
+    }
+};
+
+export default { listUsers, listCourses, acceptCourse, denyCourse, deleteCourse, acceptUpdateCourse, denyUpdateCourse };

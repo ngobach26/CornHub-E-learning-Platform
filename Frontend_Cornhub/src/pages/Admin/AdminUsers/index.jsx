@@ -1,15 +1,14 @@
 import React from "react";
-// import { GridColDef } from "@mui/x-data-grid";
 import DataTable from "../../../components/Admin/DataTable";
 import { useState, useEffect } from "react";
 import Add from "../../../components/Admin/Add";
-// import { userRows } from "../data";
 import api from "../../../services/adminAPI";
 import { useAuthContext } from "../../../hooks/useAuthContext";
+import { Link } from "react-router-dom";
 
 const columns = [
     { 
-      field: "id", 
+      field: "_id", 
       headerName: "ID", 
       width: 50 
     },
@@ -55,6 +54,23 @@ const columns = [
       headerName: "LinkedIn",
       width: 100,
     },
+    {
+      field: "action",
+      headerName: "Action",
+      width: 150,
+      renderCell: (params) => {
+        return (
+          <div className="flex gap-4">
+            <Link to={`/users/${params.row._id}`}>
+              <img src="/view.svg" className="w-5 h-5 cursor-pointer" />
+            </Link>
+            <div className="">
+              <img src="/delete.svg" className="object-cover w-5 h-5 rounded-3xl" />
+            </div>
+          </div>
+        );
+      },
+    }
 ]; // width = 730
 
 const Users = () => {
@@ -81,11 +97,11 @@ const Users = () => {
         <div>
             <div className="text-white">
                 <div className="justify-between">
-                  <div className="mt-10 ml-10 font-mono text-3xl ">Users Management</div>
-                  <button className="p-2 mx-10 my-5 bg-red-500 rounded-lg cursor-pointer " onClick={() => setOpen(true)}>ADD USER</button>
+                  <div className="my-10 ml-10 font-mono text-3xl ">Users Management</div>
                 </div>
             </div>
             <DataTable slug="users" columns={columns} rows={usersList}/> 
+            
             {open && <Add slug="users" columns={columns} setOpen={setOpen} />}
         </div>
     );
