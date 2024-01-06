@@ -1,11 +1,11 @@
 import React from "react";
 // import { GridColDef } from "@mui/x-data-grid";
-import DataTable from "../components/DataTable";
+import DataTable from "../../../components/Admin/DataTable";
 import { useState, useEffect } from "react";
-import Add from "../components/Add";
-import { userRows } from "../data";
-// import api from "../services/adminAPI";
-import { useAuthContext } from "../../../Frontend_Cornhub/src/hooks/useAuthContext";
+import Add from "../../../components/Admin/Add";
+// import { userRows } from "../data";
+import api from "../../../services/adminAPI";
+import { useAuthContext } from "../../../hooks/useAuthContext";
 
 const columns = [
     { 
@@ -58,13 +58,24 @@ const columns = [
 ]; // width = 730
 
 const Users = () => {
-    const [user] = useAuthContext();
-
     const [open, setOpen] = useState(false);
-    
-    // useEffect(() => {
-    //   const 
-    // })
+    const { user } = useAuthContext();
+    const [ usersList, setUsersList ] = useState([]);
+
+    console.log(user);
+
+    useEffect(() => {
+      const fetchUserList = async () => {
+        try{
+          const users_list = await api.listUsers(user.token);
+          setUsersList(users_list);
+        }
+        catch(err){
+          console.log(err);
+        }
+      };
+      fetchUserList();
+    }, [user.token]);
 
     return (
         <div>
@@ -74,7 +85,7 @@ const Users = () => {
                   <button className="p-2 mx-10 my-5 bg-red-500 rounded-lg cursor-pointer " onClick={() => setOpen(true)}>ADD USER</button>
                 </div>
             </div>
-            <DataTable slug="users" columns={columns} rows={list_of_users}/> 
+            <DataTable slug="users" columns={columns} rows={usersList}/> 
             {open && <Add slug="users" columns={columns} setOpen={setOpen} />}
         </div>
     );

@@ -4,6 +4,11 @@ import Menu from "./components/Menu";
 import Footer from "./components/Footer";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import Home from "./pages/Home";
+import Users from "./pages/Users";
+import User from "./pages/User";
+import Login from "./pages/Login";
+import Course from "./pages/Course";
+import Courses from "./pages/Courses";
 
 function App() {
   const Layout = () => {
@@ -15,9 +20,9 @@ function App() {
             <Menu />
           </div>
           <div className="px-5 py-1.25 w-full">
-            {/* <QueryClientProvider client={queryClient}>
+            <QueryClientProvider client={queryClient}>
               <Outlet />
-            </QueryClientProvider> */}
+            </QueryClientProvider>
           </div>
         </div>
         <Footer />
