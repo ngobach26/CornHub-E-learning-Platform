@@ -25,11 +25,12 @@ import AccountSecurity from "./pages/Profile/AccountSecurity";
 import ViewPublicProfile from "./pages/Profile/ViewPublicProfile";
 import AddInstructor from "./pages/Instructor/Team/AddInstructor";
 import CourseLandingPage from "./pages/CourseLandingPage";
+import CourseLearningPage from "./pages/CourseLearningPage";
 import CourseDetails from "./components/ManageCourse/CourseDetails";
 import CreateCurriculum from "./components/ManageCourse/CreateCurriculum";
 import IntendedLearners from "./components/ManageCourse/IntendedLearners";
 import Pricing from "./components/ManageCourse/Pricing";
-import Setting from "./components/ManageCourse/Setting"
+import Setting from "./components/ManageCourse/Setting";  
 
 async function delayForDemo(promise) {
   await new Promise((resolve) => {
@@ -88,7 +89,6 @@ export default function Router() {
           }
         />
         <Route path="/course/:id" element={<CourseLandingPage />}/>
-
       </Route>
       <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
       <Route
@@ -96,7 +96,7 @@ export default function Router() {
         element={!user ? <Signup /> : <Navigate to="/" />}
       />
       <Route path="/logout" element={<Logout />} />
-
+      <Route path="/course/:id/learn" element={<CourseLearningPage />}/>
       <Route
         path="/instructor"
         element={user ? <InstructorPageLayout /> : <Navigate to="/login" />}

@@ -157,7 +157,7 @@ export default function CourseLandingPage() {
           {/* {courseDetail.numChapters} chapters &#8226; {courseDetail.duration}{" "} */}
           
         </p>
-        <CurriculumAccordion curriculumItems={curriculumItems} />
+        <CurriculumAccordion viewOnly curriculumItems={curriculumItems} />
       </div>
     );
   };
