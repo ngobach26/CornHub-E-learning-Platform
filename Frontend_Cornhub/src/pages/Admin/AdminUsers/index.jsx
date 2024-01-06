@@ -61,7 +61,7 @@ const columns = [
       renderCell: (params) => {
         return (
           <div className="flex gap-4">
-            <Link to={`/users/${params.row._id}`}>
+            <Link to={`${params.row._id}`}>
               <img src="/view.svg" className="w-5 h-5 cursor-pointer" />
             </Link>
             <div className="">
@@ -74,7 +74,6 @@ const columns = [
 ]; // width = 730
 
 const Users = () => {
-    const [open, setOpen] = useState(false);
     const { user } = useAuthContext();
     const [ usersList, setUsersList ] = useState([]);
 
@@ -102,7 +101,6 @@ const Users = () => {
             </div>
             <DataTable slug="users" columns={columns} rows={usersList}/> 
             
-            {open && <Add slug="users" columns={columns} setOpen={setOpen} />}
         </div>
     );
 };

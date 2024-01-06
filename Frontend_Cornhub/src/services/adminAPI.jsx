@@ -54,7 +54,7 @@ const acceptCourse = async (token, id) => {
 
 const denyCourse = async (token, id) => {
     try{
-        const response = await axios.patch(`${baseUrl}/course/banned/${id}`, {
+        const response = await axios.patch(`${baseUrl}/course/banned/${id}`, {}, {
             headers:{
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,

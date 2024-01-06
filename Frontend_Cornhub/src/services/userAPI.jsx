@@ -18,4 +18,17 @@ const updateProfile = async (token, profile) => {
   return response.data;
 };
 
-export default { getProfile, updateProfile };
+const changePassword = async (token, oldPassword, newPassword) => {
+  try{
+    const response = await axios.post(`${baseUrl}/changepassword`, 
+      {oldPassword, newPassword},
+      {headers: { Authorization: `Bearer ${token}`}}
+    );
+    return response.data;
+  }
+  catch(err){
+    console.log(err);
+  }
+};
+
+export default { getProfile, updateProfile, changePassword };

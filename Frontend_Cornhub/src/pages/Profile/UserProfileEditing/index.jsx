@@ -1,4 +1,4 @@
-import React,{ useState, useEffect } from "react";
+import React,{ useState, useEffect, useRef } from "react";
 import Footer from "../../../components/Footer";
 import Navbar from "../../../components/Navbar";
 import { Avatar, stepContentClasses } from "@mui/material";
@@ -7,8 +7,9 @@ import api from "../../../services/userAPI";
 
 export default function UserProfileEditing() {
   const { user, dispatch } = useAuthContext();
+  const editableDivRef = useRef();
 
-  let [FormerData, UpdateData] = useState({
+  let [formData, setFormData] = useState({ 
     firstName: user.firstName, lastName: user.lastName, currentjob: user.currentjob, 
     introduction: user.introduction,
     website: user.website, twitter: user.twitter, facebook: user.facebook, linkedin: user.linkedin
@@ -18,7 +19,7 @@ export default function UserProfileEditing() {
     let value = event.target.value;
     let name = event.target.name;
 
-    UpdateData((prevalue) => {
+    setFormData((prevalue) => {
       return {
         ...prevalue,
         [name]: value
@@ -26,15 +27,27 @@ export default function UserProfileEditing() {
     });
   };
 
+  const handleChangeIntro = () => {
+    const newIntroduction = editableDivRef.current.innerText;
+
+    setFormData((prevalue) => {
+      return {
+        ...prevalue,
+        introduction: newIntroduction,
+      };
+    });
+  };
+
   const handleSaveClick = async () => {
     try{
-      const updatedUser = await api.updateProfile(user.token, FormerData);
+      const updatedUser = await api.updateProfile(user.token, formData);
 
       // Update the user context with the updated user data if needed
       // UpdateData(updatedUser); 
       dispatch({ type: "UPDATE_PROFILE", payload: updatedUser });
       
       console.log('Profile updated successfully:', updatedUser);
+      console.log('New introduction:', formData.introduction);
     } catch(error){
       console.error('Error updating profile:', error);
     }
@@ -176,8 +189,9 @@ export default function UserProfileEditing() {
                     </span>
                     <div
                       contenteditable="true"
+                      ref={editableDivRef}
                       className="w-full h-20 px-3 my-2 border border-black "
-                      type="text" onChange={handleChange} name="introduction"
+                      type="text" onBlur={handleChangeIntro} name="introduction"
                     >
                       <p>
                         <br />
