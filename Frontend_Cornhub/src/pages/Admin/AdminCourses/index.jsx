@@ -78,18 +78,6 @@ const AdminCourses = () => {
     fetchCourseList();
   }, [user.token]);
 
-  const handleDelete = async (courseId) => {
-    try {
-      await api.deleteCourse(user.token, courseId);
-
-      // Reload the courses list whenever a deletion operation is executed.
-      const updatedCourses = await api.listCourses(user.token);
-      setCoursesList(updatedCourses);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   const handleApprove = async (courseId) => {
     try {
       await api.acceptCourse(user.token, courseId);
@@ -118,34 +106,6 @@ const AdminCourses = () => {
     }
   };
 
-  const handleAcceptUpdateRequest = async (courseId) => {
-    try {
-      await api.acceptUpdateCourse(user.token, courseId);
-      console.log("Course is updated!");
-
-      // Reload the courses list whenever a deletion operation is executed.
-      const updatedCourses = await api.listCourses(user.token);
-      setCoursesList(updatedCourses);
-    }
-    catch(err){
-      console.error(err);
-    }
-  };
-
-  const handleDenyUpdateRequest = async (courseId) => {
-    try {
-      await api.denyUpdateCourse(user.token, courseId);
-      console.log("Course is rejected to be updated!");
-
-      // Reload the courses list whenever a deletion operation is executed.
-      const updatedCourses = await api.listCourses(user.token);
-      setCoursesList(updatedCourses);
-    }
-    catch(err){
-      console.error(err);
-    }
-  };
-
   const actionColumn = {
     field: "action",
     headerName: "Action",
@@ -159,27 +119,18 @@ const AdminCourses = () => {
           <div className="">
           </div>
           {params.row.status === 'waiting_del' && (
-            <button onClick={() => handleDelete(params.row._id)}>
+            <button onClick={() => handleBan(params.row._id)}>
               <img src="/delete.svg" className="object-cover w-5 h-5 rounded-3xl" />
             </button>
           )}
-          {(params.row.status === 'waiting'  ||  params.row.status === 'waiting_ac') 
+          {(params.row.status === 'waiting'  ||  params.row.status === 'waiting_ac'
+          || params.row.status === 'updated') 
           && (
             <div>
               <button onClick={() => handleApprove(params.row._id)}>
                 <img src="/accept.png" className="object-cover w-5 h-5 m-1" />
               </button>
               <button onClick={() => handleBan(params.row._id)}>
-                <img src="/reject.png" className="object-cover w-5 h-5 m-1" />
-              </button>
-            </div>
-          )}
-          {(params.row.status === 'updated') && (
-            <div>
-              <button onClick={() => handleAcceptUpdateRequest(params.row._id)}>
-                <img src="/accept.png" className="object-cover w-5 h-5 m-1" />
-              </button>
-              <button onClick={() => handleDenyUpdateRequest(params.row._id)}>
                 <img src="/reject.png" className="object-cover w-5 h-5 m-1" />
               </button>
             </div>

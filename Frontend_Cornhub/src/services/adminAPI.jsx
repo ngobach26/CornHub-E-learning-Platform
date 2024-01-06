@@ -22,7 +22,7 @@ const listUsers = async (token) => {
 
 const listCourses = async (token) => {
     try{
-        const response = await axios.get(`${baseUrl}/courses`, {
+        const response = await axios.get(`${baseUrl}/course`, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
@@ -38,12 +38,13 @@ const listCourses = async (token) => {
 
 const acceptCourse = async (token, id) => {
     try{
-        const response = await axios.patch(`${baseUrl}/courses/${id}`, {
+        const response = await axios.patch(`${baseUrl}/course/accept/${id}`, {
             headers:{
                 Authorization: `Bearer ${token}`,
             }
         });
         console.log("Course approved to be published!");
+        console.log("Hello",response.data);
         return response.data;
     }
     catch(err){
@@ -53,7 +54,7 @@ const acceptCourse = async (token, id) => {
 
 const denyCourse = async (token, id) => {
     try{
-        const response = await axios.patch(`${baseUrl}/courses/${id}`, {
+        const response = await axios.patch(`${baseUrl}/course/banned/${id}`, {
             headers:{
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
@@ -66,49 +67,4 @@ const denyCourse = async (token, id) => {
     }
 };
 
-const deleteCourse = async (token, id) => {
-    try{
-        const response = await axios.delete(`${baseUrl}/courses/${id}`, {
-            headers:{
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-            }
-        });
-        return response.data;
-    }
-    catch(err){
-        console.error(err);
-    }
-};
-
-const acceptUpdateCourse = async (token, id) => {
-    try{
-        const response = await axios.patch(`${baseUrl}/courses/${id}`, {
-            headers:{
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-            }
-        });
-        return response.data;
-    }
-    catch(err){
-        console.error(err);
-    }
-};
-
-const denyUpdateCourse = async (token, id) => {
-    try{
-        const response = await axios.patch(`${baseUrl}/courses/${id}`, {
-            headers:{
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-            }
-        });
-        return response.data;
-    }
-    catch(err){
-        console.error(err);
-    }
-};
-
-export default { listUsers, listCourses, acceptCourse, denyCourse, deleteCourse, acceptUpdateCourse, denyUpdateCourse };
+export default { listUsers, listCourses, acceptCourse, denyCourse };
