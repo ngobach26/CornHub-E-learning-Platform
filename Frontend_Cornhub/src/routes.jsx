@@ -2,7 +2,6 @@ import React, { Suspense } from "react";
 import { CircularProgress } from "@mui/material";
 import { Navigate, Routes, Route } from "react-router-dom";
 import { useAuthContext } from "./hooks/useAuthContext";
-import ManageCourse from "./components/ManageCourse"; // test only
 import Layout from "./components/Layout";
 import InstructorPageLayout from "./components/InstructorPageLayout";
 import FormPageLayout from "./components/FormPageLayout";
@@ -18,6 +17,7 @@ const Cart = React.lazy(() => delayForDemo(import("./pages/Cart")));
 const Courses = React.lazy(() =>
   delayForDemo(import("./pages/Instructor/Courses"))
 );
+const MyLearning = React.lazy(() => delayForDemo(import("./pages/MyLearning")));
 import Settings from "./pages/Instructor/Settings";
 const Team = React.lazy(() => delayForDemo(import("./pages/Instructor/Team")));
 import UserProfileEditing from "./pages/Profile/UserProfileEditing";
@@ -95,24 +95,58 @@ export default function Router() {
             </Suspense>
           }
         />
-        <Route path="/course/:id" element={<CourseLandingPage />}/>
+        <Route path="/course/:id" element={<CourseLandingPage />} />
+        <Route
+          path="/my-learning"
+          element={
+            <Suspense
+              fallback={
+                <CenterAligned height="screen">
+                  <CircularProgress />
+                </CenterAligned>
+              }
+            >
+              <MyLearning />
+            </Suspense>
+          }
+        />
       </Route>
-      <Route path="/admin" element={!user ? <Login /> : (!user.isAdmin ? <Navigate to="/" /> : <AdminLayout />)}>
-        <Route path="home" element={<AdminHome /> } />
+      <Route
+        path="/admin"
+        element={
+          !user ? (
+            <Login />
+          ) : !user.isAdmin ? (
+            <Navigate to="/" />
+          ) : (
+            <AdminLayout />
+          )
+        }
+      >
+        <Route path="home" element={<AdminHome />} />
         <Route path="users" element={<AdminUsers />} />
         <Route path="courses" element={<AdminCourses />} />
         <Route path="users/:id" element={<AdminUser />} />
         <Route path="courses/:id" element={<AdminCourse />} />
       </Route>
-      <Route path="/login" element={!user ? <Login /> : (user?.isAdmin ? <Navigate to="/admin" /> : <Navigate to="/" />)} />
-      {/* <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} /> */}
-      {/* <Route path="/login" element={!user ? <Login /> : ({user.isAdmin} ? <Navigate to="/admin" /> : <Navigate to="/" />)  } /> */}
+      <Route
+        path="/login"
+        element={
+          !user ? (
+            <Login />
+          ) : user?.isAdmin ? (
+            <Navigate to="/admin" />
+          ) : (
+            <Navigate to="/" />
+          )
+        }
+      />
       <Route
         path="/signup"
         element={!user ? <Signup /> : <Navigate to="/" />}
       />
       <Route path="/logout" element={<Logout />} />
-      <Route path="/course/:id/learn" element={<CourseLearningPage />}/>
+      <Route path="/course/:id/learn" element={<CourseLearningPage />} />
       <Route
         path="/instructor"
         element={user ? <InstructorPageLayout /> : <Navigate to="/login" />}
@@ -149,13 +183,13 @@ export default function Router() {
         />
         <Route path="team/add" element={<AddInstructor />} />
       </Route>
-      <Route path="/instructor/courses/manage" element={<FormPageLayout />} >
+      <Route path="/instructor/courses/manage" element={<FormPageLayout />}>
         {/* <Route index element={<CourseDetails />} /> */}
-        <Route path="course-detail/:id" element={<CourseDetails />}/>
-        <Route path="create-curriculum/:id" element={<CreateCurriculum />}/>
-        <Route path="intended-learners/:id" element={<IntendedLearners />}/>
+        <Route path="course-detail/:id" element={<CourseDetails />} />
+        <Route path="create-curriculum/:id" element={<CreateCurriculum />} />
+        <Route path="intended-learners/:id" element={<IntendedLearners />} />
         <Route path="pricing/:id" element={<Pricing />} />
-        <Route path="setting/:id" element={<Setting />} /> 
+        <Route path="setting/:id" element={<Setting />} />
       </Route>
       <Route path="/*" element={<NotFoundPage />} />
       <Route path="/user-profile-editing" element={<UserProfileEditing />} />

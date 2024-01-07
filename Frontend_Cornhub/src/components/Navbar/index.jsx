@@ -50,7 +50,9 @@ export default function Navbar() {
                   >
                     Instructor
                   </Link>
-                  <Link className="hidden text-base lg:block hover:text-gray-500 hover:cursor-pointer">
+                  <Link
+                    to="/my-learning" 
+                    className="hidden text-base lg:block hover:text-gray-500 hover:cursor-pointer">
                     My Learning
                   </Link>
                 </div>
