@@ -5,6 +5,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import QuizCreatorPopup from "../QuizCreatorPopup";
 
 const LectureForm = ({ onAddLecture, initialLectures }) => {
   const [lectureTitle, setLectureTitle] = useState("");
@@ -12,7 +13,21 @@ const LectureForm = ({ onAddLecture, initialLectures }) => {
   const [duration, setDuration] = useState(0);
   const [embedUrl, setEmbedUrl] = useState("");
   const [lectureTitleError, setLectureTitleError] = useState("");
-  const [lectures, setLectures] = useState("");
+  const [quizData, setQuizData] = useState([]);
+  const [showQuizPopup, setShowQuizPopup] = useState(false);
+
+  const openQuizPopup = () => {
+    setShowQuizPopup(true);
+  };
+
+  const closeQuizPopup = () => {
+    setShowQuizPopup(false);
+  };
+
+  const saveQuizData = (newQuizData) => {
+    setQuizData(newQuizData);
+    closeQuizPopup();
+  };
 
   const handleTitleChange = (e) => {
     setLectureTitle(e.target.value);
@@ -42,12 +57,6 @@ const LectureForm = ({ onAddLecture, initialLectures }) => {
     setLectureTitleError("");
     return true;
   };
-
-  // useEffect(() => {
-  //   if (initialLectures.length > 0) {
-  //     setLectures(initialLectures);
-  //   }
-  // }, [initialLectures]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -106,7 +115,7 @@ const LectureForm = ({ onAddLecture, initialLectures }) => {
             onChange={handleDurationChange}
           />
         </div>
-        <TextField
+        {classType==='video' && <TextField
           className="w-full"
           margin="normal"
           required
@@ -118,7 +127,21 @@ const LectureForm = ({ onAddLecture, initialLectures }) => {
           value={embedUrl}
           onChange={handleEmbedUrlChange}
           autoFocus
-        />
+        />}
+        {classType==='quiz' && (
+          <>
+            <div className="mb-4">
+              <Button label="Create Test" onClick={openQuizPopup}/>
+            </div>
+            {showQuizPopup && (
+              <QuizCreatorPopup
+                quizData={quizData}
+                setQuizData={saveQuizData}
+                onClose={closeQuizPopup}
+              />
+            )}
+          </>
+        )}
 
         <Button label="Add" className="ml-auto w-min" type="submit" onClick={handleSubmit}/>
       </form>
