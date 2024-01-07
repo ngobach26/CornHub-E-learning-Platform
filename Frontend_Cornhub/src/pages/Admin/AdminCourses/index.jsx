@@ -15,7 +15,7 @@ const columns = [
     field: "courseTitle",
     type: "string",
     headerName: "Course Title",
-    width: 100,
+    width: 120,
   },
   {
     field: "category",
@@ -26,20 +26,20 @@ const columns = [
   {
     field: "status",
     headerName: "Status",
-    width: 100,
+    width: 80,
     type: "string",
     enum: ['waiting_ac','published','banned','waiting_del','updated']
+  },
+  {
+    field: "updatedAt",
+    headerName: "Updated Date",
+    width: 200,
+    type: "string",
   },
   {
     field: "language",
     headerName: "Language",
     width: 80,
-    type: "string",
-  },
-  {
-    field: "level",
-    headerName: "Level",
-    width: 100,
     type: "string",
     enum: ['Beginner', 'Intermediate', 'Expert', 'All Levels'],
   },
@@ -126,18 +126,22 @@ const AdminCourses = () => {
     renderCell: (params) => {
       return (
         <div className="flex gap-4">
-          <Link to={`${params.row._id}`}>
+          <Link to={`/course/${params.row._id}`} target="_blank">
             <img src="/view.svg" className="w-5 h-5 cursor-pointer" />
           </Link>
           <div className="">
           </div>
           {params.row.status === 'waiting_del' && (
-            <button onClick={() => handleDelete(params.row._id)}>
-              <img src="/delete.svg" className="object-cover w-5 h-5 rounded-3xl" />
-            </button>
+            <div>
+              <button onClick={() => handleApprove(params.row._id)}>
+                <img src="/accept.png" className="object-cover w-5 h-5 m-1" />
+              </button>
+              <button onClick={() => handleDelete(params.row._id)}>
+                <img src="/delete.svg" className="object-cover w-5 h-5 m-1" />
+              </button>
+            </div>
           )}
-          {(params.row.status === 'waiting'  ||  params.row.status === 'waiting_ac'
-          || params.row.status === 'updated') 
+          {(params.row.status === 'waiting_ac' || params.row.status === 'updated') 
           && (
             <div>
               <button onClick={() => handleApprove(params.row._id)}>
@@ -148,7 +152,13 @@ const AdminCourses = () => {
               </button>
             </div>
           )}
-          {}
+          {(params.row.status === 'banned') && (
+            <div>
+              <button onClick={() => handleApprove(params.row._id)}>
+                <img src="/accept.png" className="object-cover w-5 h-5 m-1" />
+              </button>
+            </div>           
+          )}
         </div>
       );
     },

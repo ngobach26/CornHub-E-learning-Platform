@@ -5,16 +5,12 @@ const AdminMenu = () => {
     return (
         <div className="">
             <div className="flex flex-col gap-2.5 mb-5">
-                {/* main div */}
-                <span className="mt-2 text-white text-md font-extralight">Main</span>
-                <Link to="home" className="flex items-center gap-2.5 p-2">
+                <Link to="home" className="flex items-center gap-2.5 p-2 mt-4">
                     <img src="/home.jpg" className="w-10 rounded-full"/>
                     <span className="">Homepage</span>
                 </Link>
             </div>
             <div className="flex flex-col gap-2.5 mb-5">
-                {/* lists div */}
-                <span className="text-white text-md font-extralight">Lists</span>
                 <Link to="users" className="flex items-center gap-2.5 p-2 rounded-md"> 
                     <img src="/user.jpg" className="w-10 rounded-full"/>
                     <span className="">Users</span>
@@ -25,7 +21,6 @@ const AdminMenu = () => {
                 </Link>
             </div>
             <div className="flex flex-col gap-2.5 mb-5">
-                <span className="text-white text-md font-extralight">Utility</span>
                 <Link className="flex items-center gap-2.5 p-2 rounded-md">
                     <img src="/settings.jpg" className="w-10 rounded-full"/>
                     <span className="">Settings</span>

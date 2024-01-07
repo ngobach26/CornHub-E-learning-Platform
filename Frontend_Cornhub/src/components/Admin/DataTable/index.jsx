@@ -1,9 +1,9 @@
-import { DataGrid, GridToolbar} from "@mui/x-data-grid";
+import { DataGrid, GridToolbar, GridLogicOperator} from "@mui/x-data-grid";
 import { Link } from "react-router-dom"; 
 
 const DataTable = (props) => {
     return (
-        <div className="">
+        <div className=""> 
           <DataGrid 
             getRowId={(row) => row._id}
             className="p-5 bg-white"
@@ -25,7 +25,7 @@ const DataTable = (props) => {
             }}
             pageSizeOptions={[5]}
             disableRowSelectionOnClick
-            disableColumnFilter
+            // disableColumnFilter
             disableDensitySelector
             disableColumnSelector
           />

@@ -4,15 +4,23 @@ import Navbar from "../../../components/Navbar";
 import { Avatar } from "@mui/material";
 import { useAuthContext } from "../../../hooks/useAuthContext";
 import api from "../../../services/userAPI";
+import { Snackbar } from "@mui/material";
 
 export default function AccountSecurity() {
   const { user } = useAuthContext();
-  let [ oldPassword, setOldPassword ] = useState('');
-  let [ newPassword, setNewPassword ] = useState('');
-  let [ retypePassword, setRetypePassword ] = useState('');
+  const [ oldPassword, setOldPassword ] = useState('');
+  const [ newPassword, setNewPassword ] = useState('');
+  const [ retypePassword, setRetypePassword ] = useState('');
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
 
   const handleOldPassword = (event) => {
     setOldPassword(event.target.value);
+    console.log(oldPassword);
   };
 
   const handleNewPassword = (event) => {
@@ -25,17 +33,21 @@ export default function AccountSecurity() {
 
   const handleChangeClick = async () => {// 
     try {
-      if(oldPassword === newPassword && oldPassword !== user.password) {
-        console.error();
+      if(oldPassword === newPassword) {
+        setSnackbarMessage("Old password must be different from new password.");
+        setSnackbarOpen(true);
+        throw Error();
       }
       if(newPassword === retypePassword) {
-        await api.changePassword(user.token, oldPassword, newPassword);
-        console.log("Password changed successfully", newPassword);
-        setOldPassword(user.password);
+        const response = await api.changePassword(user.token, oldPassword, newPassword);
+        if(!response || response.status === 400) setSnackbarMessage("Wrong password.");
+        else setSnackbarMessage("Password changed successfully");
+        setSnackbarOpen(true);
       }
     }
     catch(err){
-      console.log("Error updating password");
+      setSnackbarMessage("Error updating password.");
+      setSnackbarOpen(true);
     }
   };
 
@@ -184,6 +196,13 @@ export default function AccountSecurity() {
           </div>
         </div>
       </div>
+      <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={snackbarOpen}
+          autoHideDuration={6000}
+          onClose={handleSnackbarClose}
+          message={snackbarMessage}
+      />
       <Footer />
     </>
   );

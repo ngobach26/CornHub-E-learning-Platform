@@ -37,7 +37,7 @@ export default function Navbar() {
                   {
                     user.isAdmin && (
                       <Link
-                        to="/admin"
+                        to="/admin/home"
                         className="hidden text-base lg:block hover:text-gray-500 hover:cursor-pointer"
                       >
                         Admin
