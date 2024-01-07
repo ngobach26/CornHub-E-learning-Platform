@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import Footer from "../../../components/Footer";
 import Navbar from "../../../components/Navbar";
 import { Avatar, stepContentClasses } from "@mui/material";
@@ -9,7 +9,6 @@ import { Link } from "react-router-dom";
 
 export default function UserProfileEditing() {
   const { user, dispatch } = useAuthContext();
-  const editableDivRef = useRef();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
@@ -32,17 +31,6 @@ export default function UserProfileEditing() {
       return {
         ...prevalue,
         [name]: value,
-      };
-    });
-  };
-  
-  const handleChangeIntro = () => {
-    const newIntroduction = editableDivRef.current.innerText;
-
-    setFormData((prevalue) => {
-      return {
-        ...prevalue,
-        introduction: newIntroduction,
       };
     });
   };
@@ -201,12 +189,14 @@ export default function UserProfileEditing() {
                       className="w-full h-10 px-3 my-2 border border-black "
                       type="text"
                       placeholder={formData.firstName}
+                      onBlur={handleChange}
                       name="firstName"
                     />
                     <input
                       className="w-full h-10 px-3 my-2 border border-black "
                       type="text"
                       placeholder={formData.lastName}
+                      onBlur={handleChange}
                       name="lastName"
                     />
                     <p>
@@ -219,6 +209,7 @@ export default function UserProfileEditing() {
                       className="w-full h-10 px-3 my-2 border border-black "
                       type="text"
                       placeholder={formData.currentjob}
+                      onBlur={handleChange}
                       name="currentjob"
                     />
                     <p>
@@ -232,7 +223,7 @@ export default function UserProfileEditing() {
                       className="w-full h-20 px-3 my-2 border border-black "
                       type="text"
                       placeholder={formData.introduction}
-                      onBlur={handleChangeIntro}
+                      onBlur={handleChange}
                       name="introduction"
                     />
                   </form>
