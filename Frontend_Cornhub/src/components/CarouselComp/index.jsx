@@ -21,6 +21,9 @@ const CarouselComp = () => {
       <div>
         {CarouselHomepage.thirdPicture}
       </div>
+      <div>
+        {CarouselHomepage.fourthPicture}
+      </div>
     </Carousel>
   );
 };
