@@ -14,6 +14,8 @@ const CourseCTA = ({ isPurchased, courseID }) => {
     navigate("/cart");
   };
 
+  
+
   return (
     <div className="flex gap-3 my-3">
       {isPurchased ? (

@@ -4,12 +4,21 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 
 function Submenu() {
   const renderMenus = (menu, allowHover) => {
+    const categories = [
+      "Information Technology",
+      "Business",
+      "Finance and accouting",
+      "Editing and design",
+      "Music",
+      "Fitness",
+      "Self development",
+    ];
     if (!menu) return null;
 
     return (
       <div className="flex-col hidden w-64 gap-4 p-5 mt-6 border border-border bg-bodyBg group-hover:flex">
         {menu?.map((category, i) => (
-          <Link key={i} to={category.url}> 
+          <Link key={i} to={category.url}>
             <div className="flex justify-between item-center">
               <p className="hover:text-primary">title</p>
               <p>
