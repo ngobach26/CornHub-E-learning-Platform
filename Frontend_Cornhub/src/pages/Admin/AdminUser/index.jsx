@@ -1,14 +1,16 @@
 import Single from "../../../components/Admin/Single";
 import React from 'react';
-// import { singleUser } from '../data';
+import api from "../../../services/adminAPI";
 
 const User = (props) => {
 
   //Fetch data and send to Single Component
+  const singleUser = 1;
   
   return (
     <div className="">
-      <Single {...singleUser}/>
+      <h1>Hello</h1>
+      {/* <Single {...singleUser}/> */}
     </div>
   )
 }

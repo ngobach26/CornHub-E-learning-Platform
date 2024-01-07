@@ -32,7 +32,6 @@ import IntendedLearners from "./components/ManageCourse/IntendedLearners";
 import Pricing from "./components/ManageCourse/Pricing";
 import Setting from "./components/ManageCourse/Setting";
 import AdminLayout from "./components/Admin/AdminLayout";
-import AdminCourse from "./pages/Admin/AdminCourse";
 import AdminCourses from "./pages/Admin/AdminCourses";
 import AdminHome from "./pages/Admin/AdminHome";
 import AdminUser from "./pages/Admin/AdminUser";
@@ -127,7 +126,6 @@ export default function Router() {
         <Route path="users" element={<AdminUsers />} />
         <Route path="courses" element={<AdminCourses />} />
         <Route path="users/:id" element={<AdminUser />} />
-        <Route path="courses/:id" element={<AdminCourse />} />
       </Route>
       <Route
         path="/login"

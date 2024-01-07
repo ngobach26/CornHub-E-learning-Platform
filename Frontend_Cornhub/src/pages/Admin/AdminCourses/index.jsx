@@ -1,6 +1,5 @@
 import { useState , useEffect } from "react";
 import DataTable from "../../../components/Admin/DataTable";
-import Add from "../../../components/Admin/Add";
 import api from "../../../services/adminAPI";
 import { useAuthContext } from "../../../hooks/useAuthContext";
 import { Link } from "react-router-dom";
@@ -10,38 +9,43 @@ const columns = [
     field: "_id", 
     headerName: "ID", 
     width: 50,
+    sortable: false,
   },
   {
     field: "courseTitle",
     type: "string",
     headerName: "Course Title",
     width: 120,
+    sortable: false,
   },
   {
     field: "category",
     headerName: "Category",
     type: "string",
     width: 100,
+    sortable: false,
   },
   {
     field: "status",
     headerName: "Status",
     width: 80,
     type: "string",
-    enum: ['waiting_ac','published','banned','waiting_del','updated']
+    enum: ['waiting_ac','published','banned','waiting_del','updated'],
+    sortable: false,
   },
   {
     field: "updatedAt",
     headerName: "Updated Date",
     width: 200,
     type: "string",
+    filterable: false,
   },
   {
     field: "language",
     headerName: "Language",
     width: 80,
     type: "string",
-    enum: ['Beginner', 'Intermediate', 'Expert', 'All Levels'],
+    sortable: false,
   },
   {
     field: "totalRating",
@@ -123,6 +127,8 @@ const AdminCourses = () => {
     field: "action",
     headerName: "Action",
     width: 150,
+    sortable: false,
+    filterable: false,
     renderCell: (params) => {
       return (
         <div className="flex gap-4">

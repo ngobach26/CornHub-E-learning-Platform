@@ -1,7 +1,6 @@
 import React from "react";
 import DataTable from "../../../components/Admin/DataTable";
 import { useState, useEffect } from "react";
-import Add from "../../../components/Admin/Add";
 import api from "../../../services/adminAPI";
 import { useAuthContext } from "../../../hooks/useAuthContext";
 import { Link } from "react-router-dom";
@@ -10,6 +9,7 @@ const columns = [
     { 
       field: "_id", 
       headerName: "ID", 
+      sortable: false,
       width: 50 
     },
     {
@@ -27,6 +27,7 @@ const columns = [
     {
       field: "email",
       type: "string",
+      sortable: false,
       headerName: "Email",
       width: 150,
     },
@@ -34,28 +35,41 @@ const columns = [
       field: "currentjob",
       headerName: "Current Position",
       width: 150,
+      sortable: false,
       type: "string",
     },
     {
       field: "website",
       type: "string",
+      sortable: false,
       headerName: "Website",
       width: 100,
     },
     {
       field: "linkedin",
       type: "string",
+      sortable: false,
       headerName: "LinkedIn",
       width: 100,
     },
-    {
+]; // width = 730
+
+const Users = () => {
+    const { user } = useAuthContext();
+    const [ usersList, setUsersList ] = useState([]);
+
+    console.log(user);
+
+    const actionColumn = {
       field: "action",
       headerName: "Action",
       width: 150,
+      sortable: false,
+      filterable: false,
       renderCell: (params) => {
         return (
           <div className="flex gap-4">
-            <Link to={`${params.row._id}`}>
+            <Link to={`${params.row._id}`} target="_blank">
               <img src="/view.svg" className="w-5 h-5 cursor-pointer" />
             </Link>
             <div className="">
@@ -64,14 +78,7 @@ const columns = [
           </div>
         );
       },
-    }
-]; // width = 730
-
-const Users = () => {
-    const { user } = useAuthContext();
-    const [ usersList, setUsersList ] = useState([]);
-
-    console.log(user);
+    };
 
     useEffect(() => {
       const fetchUserList = async () => {
@@ -93,7 +100,7 @@ const Users = () => {
                   <div className="my-10 ml-10 font-mono text-3xl ">Users Management</div>
                 </div>
             </div>
-            <DataTable slug="users" columns={columns} rows={usersList}/> 
+            <DataTable slug="users" columns={[...columns,actionColumn]} rows={usersList}/> 
             
         </div>
     );
