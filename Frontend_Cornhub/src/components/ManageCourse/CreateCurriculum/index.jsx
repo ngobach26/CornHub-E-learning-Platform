@@ -34,11 +34,11 @@ const CreateCurriculum = () => {
     setShowChapterForm(false);
   };
 
-  const addLecture = (chapterIndex, lectureTitle, classType, duration, embedUrl) => {
+  const addLecture = (chapterIndex, lectureTitle, classType, duration, embedUrl, data) => {
     const newCurriculumItems = [...curriculumItems];
     const chapter = newCurriculumItems[chapterIndex];
     if (chapter) {
-      chapter.content = [...(chapter.content || []), { lessonTitle: lectureTitle, type: classType, duration, embedUrl }];
+      chapter.content = [...(chapter.content || []), { lessonTitle: lectureTitle, type: classType, duration, embedUrl, data }];
     }
     setCurriculumItems(newCurriculumItems);
   };
@@ -108,8 +108,8 @@ const CreateCurriculum = () => {
         <div className="order-last w-full p-3 lg:w-7/12 bg-formBg h-min lg:order-first bg-slate-50">
           {showChapterForm && <ChapterForm onAddChapter={addChapter} />}
           {showLectureForm && (
-            <LectureForm onAddLecture={(lectureTitle, classType, duration, embedUrl) => 
-              addLecture(currentChapterIndex, lectureTitle, classType, duration, embedUrl)} 
+            <LectureForm onAddLecture={(lectureTitle, classType, duration, embedUrl, data) => 
+              addLecture(currentChapterIndex, lectureTitle, classType, duration, embedUrl, data)} 
             />
           )}
         </div>

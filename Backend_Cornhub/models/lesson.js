@@ -23,12 +23,9 @@ const lessonSchema = Schema(
       min: 0,
       default: 0,
     },
-    data: {
-      type: Object
-    }, 
+    data: [Object], 
     embedUrl: {
       type: String,
-      required: true,
     }
   },
   { timestamps: true }

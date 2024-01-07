@@ -3,8 +3,11 @@ import { TextField, Button, Checkbox, FormControlLabel, Paper } from '@mui/mater
 
 const defaultQuestion = () => ({
   questionText: '',
-  choices: ['', '', '', ''],
-  correctAnswers: [false, false, false, false],
+  explanation: '',
+  choices: [{text: '', correct: false}, 
+            {text: '', correct: false},
+            {text: '', correct: false},
+            {text: '', correct: false}],
 });
 
 const QuizCreatorPopup = ({ quizData, onClose, setQuizData }) => {
@@ -16,15 +19,21 @@ const QuizCreatorPopup = ({ quizData, onClose, setQuizData }) => {
     setQuestions(newQuestions);
   };
 
+  const handleExplanationChange = (index, value) => {
+    const newQuestions = [...questions];
+    newQuestions[index].explanation = value;
+    setQuestions(newQuestions);
+  };
+
   const handleChoiceChange = (questionIndex, choiceIndex, value) => {
     const newQuestions = [...questions];
-    newQuestions[questionIndex].choices[choiceIndex] = value;
+    newQuestions[questionIndex].choices[choiceIndex].text = value;
     setQuestions(newQuestions);
   };
 
   const handleCorrectAnswerChange = (questionIndex, choiceIndex) => {
     const newQuestions = [...questions];
-    newQuestions[questionIndex].correctAnswers[choiceIndex] = !newQuestions[questionIndex].correctAnswers[choiceIndex];
+    newQuestions[questionIndex].choices[choiceIndex].correct = !newQuestions[questionIndex].choices[choiceIndex].correct;
     setQuestions(newQuestions);
   };
 
@@ -43,6 +52,21 @@ const QuizCreatorPopup = ({ quizData, onClose, setQuizData }) => {
   };
 
   const handleSaveQuiz = () => {
+    const isAnyQuestionEmpty = questions.some(question => !question.questionText.trim());
+    const isAnyChoiceEmpty = questions.some(question => 
+      question.choices.some(choice => !choice.text.trim())
+    );
+    const isAnyChoiceCorrect = questions.every(question => 
+      question.choices.some(choice => choice.correct)
+    );
+    if (isAnyQuestionEmpty || isAnyChoiceEmpty) {
+      alert('All questions and choices must be filled out.');
+      return;
+    }
+    if (!isAnyChoiceCorrect){
+      alert('There must be at least one correct choice.')
+      return;
+    }
     setQuizData(questions);
     onClose();
   };
@@ -50,7 +74,6 @@ const QuizCreatorPopup = ({ quizData, onClose, setQuizData }) => {
   return (
     <Paper elevation={3} className="p-6 rounded-lg bg-white max-w-3xl mx-auto my-8">
       <h2 className="text-2xl font-bold mb-4">Create Your Quiz</h2>
-      <form>
         {questions.map((question, qIndex) => (
           <div key={qIndex} className="mb-8">
             <TextField
@@ -65,13 +88,13 @@ const QuizCreatorPopup = ({ quizData, onClose, setQuizData }) => {
             {question.choices.map((choice, cIndex) => (
               <div key={cIndex} className="flex items-center mb-2">
                 <Checkbox
-                  checked={question.correctAnswers[cIndex]}
+                  checked={choice.correct}
                   onChange={() => handleCorrectAnswerChange(qIndex, cIndex)}
                   color="primary"
                   className="mr-2"
                 />
                 <TextField
-                  value={choice}
+                  value={choice.text}
                   onChange={(e) => handleChoiceChange(qIndex, cIndex, e.target.value)}
                   margin="normal"
                   fullWidth
@@ -79,6 +102,14 @@ const QuizCreatorPopup = ({ quizData, onClose, setQuizData }) => {
                 />
               </div>
             ))}
+            <TextField
+              label="Explanation"
+              value={question.explanation}
+              onChange={(e) => handleExplanationChange(qIndex, e.target.value)}
+              fullWidth
+              margin="normal"
+              variant="outlined"
+            />
             <Button
               variant="outlined"
               color="secondary"
@@ -115,7 +146,6 @@ const QuizCreatorPopup = ({ quizData, onClose, setQuizData }) => {
             Close
           </Button>
         </div>
-      </form>
     </Paper>
   );
 };

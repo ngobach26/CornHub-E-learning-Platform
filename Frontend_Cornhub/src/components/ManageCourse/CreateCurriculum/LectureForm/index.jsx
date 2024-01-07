@@ -61,12 +61,18 @@ const LectureForm = ({ onAddLecture, initialLectures }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateLectureTitle()) {
-      onAddLecture(lectureTitle, classType, duration, embedUrl);
+      onAddLecture(lectureTitle, classType, duration, embedUrl, quizData);
       console.log("add lecture successfully")
+      console.log(lectureTitle);
+      console.log(classType);
+      console.log(duration);
+      console.log(embedUrl);
+      console.log(quizData);
       setLectureTitle("");
       setClassType("");
-      setDuration("");
-      setEmbedUrl("");
+      setDuration(0);
+      setEmbedUrl("");  
+      setQuizData([]);
     }
   };
 
@@ -98,7 +104,7 @@ const LectureForm = ({ onAddLecture, initialLectures }) => {
               label="Class Type"
               onChange={handleClassTypeChange}
             >
-              <MenuItem value="video">Lecture</MenuItem>
+              <MenuItem value="video">Video</MenuItem>
               <MenuItem value="quiz">Quiz</MenuItem>
             </Select>
           </FormControl>
