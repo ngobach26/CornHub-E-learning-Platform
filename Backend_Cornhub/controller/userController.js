@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt');
 
 //Profile Route
 const updateprofile = async (req, res) => {
-    const { _id } = req.User;
+    const { _id } = req.user;
   try {
     // Use findByIdAndUpdate to update user's information
     const user = await User.findByIdAndUpdate(_id, req.body, { new: true });
@@ -25,7 +25,7 @@ const getprofile = async (req, res) => {
 };
 
 const changepassword = async (req, res) => {
-  const {_id, password} = req.User;
+  const { _id, password } = req.user; 
   try {
     const { oldPassword, newPassword } = req.body;
 

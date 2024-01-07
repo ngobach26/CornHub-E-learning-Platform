@@ -1,32 +1,30 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import Footer from "../../../components/Footer";
 import Navbar from "../../../components/Navbar";
 import { Avatar } from "@mui/material";
 import { useAuthContext } from "../../../hooks/useAuthContext";
+import api from "../../../services/userAPI";
 
 export default function AccountSecurity() {
-  const {user, dispatch} = useAuthContext();
-  let [password, setPassword] = useState({// initial state of password
-    new: '', retype: ''
-  });
+  const { user } = useAuthContext();
+  let [ newPassword, setNewPassword ] = useState('');
+  let [ retypePassword, setRetypePassword ] = useState('');
 
   const handleNewPassword = (event) => {
-    let value = event.target.value;
-    let name = event.target.name;
+    setNewPassword(event.target.value);
+  };
 
-    setPassword((prevalue) => { // simply set new value to password, 
-      //new password will be stored in `password` variable
-      return {
-        ...prevalue,
-        [name]: value
-      }
-    });
+  const handleRetypePassword = (event) => {
+    setRetypePassword(event.target.value);
   };
 
   const handleChangeClick = async () => {// 
     try {
-      
-      console.log("Password changed successfully");
+      if(newPassword === retypePassword) {
+        await api.changePassword(user.token, user.password, newPassword);
+        console.log("Password changed successfully");
+        setOldPassword(newPassword);
+      }
     }
     catch(err){
       console.log("Error updating password");
@@ -156,7 +154,7 @@ export default function AccountSecurity() {
                     <input
                       className="items-center w-full h-10 px-3 mx-2 my-2 border border-black"
                       type="password"
-                      placeholder="Re-type new password" onChange={handleNewPassword} name='retype'
+                      placeholder="Re-type new password" onChange={handleRetypePassword} name='retype'
                     />
                   </form>
                   <span className="p-5">

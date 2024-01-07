@@ -59,7 +59,6 @@ const columns = [
 ];
 
 const AdminCourses = () => {
-  const [ open, setOpen ] = useState(false);
   const { user } = useAuthContext();
   const [ coursesList, setCoursesList ] = useState([]);
 
@@ -127,7 +126,7 @@ const AdminCourses = () => {
     renderCell: (params) => {
       return (
         <div className="flex gap-4">
-          <Link to={`/courses/${params.row._id}`}>
+          <Link to={`${params.row._id}`}>
             <img src="/view.svg" className="w-5 h-5 cursor-pointer" />
           </Link>
           <div className="">
@@ -149,6 +148,7 @@ const AdminCourses = () => {
               </button>
             </div>
           )}
+          {}
         </div>
       );
     },
@@ -160,8 +160,7 @@ const AdminCourses = () => {
         <div className="my-10 ml-10 font-mono text-3xl ">Courses Management</div>
       </div>
       <DataTable slug="courses" columns={[...columns, actionColumn]} rows={coursesList} />
-      
-      {open && <Add slug="courses" columns={columns} setOpen={setOpen} />}
+    
     </div>
   );
 };

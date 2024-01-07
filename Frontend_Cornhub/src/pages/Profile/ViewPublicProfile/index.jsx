@@ -1,4 +1,4 @@
-import React from "react";
+import React , {useState, useEffect} from "react";
 import Footer from "../../../components/Footer";
 import Navbar from "../../../components/Navbar";
 import { Avatar } from "@mui/material";
@@ -7,9 +7,25 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 
 import { useAuthContext } from "../../../hooks/useAuthContext";
+import api from "../../../services/userAPI";
 
 export default function ViewPublicProfile() {
   const { user } = useAuthContext();
+  const [ detail, setDetail ] = useState([]);
+
+  useEffect (() => {
+    const fetchUserDetail = async () => {
+      try{
+        const userDetail = await api.getProfile(user.token);
+        setDetail(userDetail);
+      }
+      catch(err){
+        console.log(err);
+      }
+    };
+    fetchUserDetail();
+  }, [user.token]);
+
   return (
     <>
       <Navbar />
@@ -19,7 +35,7 @@ export default function ViewPublicProfile() {
         <div className="flex-1">
           <div className="pt-5 pb-10 text-left text-white bg-black h-30">
             <span className="ml-20 text-2xl">
-              {user.firstName} {user.lastName}
+              {detail.firstName} {detail.lastName}
             </span>
             <br />
           </div>
@@ -36,13 +52,13 @@ export default function ViewPublicProfile() {
                   className="items-center mx-20"
                 />
                 <div className="py-10 space-x-2">
-                  <a href={user.twitter}>
+                  <a href={detail.twitter}>
                     <TwitterIcon style={{ width: "2rem", height: "2rem" }} />
                   </a>
-                  <a href={user.facebook}>
+                  <a href={detail.facebook}>
                     <FacebookIcon style={{ width: "2rem", height: "2rem" }} />
                   </a>
-                  <a href={user.linkedin}>
+                  <a href={detail.linkedin}>
                     <LinkedInIcon style={{ width: "2rem", height: "2rem" }} />
                   </a>
                 </div>
@@ -51,7 +67,7 @@ export default function ViewPublicProfile() {
             <div className="w-full h-screen">
               <div className="p-10 text-left ml-300 ">
                 <span className="text-lg ">
-                  {user.introduction}
+                  {detail.introduction}
                 </span>
               </div>
             </div>
