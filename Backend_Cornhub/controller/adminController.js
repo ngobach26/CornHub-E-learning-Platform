@@ -77,6 +77,17 @@ const deletecourse = async (req, res) => {
     }
 };
 
+const getUserById = async (req,res) =>{
+    try{
+        const userId = req.params.id;
+        const user = await User.findById(userId);
+        if(!user){
+            req.status(404).json({message:"User not found"});
+        }
+        res.status(200).json(user);
+    }catch(error){
+        res.status(500).json({error: error.message});
+    }
+  }
 
-
-module.exports = {listusers, listcourses, acceptcourse, denycourse, deletecourse};
+module.exports = {listusers, listcourses, acceptcourse, denycourse, deletecourse, getUserById};
