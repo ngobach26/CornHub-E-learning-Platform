@@ -48,7 +48,7 @@ export default function Homepage() {
   return (
     <>
       <CarouselComp />
-      <div className="flex flex-col items-start mx-8 mb-8 space-y-3 mt-14">
+      <div className="flex flex-col items-start mx-12 mb-8 space-y-3 mt-14">
         <h2 className="text-4xl font-bold">A broad selection of courses</h2>
         <h3 className="text-xl text-left">
           Choose from 69,000 online video courses with new additions published
