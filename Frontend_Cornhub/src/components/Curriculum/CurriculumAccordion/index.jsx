@@ -45,16 +45,20 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 
 export default function CurriculumAccordion(props) {
-  const { viewOnly, curriculumItems, handleItemClick, handleLessonDisplay, lessonTypeCheck } = props;
+  const { viewOnly, curriculumItems, handleVideoClick, handleQuizClick, handleLessonDisplay, lessonTypeCheck } = props;
   
   const renderLecture = (index, lectures) => {
     return lectures.map((lecture, index) => {
       const handleClick = (event) => {
         // event.stopPropagation() 
         if(!viewOnly){
-          lessonTypeCheck(lecture.type)
+          lessonTypeCheck(lecture.type);
           handleLessonDisplay(lecture.lessonTitle);
-          handleItemClick(lecture.embedUrl);
+          if (lecture.type==='video'){
+            handleVideoClick(lecture.embedUrl)
+          } else if (lecture.type==='quiz'){
+            handleQuizClick(lecture.data);
+          }
         }
       };  
       return (

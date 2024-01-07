@@ -61,6 +61,18 @@ const LectureForm = ({ onAddLecture, initialLectures }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateLectureTitle()) {
+      if (!classType){
+        alert("Please select type for lesson.");
+        return;
+      }
+      if (classType==='video' && !embedUrl){
+        alert("Embed Url shoul not be empty.");
+        return;
+      }
+      if (classType==='quiz' && quizData.length===0){
+        alert("You do not create any quiz test.");
+        return;
+      }
       onAddLecture(lectureTitle, classType, duration, embedUrl, quizData);
       console.log("add lecture successfully")
       console.log(lectureTitle);

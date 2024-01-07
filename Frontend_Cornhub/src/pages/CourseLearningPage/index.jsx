@@ -11,6 +11,7 @@ import CurriculumAccordion from "../../components/Curriculum/CurriculumAccordion
 import CourseNavbar from "../../components/CourseNavbar";
 import VideoPlayer from "../../components/VideoPlayer";
 import CenterAligned from "../../components/CenterAligned";
+import Quiz from "../../components/Quiz";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useNavigate } from "react-router-dom";
 
@@ -26,6 +27,7 @@ export default function CourseLearningPage() {
   const [embedUrl, setEmbedUrl] = useState(null);
   const [lessonDisplay, setLessonDisplay] = useState();
   const [lessonType, setLessonType] = useState("");
+  const [quizData, setQuizData] = useState([]);
   const toggleSidebar = () => setShowSidebar(!showSidebar);
   const navigate = useNavigate();
 
@@ -49,9 +51,13 @@ export default function CourseLearningPage() {
     fetchCourseDetails();
   }, [id, user?.token]);
 
-  const handleLessonClick = (videoUrl) => {
+  const handleVideoClick = (videoUrl) => {
     setEmbedUrl(videoUrl);
   };
+
+  const handleQuizClick = (data) => {
+    setQuizData(data);
+  }
 
   const handleLessonDisplay = (title) => {
     setLessonDisplay(title);
@@ -70,10 +76,9 @@ export default function CourseLearningPage() {
       );
     }
     if (lessonType === "quiz") {
+      console.log(quizData);
       return (
-        <CenterAligned height="screen">
-          <CircularProgress />
-        </CenterAligned>
+        <Quiz quizData={quizData} />
       );
     }
   };
@@ -115,7 +120,8 @@ export default function CourseLearningPage() {
             )}
             <CurriculumAccordion
               curriculumItems={curriculumItems}
-              handleItemClick={handleLessonClick}
+              handleVideoClick={handleVideoClick}
+              handleQuizClick={handleQuizClick}
               handleLessonDisplay={handleLessonDisplay}
               lessonTypeCheck={lessonTypeCheck}
             />
@@ -136,7 +142,8 @@ export default function CourseLearningPage() {
               {" "}
               <CurriculumAccordion
                 curriculumItems={curriculumItems}
-                handleItemClick={handleLessonClick}
+                handleVideoClick={handleVideoClick}
+                handleQuizClick={handleQuizClick}
                 handleLessonDisplay={handleLessonDisplay}
                 lessonTypeCheck={lessonTypeCheck}
               />
