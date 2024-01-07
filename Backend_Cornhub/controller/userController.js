@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt');
 
 //Profile Route
 const updateprofile = async (req, res) => {
-    const { _id } = req.user;
+  const { _id } = req.user;
   try {
     // Use findByIdAndUpdate to update user's information
     const user = await User.findByIdAndUpdate(_id, req.body, { new: true });
@@ -20,19 +20,19 @@ const updateprofile = async (req, res) => {
 };
 
 const getprofile = async (req, res) => {
-  const {email, firstName, lastName, birthday, currentjob, website, twitter, facebook, linkedin, interests, introduction} = req.user;
-  res.status(200).json({email, firstName, lastName, birthday, currentjob, website, twitter, facebook, linkedin, interests, introduction});
+  const { email, firstName, lastName, birthday, currentjob, website, twitter, facebook, linkedin, interests, introduction } = req.user;
+  res.status(200).json({ email, firstName, lastName, birthday, currentjob, website, twitter, facebook, linkedin, interests, introduction });
 };
 
 const changepassword = async (req, res) => {
-  const { _id, password } = req.user; 
   try {
+    const { password } = req.user; // Assuming this is the hashed password
     const { oldPassword, newPassword } = req.body;
 
     // Check if old password is correct
     const isMatch = await bcrypt.compare(oldPassword, password);
     if (!isMatch) {
-      return res.status(400).json({error: "Old password is incorrect"});
+      return res.status(400).json({ error: "Old password is incorrect" });
     }
 
     // Hash the new password
@@ -41,13 +41,14 @@ const changepassword = async (req, res) => {
 
     // Update the user's password
     req.user.password = hashedPassword;
-    await req.User.save();
+    await req.user.save(); // Corrected case sensitivity
 
-    res.status(200).json({success: 'Password changed successfully'});
+    res.status(200).json({ success: 'Password changed successfully' });
   } catch (error) {
     console.error(error);
-    res.status(500).json({error: 'Internal Server Error'});
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
-module.exports = {getprofile, updateprofile, changepassword};
+
+module.exports = { getprofile, updateprofile, changepassword };
 

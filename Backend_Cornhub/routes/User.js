@@ -5,6 +5,6 @@ const userController =  require("../controller/userController");
 
 router.get("/getprofile", requireAuth, userController.getprofile);
 router.patch("/updateprofile", requireAuth, userController.updateprofile);
-router.post("/changepassword", requireAuth, userController.changepassword);
+router.patch("/changepassword", requireAuth, userController.changepassword);
 
 module.exports = router;
