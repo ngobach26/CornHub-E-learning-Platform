@@ -35,6 +35,7 @@ const courseSchema = Schema(
         },
         price: {
             type: Number,
+            default: 0,
         },
         contents: [Section.schema],
         totalRating: {

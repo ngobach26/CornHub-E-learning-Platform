@@ -6,7 +6,7 @@ const baseUrl = VITE_APP_BASE_URL + "/admin";
 
 const listUsers = async (token) => {
     try{
-        const response = await axios.get(`${baseUrl}/listusers`, {
+        const response = await axios.get(`${baseUrl}/users`, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
@@ -22,7 +22,7 @@ const listUsers = async (token) => {
 
 const listCourses = async (token) => {
     try{
-        const response = await axios.get(`${baseUrl}/listcourses`, {
+        const response = await axios.get(`${baseUrl}/course`, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
@@ -37,24 +37,24 @@ const listCourses = async (token) => {
 };
 
 const acceptCourse = async (token, id) => {
-    try{
-        const response = await axios.patch(`${baseUrl}/acceptcourse/${id}`, {
-            headers:{
-                "Content-Type": "application/json",
+    try {
+        const response = await axios.patch(`${baseUrl}/course/accept/${id}`, {}, {
+            headers: {
                 Authorization: `Bearer ${token}`,
             }
         });
         console.log("Course approved to be published!");
+        console.log("Hello", response.data);
         return response.data;
-    }
-    catch(err){
+    } catch (err) {
         console.log(err);
     }
 };
 
+
 const denyCourse = async (token, id) => {
     try{
-        const response = await axios.patch(`${baseUrl}/denycourse/${id}`, {
+        const response = await axios.patch(`${baseUrl}/course/banned/${id}`, {
             headers:{
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
@@ -67,4 +67,19 @@ const denyCourse = async (token, id) => {
     }
 };
 
-export default { listUsers, listCourses, acceptCourse, denyCourse };
+const deleteCourse = async (token, id) => {
+    try {
+        const response = await axios.delete(`${baseUrl}/course/${id}`, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            }
+        });
+        return response.data;
+    }
+    catch(err){
+        console.log(err);
+    }
+};
+
+export default { listUsers, listCourses, acceptCourse, denyCourse, deleteCourse };

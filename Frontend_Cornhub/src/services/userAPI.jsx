@@ -9,7 +9,7 @@ const getProfile = async (token) => {
     headers: { Authorization: `Bearer ${token}` },
   });
   return response.data;
-};
+}; 
 
 const updateProfile = async (token, profile) => {
   const response = await axios.patch(`${baseUrl}/updateprofile`, profile, {

@@ -22,25 +22,10 @@ const listcourses = async (req, res) => {
     }
 }
 
-const deletecourse = async (req, res) => {
-    try {
-        const id = req.params.id; 
-        const course = await Course.findByIdAndDelete(id);
-
-        if (!course) {
-            return res.status(404).json({ error: "Course not found" });
-        }
-
-        res.status(200).json({ message: "Course successfully deleted", course });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-}
-
 const acceptcourse = async (req, res) => {
     try {
         const id = req.params.id;
-        const course = await Course.findByIdAndUpdate(id, { status: 'accepted' }, { new: true });
+        const course = await Course.findByIdAndUpdate(id, { status: 'published' }, { new: true });
 
         if (!course) {
             return res.status(404).json({ error: "Course not found" });
@@ -55,7 +40,7 @@ const acceptcourse = async (req, res) => {
 const denycourse = async (req, res) => {
     try {
         const id = req.params.id;
-        const course = await Course.findByIdAndUpdate(id, { status: 'denied' }, { new: true });
+        const course = await Course.findByIdAndUpdate(id, { status: 'banned' }, { new: true });
 
         if (!course) {
             return res.status(404).json({ error: "Course not found" });
@@ -67,40 +52,31 @@ const denycourse = async (req, res) => {
     }
 }
 
-const acceptupdatecourse = async (req, res) => {
+const deletecourse = async (req, res) => {
     try {
-        const id = req.params.id; 
-        const course = await Course.findOne({ _id: id, status: 'waiting_ac' });
+        const id = req.params.id; // the ID of the course to delete
+
+        // First, find the course by ID without deleting it
+        const course = await Course.findById(id);
 
         if (!course) {
-            return res.status(404).json({ error: "Course not found or not awaiting approval" });
+            return res.status(404).json({ error: "Course not found" });
         }
 
-        course.status = 'published';
-        await course.save();
+        // Check if the status of the course is 'waiting_del'
+        if (course.status !== 'waiting_del') {
+            return res.status(400).json({ error: "Course cannot be deleted, incorrect status" });
+        }
 
-        res.status(200).json({ message: "Course update accepted", course });
+        // If the status is 'waiting_del', proceed to delete
+        await Course.findByIdAndDelete(id);
+
+        res.status(200).json({ message: "Course successfully deleted" });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-}
+};
 
-const denyupdatecourse = async (req, res) => {
-    try {
-        const id = req.params.id; 
-        const course = await Course.findOne({ _id: id, status: 'waiting_ac' });
 
-        if (!course) {
-            return res.status(404).json({ error: "Course not found or not awaiting approval" });
-        }
 
-        course.status = 'banned';
-        await course.save();
-
-        res.status(200).json({ message: "Course update denied", course });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-}
-
-module.exports = {listusers, listcourses, deletecourse, acceptcourse, denycourse, acceptupdatecourse, denyupdatecourse};
+module.exports = {listusers, listcourses, acceptcourse, denycourse, deletecourse};
