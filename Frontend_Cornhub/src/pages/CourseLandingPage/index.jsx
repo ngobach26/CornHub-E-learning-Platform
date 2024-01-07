@@ -13,8 +13,8 @@ import VideoPlayer from "../../components/VideoPlayer";
 import CourseCTA from "../../components/CourseCTA";
 
 import { useAuthContext } from "../../hooks/useAuthContext";
-import api from "../../services/searchAPI"
-import cartApi from "../../services/cartAPI"
+import api from "../../services/searchAPI";
+import cartApi from "../../services/cartAPI";
 
 const exampleCourse = {
   courseurlPreview:
@@ -45,23 +45,24 @@ export default function CourseLandingPage() {
   const [cart, setCart] = useState([]);
 
   const isPurchased = (id) => {
-    for (let purchasedCourse of purchasedCourses){
-      if (purchasedCourse.courseId && purchasedCourse.courseId._id===id) return true;
+    for (let purchasedCourse of purchasedCourses) {
+      if (purchasedCourse.courseId && purchasedCourse.courseId._id === id)
+        return true;
     }
     return false;
-  }
+  };
 
   const isInCart = (id) => {
-    for (let inCart of cart){
-      if (inCart._id===id) return true;
+    for (let inCart of cart) {
+      if (inCart._id === id) return true;
     }
     return false;
-  }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log(user)
+        console.log(user);
         const courseData = await api.getCourseById(id);
         setCourseDetail({
           courseTitle: courseData.courseTitle || "",
@@ -71,7 +72,9 @@ export default function CourseLandingPage() {
           category: courseData.category || "",
           subcategory: courseData.subcategory || "",
           demoVideo: courseData.demoVideo || "",
-          author: `${courseData.author?.firstName} ${courseData.author?.lastName}` || "",
+          author:
+            `${courseData.author?.firstName} ${courseData.author?.lastName}` ||
+            "",
           details: {
             outcomes:
               courseData.outcomes.length > 0
@@ -88,8 +91,10 @@ export default function CourseLandingPage() {
           },
         });
         setCurriculumItems(courseData.contents);
-        if (user){
-          const {purchasedCourses} = await api.getPurchasedCourses(user.token);
+        if (user) {
+          const { purchasedCourses } = await api.getPurchasedCourses(
+            user.token
+          );
           setPurchasedCourses(purchasedCourses);
           const getCart = await cartApi.viewCart(user.token);
           setCart(getCart);
@@ -111,6 +116,15 @@ export default function CourseLandingPage() {
               <NavigateNextIcon fontSize="small" className="text-sm" />
               {courseDetail?.subcategory}
             </p>
+            <div className="block lg:hidden">
+              <VideoPlayer
+                url={
+                  courseDetail.demoVideo
+                    ? courseDetail.demoVideo
+                    : "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
+                }
+              />
+            </div>
             <div className="flex flex-col gap-2 my-5 text-left">
               <h1 className="text-3xl font-medium">
                 {courseDetail?.courseTitle}{" "}
@@ -144,10 +158,12 @@ export default function CourseLandingPage() {
               : "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
           }
         />
-        {/* video can be added later */}
         <div className="px-6 py-8 bg-white shadow-md">
-          {/* <CourseCTA course={course} /> */}
-          <CourseCTA courseID={id} isPurchased={isPurchased(id)} isInCart={isInCart(id)} />
+          <CourseCTA
+            courseID={id}
+            isPurchased={isPurchased(id)}
+            isInCart={isInCart(id)}
+          />
           <div>
             <p className="mt-8 mb-3 font-bold text-left">
               This course includes:
