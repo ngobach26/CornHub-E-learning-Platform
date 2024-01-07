@@ -25,7 +25,7 @@ export default function Navbar() {
           <div className="text-3xl font-semibold hover:cursor-pointer">
             <Logo variant="header" />
           </div>
-          <div className="items-center hidden w-1/2 md:flex">
+          <div className="items-center hidden w-1/3 md:flex">
             <Submenu />
             <SearchBar />
           </div>
@@ -34,6 +34,16 @@ export default function Navbar() {
             {user ? (
               <>
                 <div className="hidden gap-8 md:flex">
+                  {
+                    user.isAdmin && (
+                      <Link
+                        to="/admin"
+                        className="hidden text-base lg:block hover:text-gray-500 hover:cursor-pointer"
+                      >
+                        Admin
+                      </Link>
+                    )
+                  }
                   <Link
                     to="/instructor/courses"
                     className="hidden text-base lg:block hover:text-gray-500 hover:cursor-pointer"

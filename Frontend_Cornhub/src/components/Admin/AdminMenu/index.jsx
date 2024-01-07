@@ -30,7 +30,7 @@ const AdminMenu = () => {
                     <img src="/settings.jpg" className="w-10 rounded-full"/>
                     <span className="">Settings</span>
                 </Link>
-                <Link className="flex items-center gap-2.5 p-2 rounded-md">
+                <Link to="/logout" className="flex items-center gap-2.5 p-2 rounded-md">
                     <img src="/logout.jpg" className="w-10 rounded-full"/>
                     <span className="">Logout</span>
                 </Link>
