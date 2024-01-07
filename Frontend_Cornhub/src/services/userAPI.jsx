@@ -21,8 +21,11 @@ const updateProfile = async (token, profile) => {
 const changePassword = async (token, oldPassword, newPassword) => {
   try{
     const response = await axios.patch(`${baseUrl}/changepassword`, 
-      {oldPassword, newPassword},
-      {headers: { Authorization: `Bearer ${token}`}}
+      JSON.stringify({oldPassword, newPassword}),
+      {headers: { 
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      }}
     );
     return response.data;
   }

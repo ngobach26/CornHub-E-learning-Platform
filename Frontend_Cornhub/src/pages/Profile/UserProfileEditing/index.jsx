@@ -4,10 +4,13 @@ import Navbar from "../../../components/Navbar";
 import { Avatar, stepContentClasses } from "@mui/material";
 import { useAuthContext } from "../../../hooks/useAuthContext";
 import api from "../../../services/userAPI";
+import { Snackbar } from "@mui/material";
 
 export default function UserProfileEditing() {
   const { user, dispatch } = useAuthContext();
   const editableDivRef = useRef();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   let [formData, setFormData] = useState({ 
     firstName: user.firstName, lastName: user.lastName, currentjob: user.currentjob, 
@@ -38,6 +41,10 @@ export default function UserProfileEditing() {
     });
   };
 
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
   const handleSaveClick = async () => {
     try{
       const updatedUser = await api.updateProfile(user.token, formData);
@@ -46,10 +53,11 @@ export default function UserProfileEditing() {
       // UpdateData(updatedUser); 
       dispatch({ type: "UPDATE_PROFILE", payload: updatedUser });
       
-      console.log('Profile updated successfully:', updatedUser);
-      console.log('New introduction:', formData.introduction);
+      setSnackbarMessage("All changes saved successfully.");
+      setSnackbarOpen(true);
     } catch(error){
-      console.error('Error updating profile:', error);
+      setSnackbarMessage("Error updating profile.");
+      setSnackbarOpen(true);
     }
   };
   
@@ -245,6 +253,13 @@ export default function UserProfileEditing() {
           </div>
         </div>
       </div>
+      <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={snackbarOpen}
+          autoHideDuration={6000}
+          onClose={handleSnackbarClose}
+          message={snackbarMessage}
+      />
       <Footer />
     </>
   );

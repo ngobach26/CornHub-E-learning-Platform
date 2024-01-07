@@ -33,9 +33,12 @@ export default function ViewPublicProfile() {
         {" "}
         {/* Sidebar and Form Container */}
         <div className="flex-1">
-          <div className="pt-5 pb-10 text-left text-white bg-black h-30">
+          <div className="flex flex-col pt-5 pb-5 text-left text-white bg-black h-30 ">
             <span className="ml-20 text-2xl">
               {detail.firstName} {detail.lastName}
+            </span>
+            <span className="ml-32 italic text-md ">
+              {detail.currentjob} 
             </span>
             <br />
           </div>

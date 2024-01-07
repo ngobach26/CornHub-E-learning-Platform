@@ -41,11 +41,11 @@ const changepassword = async (req, res) => {
 
     // Update the user's password
     req.user.password = hashedPassword;
-    await req.User.save();
+    await req.user.save();
 
     res.status(200).json({success: 'Password changed successfully'});
   } catch (error) {
-    console.error(error);
+    console.error("hello",error);
     res.status(500).json({error: 'Internal Server Error'});
   }
 };
