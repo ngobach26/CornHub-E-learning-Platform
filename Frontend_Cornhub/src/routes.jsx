@@ -97,7 +97,7 @@ export default function Router() {
         />
         <Route path="/course/:id" element={<CourseLandingPage />}/>
       </Route>
-      <Route path="/admin" element={<AdminLayout />}>
+      <Route path="/admin" element={!user ? <Login /> : (!user.isAdmin ? <Navigate to="/" /> : <AdminLayout />)}>
         <Route path="home" element={<AdminHome /> } />
         <Route path="users" element={<AdminUsers />} />
         <Route path="courses" element={<AdminCourses />} />

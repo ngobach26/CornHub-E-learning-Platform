@@ -4,7 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import CourseInfoCard from "../CourseInfoCard";
 import ShimmerBlock from "../ShimmerBlock";
 
-const CourseCarousel = ({ publishedCourses, purchasedCourses }) => {
+const CourseCarousel = ({ publishedCourses, purchasedCourses, cart }) => {
   // const { data } = props;
   const categories = ["Information Technology", "Business", "Finance and accouting", "Editing and design", "Music", "Fitness", "Self development"]
   const coursesArray = publishedCourses;
@@ -16,11 +16,18 @@ const CourseCarousel = ({ publishedCourses, purchasedCourses }) => {
       }
       return false;
     }
+
+    const isInCart = (id) => {
+      for (let inCart of cart){
+        if (inCart._id===id) return true;
+      }
+      return false;
+    }
     return (
       <>
         {filteredCourses.map(course => (
           <SwiperSlide key={course._id}>
-            <CourseInfoCard course={course} isPurchased={isPurchased(course._id)}/>
+            <CourseInfoCard course={course} isPurchased={isPurchased(course._id)} isInCart={isInCart(course._id)}/>
           </SwiperSlide>
         ))}
       </>

@@ -3,7 +3,9 @@ import React, { useEffect, useState } from "react";
 import CartCard from "../../components/CartCard";
 import Button from "../../components/Button";
 import CenterAligned from "../../components/CenterAligned";
-import { viewCart, checkout } from "../../services/cartAPI";
+import api from "../../services/cartAPI";
+import { useAuthContext } from "../../hooks/useAuthContext";
+import { Snackbar } from "@mui/material";
 
 const exampleCourses = [
   {
@@ -31,13 +33,16 @@ const exampleCourses = [
 
 export default function Cart() {
   const [cartItems, setCartItems] = useState([]);
+  const { user } = useAuthContext();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   useEffect(() => {
-    viewCart().then((cart) => {
+    api.viewCart(user.token).then((cart) => {
       console.log(cart);
       setCartItems(cart);
     });
-  }, [viewCart]);
+  }, [user.token]);
 
   const handleRemoveCartItem = (courseId) => {
     console.log(courseId, cartItems);
@@ -50,18 +55,24 @@ export default function Cart() {
 
   const handleCheckout = async () =>{
     try{
-      await checkout();
+      await api.checkout(user.token);
+      setSnackbarMessage("Successfully register!");
+      setSnackbarOpen(true);
       setCartItems([]);
-      
     }
     catch (error){
-      console.log(error)
+      console.log("No courses: ", error)
+      setSnackbarMessage("No courses to checkout");
+      setSnackbarOpen(true);
     }
+  };
 
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
   };
 
   const renderPurchaseValueAndCTA = () => {
-    const total = cartItems.reduce(
+    const total = cartItems?.reduce(
       (acc, course) => acc + parseFloat(course.price),
       0
     );
@@ -98,9 +109,19 @@ export default function Cart() {
   };
 
   return (
-    <div className="max-w-[1300px] px-10 mx-auto my-10 xl:px-0">
-      <h1 className="mb-5 text-2xl font-semibold text-left">Shopping Cart</h1>
-      {renderCart()}
-    </div>
+    <>
+      <div className="max-w-[1300px] px-10 mx-auto my-10 xl:px-0">
+        <h1 className="mb-5 text-2xl font-semibold text-left">Shopping Cart</h1>
+        {renderCart()}
+      </div>
+      <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={snackbarOpen}
+          autoHideDuration={6000}
+          onClose={handleSnackbarClose}
+          message={snackbarMessage}
+      />
+    </>
+    
   );
 }

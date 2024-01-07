@@ -5,7 +5,7 @@ const Lesson = require("../models/lesson");
 
 const getCourses = async (req, res) => {
     try {
-        const PER_PAGE = 5
+        const PER_PAGE = 10
         const page = Number(req.query.page) || 1
 
         //filter
@@ -33,7 +33,7 @@ const getCourses = async (req, res) => {
         if (req.query.maxPrice){
             maxPrice = Number(req.query.maxPrice)
         }
-        query.price = {$gte: minPrice, $lte: maxPrice}
+        //query.price = {$gte: minPrice, $lte: maxPrice}
         //minRatings
         if (req.query.ratings){
             query.totalRating = {$gte: Number(ratings)}

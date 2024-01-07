@@ -65,18 +65,23 @@ export default function CourseLandingPage() {
           demoVideo: courseData.demoVideo || "",
           author: `${courseData.author?.firstName} ${courseData.author?.lastName}` || "",
           details: {
-            outcomes: JSON.parse(courseData.outcomes) || [{ points: "" }],
-            prerequisites: JSON.parse(courseData.prerequisites) || [
-              { points: "" },
-            ],
-            target_audience: JSON.parse(courseData.target_audience) || [
-              { points: "" },
-            ],
+            outcomes:
+              courseData.outcomes.length > 0
+                ? JSON.parse(courseData.outcomes)
+                : [{ points: "" }],
+            prerequisites:
+              courseData.prerequisites.length > 0
+                ? JSON.parse(courseData.prerequisites)
+                : [{ points: "" }],
+            target_audience:
+              courseData.target_audience.length > 0
+                ? JSON.parse(courseData.target_audience)
+                : [{ points: "" }],
           },
         });
         setCurriculumItems(courseData.contents);
         if (user){
-          const {purchasedCourses} = await searchApi.getPurchasedCourses(user.token);
+          const {purchasedCourses} = await api.getPurchasedCourses(user.token);
           setPurchasedCourses(purchasedCourses);
         }
       } catch (error) {

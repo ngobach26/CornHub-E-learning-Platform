@@ -1,12 +1,14 @@
 import React from "react";
 import CartImg from "../../assets/image/CartImg";
 import { Link } from "react-router-dom";
-import { removeFromCart } from "../../services/cartAPI";
+import api from "../../services/cartAPI";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 const CartCard = ({ course, onRemove }) => {
+  const { user } = useAuthContext();
   const removeCourse = async () => {
     const courseId = course._id;
-    await removeFromCart(courseId);
+    await api.removeFromCart(user.token, courseId);
     onRemove?.(courseId);
   };
 

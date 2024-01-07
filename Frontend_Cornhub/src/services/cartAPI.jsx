@@ -2,67 +2,63 @@ import axios from "axios";
 
 const VITE_APP_BASE_URL = "http://localhost:3000/api";
 
-export const cartApi = axios.create({
-  baseURL: VITE_APP_BASE_URL + "/cart",
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
+const baseUrl = VITE_APP_BASE_URL + "/cart";
 
-cartApi.interceptors.request.use(
-  (config) => {
-    try {
-      const user = JSON.parse(localStorage.getItem("user"));
-      const { token } = user;
-
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-    } catch (e) {
-      console.log(e);
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
+const addToCart = async (token, id) => {
+  try {
+    const response = await axios.post(`${baseUrl}/add/${id}`, {}, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (err) {
+    console.log(err);
   }
-);
-
-export const addToCart = async (courseID) => {
-  const res = await cartApi({
-    method: "POST",
-    url: `add/${courseID}`,
-  });
-
-  console.log(res.message);
-  return res.message;
 };
 
-export const viewCart = async () => {
-  const res = await cartApi({
-    method: "GET",
-    url: "viewcart",
-  });
-
-  return res.data.cart;
+const viewCart = async (token) => {
+  try {
+    const response = await axios.get(`${baseUrl}/viewcart`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data.cart;
+  } catch (err) {
+    console.log(err);
+  }
 };
 
-export const removeFromCart = async (courseID) => {
-  const res = await cartApi({
-    method: "POST",
-    url: `remove/${courseID}`,
-  });
-
-  console.log(res.message);
-  return res.message;
+const removeFromCart = async (token, id) => {
+  try {
+    const response = await axios.post(`${baseUrl}/remove/${id}`, {}, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data.cart;
+  } catch (err) {
+    console.log(err);
+  }
 };
 
-export const checkout = async () => {
-  const res = await cartApi({
-    method: "POST",
-    url: "checkout",
-  });
+const checkout = async (token) => {
+    const response = await axios.post(`${baseUrl}/checkout`, {}, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data.order;
+};
 
-  console.log(res.message)
-  return res.message;
+export default {
+  addToCart,
+  viewCart,
+  removeFromCart,
+  checkout,
 };
