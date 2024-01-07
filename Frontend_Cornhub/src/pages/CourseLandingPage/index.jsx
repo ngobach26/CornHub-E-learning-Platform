@@ -14,6 +14,7 @@ import CourseCTA from "../../components/CourseCTA";
 
 import { useAuthContext } from "../../hooks/useAuthContext";
 import api from "../../services/searchAPI"
+import cartApi from "../../services/cartAPI"
 
 const exampleCourse = {
   courseurlPreview:
@@ -41,6 +42,7 @@ export default function CourseLandingPage() {
   });
   const [curriculumItems, setCurriculumItems] = useState([]);
   const [purchasedCourses, setPurchasedCourses] = useState([]);
+  const [cart, setCart] = useState([]);
 
   const isPurchased = (id) => {
     for (let purchasedCourse of purchasedCourses){
@@ -49,6 +51,12 @@ export default function CourseLandingPage() {
     return false;
   }
 
+  const isInCart = (id) => {
+    for (let inCart of cart){
+      if (inCart._id===id) return true;
+    }
+    return false;
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -83,6 +91,8 @@ export default function CourseLandingPage() {
         if (user){
           const {purchasedCourses} = await api.getPurchasedCourses(user.token);
           setPurchasedCourses(purchasedCourses);
+          const getCart = await cartApi.viewCart(user.token);
+          setCart(getCart);
         }
       } catch (error) {
         console.error("Error fetching course details:", error);
@@ -137,7 +147,7 @@ export default function CourseLandingPage() {
         {/* video can be added later */}
         <div className="px-6 py-8 bg-white shadow-md">
           {/* <CourseCTA course={course} /> */}
-          <CourseCTA courseID={id} isPurchased={isPurchased(id)}/>
+          <CourseCTA courseID={id} isPurchased={isPurchased(id)} isInCart={isInCart(id)} />
           <div>
             <p className="mt-8 mb-3 font-bold text-left">
               This course includes:

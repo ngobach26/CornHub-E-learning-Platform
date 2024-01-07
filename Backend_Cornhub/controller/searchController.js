@@ -5,7 +5,7 @@ const Lesson = require("../models/lesson");
 
 const getCourses = async (req, res) => {
     try {
-        const PER_PAGE = 10
+        const PER_PAGE = 100
         const page = Number(req.query.page) || 1
 
         //filter

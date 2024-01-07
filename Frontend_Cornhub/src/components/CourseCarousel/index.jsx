@@ -1,13 +1,34 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
+import Carousel from "react-multi-carousel"
+import 'react-multi-carousel/lib/styles.css'
 
 import CourseInfoCard from "../CourseInfoCard";
-import ShimmerBlock from "../ShimmerBlock";
 
 const CourseCarousel = ({ publishedCourses, purchasedCourses, cart }) => {
   // const { data } = props;
   const categories = ["Information Technology", "Business", "Finance and accouting", "Editing and design", "Music", "Fitness", "Self development"]
   const coursesArray = publishedCourses;
+
+  const responsive = {
+    superLargeDesktop: {
+      // the naming can be any, depends on you.
+      breakpoint: { max: 4000, min: 3000 },
+      items: 6
+    },
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 4
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 2
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1
+    }
+  };
 
   const renderSlides = (filteredCourses) => {    
     const isPurchased = (id) => {
@@ -24,13 +45,17 @@ const CourseCarousel = ({ publishedCourses, purchasedCourses, cart }) => {
       return false;
     }
     return (
-      <>
-        {filteredCourses.map(course => (
+      <Carousel responsive={responsive} showDots={true}>
+        {filteredCourses.map((course) => (
           <SwiperSlide key={course._id}>
-            <CourseInfoCard course={course} isPurchased={isPurchased(course._id)} isInCart={isInCart(course._id)}/>
+            <CourseInfoCard 
+              course={course} 
+              isPurchased={isPurchased(course._id)} 
+              isInCart={isInCart(course._id)}
+            />
           </SwiperSlide>
         ))}
-      </>
+      </Carousel>
     );
   };
 
@@ -47,11 +72,9 @@ const CourseCarousel = ({ publishedCourses, purchasedCourses, cart }) => {
         {categories.map(category => {
           const filteredCourses = coursesArray.filter(course => course.category == category);
           return (
-            <div className="my-8">
-              <div className="mb-3">{renderTitle(category)}</div>
-              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 sm:gap-1">
-                {renderSlides(filteredCourses)}
-              </div>
+            <div className="my-8" key={category}>
+              <div className="mb-3">{renderTitle(category)}</div>              
+              {renderSlides(filteredCourses)}              
             </div>
           )
         })}
