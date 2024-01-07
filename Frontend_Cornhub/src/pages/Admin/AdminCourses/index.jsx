@@ -165,6 +165,13 @@ const AdminCourses = () => {
               </button>
             </div>           
           )}
+          {(params.row.status === 'published') &&(
+            <div>
+              <button onClick={() => handleBan(params.row._id)}>
+                <img src="/reject.png" className="object-cover w-5 h-5 m-1" />
+              </button>
+            </div> 
+          )}
         </div>
       );
     },
