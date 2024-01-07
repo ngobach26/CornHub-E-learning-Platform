@@ -7,7 +7,7 @@ import { BsStar, BsStarHalf, BsStarFill } from "react-icons/bs";
 const CourseInfoCard = (props) => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { course, isPurchased, isInCart } = props;
+  const { course, isPurchased, isInCart, belongToUser } = props;
   const baseURL = "http://localhost:3000/uploads/";
 
   const handleClick = () => {
@@ -36,7 +36,7 @@ const CourseInfoCard = (props) => {
   };
 
   return (
-    <CourseInfoPopover course={course} isPurchased={isPurchased} isInCart={isInCart}>
+    <CourseInfoPopover course={course} isPurchased={isPurchased} isInCart={isInCart} belongToUser={belongToUser}>
       <div
         onClick={handleClick}
         className="cursor-pointer bg-white rounded-lg shadow-lg p-4 transition duration-300 hover:shadow-2xl"

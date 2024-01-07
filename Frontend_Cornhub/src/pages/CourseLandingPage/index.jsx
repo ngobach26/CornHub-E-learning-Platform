@@ -15,6 +15,7 @@ import CourseCTA from "../../components/CourseCTA";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import api from "../../services/searchAPI";
 import cartApi from "../../services/cartAPI";
+import instructorAPI from "../../services/instructorAPI";
 
 const exampleCourse = {
   courseurlPreview:
@@ -43,6 +44,8 @@ export default function CourseLandingPage() {
   const [curriculumItems, setCurriculumItems] = useState([]);
   const [purchasedCourses, setPurchasedCourses] = useState([]);
   const [cart, setCart] = useState([]);
+  const [createdCourses, setCreatedCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const isPurchased = (id) => {
     for (let purchasedCourse of purchasedCourses) {
@@ -58,6 +61,8 @@ export default function CourseLandingPage() {
     }
     return false;
   };
+
+  const belongToUser = (id) => createdCourses.some(createdCourse => createdCourse._id===id);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -92,15 +97,17 @@ export default function CourseLandingPage() {
         });
         setCurriculumItems(courseData.contents);
         if (user) {
-          const { purchasedCourses } = await api.getPurchasedCourses(
-            user.token
-          );
+          const { purchasedCourses } = await api.getPurchasedCourses(user.token);
           setPurchasedCourses(purchasedCourses);
           const getCart = await cartApi.viewCart(user.token);
           setCart(getCart);
+          const getCreatedCourses = await instructorAPI.getPublishedCourse(user.token);
+          setCreatedCourses(getCreatedCourses);
         }
       } catch (error) {
         console.error("Error fetching course details:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
@@ -159,11 +166,12 @@ export default function CourseLandingPage() {
           }
         />
         <div className="px-6 py-8 bg-white shadow-md">
-          <CourseCTA
+          {!loading && <CourseCTA
             courseID={id}
             isPurchased={isPurchased(id)}
             isInCart={isInCart(id)}
-          />
+            belongToUser={belongToUser(id)}
+          />}
           <div>
             <p className="mt-8 mb-3 font-bold text-left">
               This course includes:
