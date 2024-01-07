@@ -119,5 +119,59 @@ const getCourseById = async (req, res) => {
         });
     }
 };
+const updateRating = async (req, res) => {
+  try {
+      const courseId = req.params.id; // ID of the course to update
+      const userRating = req.body.rating; // New rating provided by the user
 
-module.exports = { getCourses, getPurchasedCourses, getCourseById }
+      // Find the course and user by ID
+      const course = await Course.findById(courseId);
+      const user = req.user;
+
+      if (!course || !user) {
+          return res.status(404).send({ message: 'Course or User not found' });
+      }
+
+      // Check if user is enrolled in the course
+      const isEnrolledInCourse = course.studentsEnrolled.includes(user._id);
+
+      // Check if the course is in user's joinedCourses
+      const hasJoinedCourse = user.joinedCourses.some(joinedCourse => joinedCourse.courseId.equals(courseId));
+
+      if (!isEnrolledInCourse || !hasJoinedCourse) {
+          return res.status(403).send({ message: 'User is not enrolled in this course' });
+      }
+
+      // Update course's total rating and number of ratings
+      const oldRating = user.joinedCourses.find(rc => rc.courseId.equals(courseId))?.rating;
+      if (oldRating !== undefined) {
+          // Adjust total rating if user has already rated this course
+          course.totalRating = ((course.totalRating * course.numRating) - oldRating + userRating) / course.numRating;
+      } else {
+          // Add new rating
+          course.totalRating = ((course.totalRating * course.numRating) + userRating) / (course.numRating + 1);
+          course.numRating += 1;
+      }
+      await course.save();
+
+      // Update or add the course rating in user's joinedCourses
+      const ratedCourseIndex = user.joinedCourses.findIndex(item => item.courseId.equals(courseId));
+      if (ratedCourseIndex > -1) {
+          // Update existing rating
+          user.joinedCourses[ratedCourseIndex].rating = userRating;
+      } else {
+          // Add new rating
+          user.joinedCourses.push({ courseId, rating: userRating });
+      }
+      await user.save();
+
+      // Send a success response
+      res.status(200).send({ message: 'Course rating updated successfully', course: course });
+  } catch (error) {
+      // Handle potential errors
+      res.status(500).send({ message: 'Error updating course rating', error });
+  }
+};
+
+
+module.exports = { getCourses, getPurchasedCourses, getCourseById,updateRating }
