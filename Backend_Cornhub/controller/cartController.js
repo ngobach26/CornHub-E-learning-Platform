@@ -90,38 +90,47 @@ const viewCart = async (req, res) => {
 
 const checkout = async (req, res) => {
   try {
-    const user = req.user;
-    if (!user.cart.length) {
-      return res.status(400).json({ message: "No items in cart to checkout" });
-    }
-
-    let coursesCheckout = [];
-
-    // Add cart items to joinedCourses
-    user.cart.forEach((courseId) => {
-      // Check if the course is already in joinedCourses
-      const isCourseJoined = user.joinedCourses.some((joinedCourse) =>
-        joinedCourse.courseId.equals(courseId)
-      );
-      if (!isCourseJoined) {
-        user.joinedCourses.push({ courseId });
-        coursesCheckout.push({ courseId });
+      const user = req.user;
+      if (!user.cart.length) {
+          return res.status(400).json({ message: "No items in cart to checkout" });
       }
-    });
-    const order = {
-      userId: user._id,
-      courses: coursesCheckout,
-      date: new Date(),
-    };
+      let coursesCheckout = [];
 
-    user.cart = [];
-    await user.save();
+      for (const courseId of user.cart) {
+          const course = await Course.findById(courseId);
 
-    // Respond with order details
-    res.status(200).json({ message: "Checkout successful", order });
+          // Check if course exists
+          if (!course) {
+              continue; // Skip if course is not found
+          }
+
+          // Check if the course is already in joinedCourses
+          const isCourseJoined = user.joinedCourses.some(joinedCourse =>
+              joinedCourse.courseId.equals(courseId)
+          );
+
+          if (!isCourseJoined) {
+              // Add to user's joinedCourses
+              user.joinedCourses.push({ courseId });
+              coursesCheckout.push(course);
+
+              // Add user to course's studentsEnrolled if not already enrolled
+              if (!course.studentsEnrolled.includes(user._id)) {
+                  course.studentsEnrolled.push(user._id);
+                  await course.save();
+              }
+          }
+      }
+
+      user.cart = [];
+      await user.save();
+
+      // Respond with order details
+      res.status(200).json({ message: "Checkout successful", courses: coursesCheckout });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+      res.status(500).json({ message: error.message });
   }
 };
+
 
 module.exports = { addToCart, removeFromCart, viewCart, checkout };
