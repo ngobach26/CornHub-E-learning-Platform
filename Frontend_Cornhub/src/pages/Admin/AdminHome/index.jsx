@@ -4,7 +4,7 @@ const AdminHome = () => {
     return (
         <>
             <div className="">
-                <h1 className="mt-10 ml-10 font-mono text-3xl">WELCOME TO CORNHUB ADMIN PANEL!</h1>
+                <h1 className="mt-10 ml-10 text-3xl font-semibold">WELCOME TO CORNHUB ADMIN PANEL!</h1>
             </div>
         </>
     );
