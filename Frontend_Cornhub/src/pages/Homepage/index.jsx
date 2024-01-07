@@ -55,7 +55,7 @@ export default function Homepage() {
           every month
         </h3>
       </div>
-      <div className="px-12 my-10 xl:px-0">
+      <div className="px-12 my-10 ml-10 xl:px-0">
         {/* <CourseCarousel /> */}
         <CourseCarousel publishedCourses={publishedCourses} purchasedCourses={purchasedCourses} cart={cart}/>
       </div>
