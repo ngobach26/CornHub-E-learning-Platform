@@ -20,7 +20,7 @@ const updateProfile = async (token, profile) => {
 
 const changePassword = async (token, oldPassword, newPassword) => {
   try{
-    const response = await axios.post(`${baseUrl}/changepassword`, 
+    const response = await axios.patch(`${baseUrl}/changepassword`, 
       {oldPassword, newPassword},
       {headers: { Authorization: `Bearer ${token}`}}
     );

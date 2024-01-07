@@ -28,18 +28,12 @@ const columns = [
       field: "email",
       type: "string",
       headerName: "Email",
-      width: 100,
-    },
-    {
-      field: "password",
-      type: "string",
-      headerName: "Password",
-      width: 100,
+      width: 150,
     },
     {
       field: "currentjob",
       headerName: "Current Position",
-      width: 100,
+      width: 150,
       type: "string",
     },
     {

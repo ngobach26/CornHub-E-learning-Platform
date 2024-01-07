@@ -7,8 +7,13 @@ import api from "../../../services/userAPI";
 
 export default function AccountSecurity() {
   const { user } = useAuthContext();
+  let [ oldPassword, setOldPassword ] = useState('');
   let [ newPassword, setNewPassword ] = useState('');
   let [ retypePassword, setRetypePassword ] = useState('');
+
+  const handleOldPassword = (event) => {
+    setOldPassword(event.target.value);
+  };
 
   const handleNewPassword = (event) => {
     setNewPassword(event.target.value);
@@ -20,10 +25,13 @@ export default function AccountSecurity() {
 
   const handleChangeClick = async () => {// 
     try {
+      if(oldPassword === newPassword && oldPassword !== user.password) {
+        console.error();
+      }
       if(newPassword === retypePassword) {
-        await api.changePassword(user.token, user.password, newPassword);
-        console.log("Password changed successfully");
-        setOldPassword(newPassword);
+        await api.changePassword(user.token, oldPassword, newPassword);
+        console.log("Password changed successfully", newPassword);
+        setOldPassword(user.password);
       }
     }
     catch(err){
@@ -146,6 +154,11 @@ export default function AccountSecurity() {
                     Modify password:
                   </span>
                   <form action="" className="p-5">
+                    <input
+                      className="items-center w-full h-10 px-3 mx-2 my-2 border border-black"
+                      type="password"
+                      placeholder="Enter old password" onChange={handleOldPassword} name='old'
+                    />
                     <input
                       className="items-center w-full h-10 px-3 mx-2 my-2 border border-black"
                       type="password"
