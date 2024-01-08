@@ -5,19 +5,21 @@ import Footer from "../../components/Footer";
 import CourseCarousel from "../../components/CourseCarousel";
 
 import { useAuthContext } from "../../hooks/useAuthContext";
-import api from "../../services/searchAPI"
-import cartApi from "../../services/cartAPI"
+import api from "../../services/searchAPI";
+import cartApi from "../../services/cartAPI";
 import instructorAPI from "../../services/instructorAPI";
+import CenterAligned from "../../components/CenterAligned";
+import { CircularProgress } from "@mui/material";
 
 export default function Homepage() {
   const { applemusic, amd, mmm, github, nintendo, samsung } = Brand;
   const brands = [
-    { icon: applemusic, },
-    { icon: amd, },
-    { icon: mmm, },
-    { icon: github, },
-    { icon: nintendo, },
-    { icon: samsung, },
+    { icon: applemusic },
+    { icon: amd },
+    { icon: mmm },
+    { icon: github },
+    { icon: nintendo },
+    { icon: samsung },
   ];
   const { user } = useAuthContext();
   const [publishedCourses, setPublishedCourses] = useState([]);
@@ -29,19 +31,23 @@ export default function Homepage() {
   useEffect(() => {
     const fetchPublishedCourses = async () => {
       try {
-        const {courses} = await api.getCourses();
+        const { courses } = await api.getCourses();
         setPublishedCourses(courses);
-        if (user){
-          const {purchasedCourses} = await api.getPurchasedCourses(user.token);
+        if (user) {
+          const { purchasedCourses } = await api.getPurchasedCourses(
+            user.token
+          );
           setPurchasedCourses(purchasedCourses);
           const getCart = await cartApi.viewCart(user.token);
           setCart(getCart);
-          const getCreatedCourses = await instructorAPI.getPublishedCourse(user.token);
+          const getCreatedCourses = await instructorAPI.getPublishedCourse(
+            user.token
+          );
           setCreatedCourses(getCreatedCourses);
           console.log("Created courses: ", getCreatedCourses);
         }
-        console.log(courses)
-        console.log(purchasedCourses)
+        console.log(courses);
+        console.log(purchasedCourses);
       } catch (error) {
         console.error("Error fetching published courses:", error);
       } finally {
@@ -52,7 +58,11 @@ export default function Homepage() {
     fetchPublishedCourses();
   }, []);
 
-  return isLoading ? <h1>Loading...</h1> : (
+  return isLoading ? (
+    <CenterAligned height="screen">
+      <CircularProgress />
+    </CenterAligned>
+  ) : (
     <>
       <CarouselComp />
       <div className="flex flex-col items-start mx-12 mb-8 space-y-3 mt-14">
@@ -64,7 +74,12 @@ export default function Homepage() {
       </div>
       <div className="px-12 my-10 ml-10 xl:px-0">
         {/* <CourseCarousel /> */}
-        <CourseCarousel publishedCourses={publishedCourses} purchasedCourses={purchasedCourses} cart={cart} createdCourses={createdCourses}/>
+        <CourseCarousel
+          publishedCourses={publishedCourses}
+          purchasedCourses={purchasedCourses}
+          cart={cart}
+          createdCourses={createdCourses}
+        />
       </div>
       <div className="flex items-center justify-center w-full h-auto text-gray-900 bg-gray-100">
         <div className="flex flex-col items-center justify-center w-4/5 h-full my-8">
