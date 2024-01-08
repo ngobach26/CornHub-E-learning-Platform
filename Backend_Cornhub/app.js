@@ -12,6 +12,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+const uploadRouter = require('./routes/Upload');
+app.use("/api/upload", uploadRouter);
+
 const authRouter = require("./routes/Auth")
 app.use("/api/auth", authRouter);
 

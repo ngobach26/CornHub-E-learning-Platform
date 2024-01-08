@@ -28,7 +28,7 @@ const columns = [
   {
     field: "status",
     headerName: "Status",
-    width: 80,
+    width: 100,
     type: "string",
     enum: ['waiting_ac','published','banned','waiting_del','updated'],
     sortable: false,
@@ -41,9 +41,9 @@ const columns = [
     filterable: false,
   },
   {
-    field: "language",
-    headerName: "Language",
-    width: 80,
+    field: "author",
+    headerName: "Author ID",
+    width: 100,
     type: "string",
     sortable: false,
   },
