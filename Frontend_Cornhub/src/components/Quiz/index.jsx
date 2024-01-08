@@ -68,7 +68,7 @@ const Quiz = ({ quizData }) => {
   };
 
   return (
-    <Paper elevation={3} style={{ padding: '20px', margin: '20px', maxWidth: '800px' }}>
+    <Paper elevation={3} style={{ padding: '20px', margin: '20px', maxWidth: '800px', marginLeft: '200px' }}>
       <Typography variant="h4" style={{ marginBottom: '20px' }}>Take the Quiz</Typography>
       <LinearProgress variant="determinate" value={progress} style={{ marginBottom: '20px' }}/>
       {quizData.map((question, qIndex) => (

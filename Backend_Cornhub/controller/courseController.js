@@ -81,8 +81,19 @@ const getPurchasedCourses = async (req, res) => {
             {
                 path: 'joinedCourses.completedLessons', 
                 model: 'Lesson' 
-            }
+            },
         ])
+
+        if (userWithPurchasedCourses.joinedCourses && userWithPurchasedCourses.joinedCourses.length > 0) {
+            for (let joinedCourse of userWithPurchasedCourses.joinedCourses) {
+                if (joinedCourse.courseId) { // Ensuring that courseId exists
+                    joinedCourse.courseId = await joinedCourse.courseId.populate({
+                        path: 'author',
+                        model: 'User'
+                    });
+                }
+            }
+        }
 
         res.status(200).json({purchasedCourses: userWithPurchasedCourses.joinedCourses});
     } catch (error) {

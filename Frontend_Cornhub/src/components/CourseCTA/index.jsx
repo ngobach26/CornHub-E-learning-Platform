@@ -7,7 +7,7 @@ import api from "../../services/cartAPI";
 import Button from "../Button";
 import { useAuthContext } from "../../hooks/useAuthContext";
 
-const CourseCTA = ({ isPurchased, courseID, isInCart }) => {
+const CourseCTA = ({ isPurchased, courseID, isInCart, belongToUser }) => {
   const navigate = useNavigate();
   const { user } = useAuthContext();
 
@@ -38,11 +38,9 @@ const CourseCTA = ({ isPurchased, courseID, isInCart }) => {
     
   };
 
-  
-
   return (
     <div className="flex gap-3 my-3">
-      {isPurchased ? (
+      {(belongToUser || isPurchased) ? (
         <Button
           label="Go to course"
           className="w-full py-3 font-semibold"

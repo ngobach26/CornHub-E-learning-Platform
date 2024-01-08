@@ -7,22 +7,21 @@ import api from "../../services/searchAPI"
 
 export default function MyLearning() {
   const { user } = useAuthContext();
-  const [purchased, setPurchased] = useState([]);
-  const [publishedCourses, setPublishedCourses] = useState([]);
+  const [purchasedCourses, setPurchasedCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
     
   useEffect(() => {
     const fetchPublishedCourses = async () => {
       try {
-        const {courses} = await api.getCourses();
-        setPublishedCourses(courses);
         if (user){
           const {purchasedCourses} = await api.getPurchasedCourses(user.token);
-          setPurchased((prevPurchased) => [...prevPurchased, ...purchasedCourses]);
-          console.log("Hihihi", purchasedCourses);
-          console.log("hihi", purchased);
+          console.log(purchasedCourses)
+          setPurchasedCourses(purchasedCourses.map(course => course.courseId));
         }
       } catch (error) {
         console.error("Error fetching published courses:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -31,7 +30,15 @@ export default function MyLearning() {
   
 //   const renderCourses = ({ purchasedCourses, cart }) => {
   const renderCourses = () => {
-    return <div className="flex gap-5">hello</div>;
+    return loading ? <h1>Loading...</h1> : (
+    <div className="flex flex-wrap gap-10">
+      {purchasedCourses.map((course) => (
+        <div key={course._id} className="w-60">
+          <CourseInfoCard course={course} isPurchased={true}/>
+        </div>
+      ))}
+    </div>
+    )
   };
 
   return (

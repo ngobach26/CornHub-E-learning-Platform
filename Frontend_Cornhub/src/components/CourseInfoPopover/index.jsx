@@ -20,10 +20,10 @@ const Info = styled(({ className, ...props }) => (
   },
 }));
 
-const CourseInfoPopover = ({ children, course, isPurchased, courseID, isInCart }) => {
+const CourseInfoPopover = ({ children, course, isPurchased, courseID, isInCart, belongToUser }) => {
   console.log(course);
   const renderHighlights = () => {
-    if (!course.outcomes[0]) return null;
+    if (!course.outcomes || !course.outcomes[0]) return null;
     const topHighlights = course.outcomes[0].replace(/\[|\]/g, "").split(",");
     return (
       <div className="flex flex-col gap-2 mt-2 text-sm">
@@ -43,7 +43,7 @@ const CourseInfoPopover = ({ children, course, isPurchased, courseID, isInCart }
         <h3 className="text-lg font-semibold">{course.courseTitle}</h3>
         <p className="text-sm text-gray-400">{course.level}</p>
         {renderHighlights()}
-        <CourseCTA isPurchased={isPurchased} courseID={course._id} isInCart={isInCart}/>
+        <CourseCTA isPurchased={isPurchased} courseID={course._id} isInCart={isInCart} belongToUser={belongToUser}/>
       </div>
     );
   };

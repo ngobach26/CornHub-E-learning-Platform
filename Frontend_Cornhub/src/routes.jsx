@@ -125,7 +125,7 @@ export default function Router() {
         <Route path="home" element={<AdminHome />} />
         <Route path="users" element={<AdminUsers />} />
         <Route path="courses" element={<AdminCourses />} />
-        <Route path="users/:id" element={<AdminUser />} />
+        <Route path="users/:id" element={<AdminUser id=""/>} />
       </Route>
       <Route
         path="/login"

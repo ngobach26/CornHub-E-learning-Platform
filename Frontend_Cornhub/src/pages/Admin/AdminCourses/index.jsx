@@ -142,6 +142,9 @@ const AdminCourses = () => {
               <button onClick={() => handleApprove(params.row._id)}>
                 <img src="/accept.png" className="object-cover w-5 h-5 m-1" />
               </button>
+              <button onClick={() => handleBan(params.row._id)}>
+                <img src="/reject.png" className="object-cover w-5 h-5 m-1" />
+              </button>
               <button onClick={() => handleDelete(params.row._id)}>
                 <img src="/delete.svg" className="object-cover w-5 h-5 m-1" />
               </button>
@@ -164,6 +167,13 @@ const AdminCourses = () => {
                 <img src="/accept.png" className="object-cover w-5 h-5 m-1" />
               </button>
             </div>           
+          )}
+          {(params.row.status === 'published') &&(
+            <div>
+              <button onClick={() => handleBan(params.row._id)}>
+                <img src="/reject.png" className="object-cover w-5 h-5 m-1" />
+              </button>
+            </div> 
           )}
         </div>
       );

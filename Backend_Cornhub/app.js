@@ -18,8 +18,8 @@ app.use("/api/upload", uploadRouter);
 const authRouter = require("./routes/Auth")
 app.use("/api/auth", authRouter);
 
-const courseRouter = require("./routes/Instructor")
-app.use("/api/instructor", courseRouter);
+const instructorRouter = require("./routes/Instructor")
+app.use("/api/instructor", instructorRouter);
 
 const userRouter = require("./routes/User")
 app.use("/api/user", userRouter);
@@ -30,8 +30,8 @@ app.use("/api/cart", cartRouter);
 const adminRouter = require("./routes/Admin")
 app.use("/api/admin", adminRouter);
 
-const searchRouter = require("./routes/Search")
-app.use("/api/course", searchRouter);
+const courseRouter = require("./routes/Course")
+app.use("/api/course", courseRouter);
 
 app.listen(process.env.PORT, () => {
     console.log(`Listening on port ${process.env.PORT}`);

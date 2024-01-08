@@ -5,7 +5,7 @@ import 'react-multi-carousel/lib/styles.css'
 
 import CourseInfoCard from "../CourseInfoCard";
 
-const CourseCarousel = ({ publishedCourses, purchasedCourses, cart }) => {
+const CourseCarousel = ({ publishedCourses, purchasedCourses, cart, createdCourses }) => {
   // const { data } = props;
   const categories = ["Information Technology", "Business", "Finance and accouting", "Editing and design", "Music", "Fitness", "Self development"]
   const coursesArray = publishedCourses;
@@ -44,6 +44,9 @@ const CourseCarousel = ({ publishedCourses, purchasedCourses, cart }) => {
       }
       return false;
     }
+  
+    const belongToUser = (id) => createdCourses.some(createdCourse => createdCourse._id===id);
+    
     return (
       <Carousel responsive={responsive} showDots={true}>
         {filteredCourses.map((course) => (
@@ -52,6 +55,7 @@ const CourseCarousel = ({ publishedCourses, purchasedCourses, cart }) => {
               course={course} 
               isPurchased={isPurchased(course._id)} 
               isInCart={isInCart(course._id)}
+              belongToUser={belongToUser(course._id)}
             />
           </SwiperSlide>
         ))}

@@ -82,4 +82,19 @@ const deleteCourse = async (token, id) => {
     }
 };
 
-export default { listUsers, listCourses, acceptCourse, denyCourse, deleteCourse };
+const getUserById = async (token, id) => {
+    try{
+        const response = await axios.get(`${baseUrl}/user/${id}`, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            }
+        });
+        return response.data;
+    }
+    catch(err){
+        console.log(err);    
+    }
+};
+
+export default { listUsers, listCourses, acceptCourse, denyCourse, deleteCourse, getUserById };

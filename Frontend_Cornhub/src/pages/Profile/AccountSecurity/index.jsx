@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import { Link } from "react-router-dom";
 import Footer from "../../../components/Footer";
 import Navbar from "../../../components/Navbar";
 import { Avatar } from "@mui/material";
@@ -13,7 +14,37 @@ export default function AccountSecurity() {
   const [ retypePassword, setRetypePassword ] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
-
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    currentjob: "",
+    introduction: "",
+    website: "",
+    twitter: "",
+    facebook: "",
+    linkedin: "",
+  });
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const getData = await api.getProfile(user.token);
+        setFormData({
+          firstName: getData.firstName || "",
+          lastName: getData.lastName || "",
+          currentjob: getData.currentjob || "",
+          introduction: getData.introduction || "",
+          website: getData.website || "",
+          twitter: getData.twitter || "",
+          facebook: getData.facebook || "",
+          linkedin: getData.linkedin || "", 
+        });
+        console.log(formData);
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+      }
+    };
+    fetchData();
+  }, [user.token]);
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
@@ -65,37 +96,37 @@ export default function AccountSecurity() {
               className="z-20 flex h-screen transition-transform -translate-x-full border w-80 left-30 top-30 sm:translate-x-0"
               aria-label="Sidebar"
             >
-              <div className="h-full px-3 py-4 overflow-y-auto bg-gray-300 dark:bg-gray-800">
+              <div className="h-full px-3 py-4 overflow-y-auto bg-gray-300 dark:bg-gray-500">
                 <Avatar
                   sx={{ width: 48, height: 48 }}
                   className="items-center mx-20"
                 />
                 <div className="py-3 font-bold text-center text-md">
-                  {user.firstName} {user.lastName}
+                {formData.firstName} {formData.lastName}
                 </div>
                 <div className="pb-3 text-sm italic">
-                  {user.currentjob}
+                  {formData.currentjob}
                 </div>
                 <ul className="space-y-2 font-medium">
                   <li>
-                    <a
-                      href="/view-public-profile"
+                    <Link
+                      to="/view-public-profile"
                       className="flex items-center p-2 text-gray-900 rounded-lg n dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                     >
                       <span className="flex-1 ml-3 whitespace-nowrap">
                         View public profile
                       </span>
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a
-                      href="/user-profile-editing"
+                    <Link
+                      to="/user-profile-editing"
                       className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                     >
                       <span className="flex-1 ml-3 whitespace-nowrap">
                         Profile
                       </span>
-                    </a>
+                    </Link>
                   </li>
                   <li>
                     <a
@@ -108,14 +139,14 @@ export default function AccountSecurity() {
                     </a>
                   </li>
                   <li>
-                    <a
-                      href="/account-security"
+                    <Link
+                      to="/account-security"
                       className="flex items-center p-2 text-gray-900 rounded-lg bg-stone-400 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                     >
                       <span className="flex-1 ml-3 whitespace-nowrap">
                         Account Security
                       </span>
-                    </a>
+                    </Link>
                   </li>
                   <li>
                     <a
