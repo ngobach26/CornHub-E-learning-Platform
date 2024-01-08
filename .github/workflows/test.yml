@@ -28,4 +28,3 @@ jobs:
         cache: 'npm'
     - run: cd Frontend_Cornhub;npm install
     - run: cd Backend_Cornhub;npm install
-    - run: cd Admin_Cornhub;npm install

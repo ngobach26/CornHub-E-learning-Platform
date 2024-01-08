@@ -1,21 +1,26 @@
-import React,{ useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import Footer from "../../../components/Footer";
 import Navbar from "../../../components/Navbar";
 import { Avatar, stepContentClasses } from "@mui/material";
 import { useAuthContext } from "../../../hooks/useAuthContext";
 import api from "../../../services/userAPI";
 import { Snackbar } from "@mui/material";
+import { Link } from "react-router-dom";
 
 export default function UserProfileEditing() {
   const { user, dispatch } = useAuthContext();
-  const editableDivRef = useRef();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
-  let [formData, setFormData] = useState({ 
-    firstName: user.firstName, lastName: user.lastName, currentjob: user.currentjob, 
-    introduction: user.introduction,
-    website: user.website, twitter: user.twitter, facebook: user.facebook, linkedin: user.linkedin
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    currentjob: "",
+    introduction: "",
+    website: "",
+    twitter: "",
+    facebook: "",
+    linkedin: "",
   });
 
   const handleChange = (event) => {
@@ -25,87 +30,92 @@ export default function UserProfileEditing() {
     setFormData((prevalue) => {
       return {
         ...prevalue,
-        [name]: value
+        [name]: value,
       };
     });
   };
-
-  const handleChangeIntro = () => {
-    const newIntroduction = editableDivRef.current.innerText;
-
-    setFormData((prevalue) => {
-      return {
-        ...prevalue,
-        introduction: newIntroduction,
-      };
-    });
-  };
-
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const getData = await api.getProfile(user.token);
+        setFormData({
+          firstName: getData.firstName || "",
+          lastName: getData.lastName || "",
+          currentjob: getData.currentjob || "",
+          introduction: getData.introduction || "",
+          website: getData.website || "",
+          twitter: getData.twitter || "",
+          facebook: getData.facebook || "",
+          linkedin: getData.linkedin || "", 
+        });
+        console.log(formData);
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+      }
+    };
+    fetchData();
+  }, [user.token]);
+  
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
 
   const handleSaveClick = async () => {
-    try{
+    try {
       const updatedUser = await api.updateProfile(user.token, formData);
 
       // Update the user context with the updated user data if needed
-      // UpdateData(updatedUser); 
+      // UpdateData(updatedUser);
       dispatch({ type: "UPDATE_PROFILE", payload: updatedUser });
-      
+
       setSnackbarMessage("All changes saved successfully.");
       setSnackbarOpen(true);
-    } catch(error){
+    } catch (error) {
       setSnackbarMessage("Error updating profile.");
       setSnackbarOpen(true);
     }
   };
-  
+
   return (
     <>
       <Navbar />
       <div className="flex overflow-auto">
-        {" "}
-        {/* Sidebar and Form Container */}
         <div className="flex-1">
-          <div className="z-20 flex h-screen mx-10 my-2 border">
-            {" "}
-            {/*Sidebar*/}
+          <div className="z-20 flex h-screen mx-10 my-2">
             <div
-              className="z-20 flex h-screen transition-transform -translate-x-full border w-80 left-30 top-30 sm:translate-x-0"
+              className="z-20 flex h-screen transition-transform -translate-x-full w-80 left-30 top-30 sm:translate-x-0"
               aria-label="Sidebar"
             >
-              <div className="h-full px-3 py-4 overflow-y-auto bg-gray-300 dark:bg-gray-800">
+              <div className="h-full px-3 py-4 overflow-y-auto bg-gray-300 dark:bg-gray-500">
                 <Avatar
                   sx={{ width: 48, height: 48 }}
                   className="items-center mx-20"
                 />
                 <div className="py-3 font-bold text-center text-md">
-                  {user.firstName} {user.lastName}
+                  {formData.firstName} {formData.lastName}
                 </div>
-                <div className="pb-3 text-sm italic">
-                  {user.currentjob}
-                </div>
+                <div className="pb-3 text-sm italic">{formData.currentjob}</div>
                 <ul className="space-y-2 font-medium">
                   <li>
-                    <a
-                      href="/view-public-profile"
+                    <Link
+                      to="/view-public-profile"
                       className="flex items-center p-2 text-gray-900 rounded-lg n dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                     >
                       <span className="flex-1 ml-3 whitespace-nowrap">
                         View public profile
                       </span>
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a
-                      href="/userprofileediting"
+                    <Link
+                      to="/userprofileediting"
                       className="flex items-center p-2 text-gray-900 rounded-lg bg-stone-400 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                     >
                       <span className="flex-1 ml-3 whitespace-nowrap">
                         Profile
                       </span>
-                    </a>
+                    </Link>
                   </li>
                   <li>
                     <a
@@ -118,14 +128,14 @@ export default function UserProfileEditing() {
                     </a>
                   </li>
                   <li>
-                    <a
-                      href="/account-security"
+                    <Link
+                      to="/account-security"
                       className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                     >
                       <span className="flex-1 ml-3 whitespace-nowrap">
                         Account Security
                       </span>
-                    </a>
+                    </Link>
                   </li>
                   <li>
                     <a
@@ -160,7 +170,7 @@ export default function UserProfileEditing() {
                 </ul>
               </div>
             </div>
-            <div className="w-full h-screen">
+            <div className="w-full overflow-auto">
               <div className="p-10 text-center border ml-300">
                 <span className="text-2xl font-bold">
                   Public profile
@@ -172,81 +182,108 @@ export default function UserProfileEditing() {
                 <div className="p-5 text-left">
                   <span className="my-3 text-base font-bold">Basics:</span>
                   <form action="" className="p-5">
+                    <span className="text-xs font-semibold">
+                      *Please provide your first name and last name
+                    </span>
                     <input
                       className="w-full h-10 px-3 my-2 border border-black "
                       type="text"
-                      placeholder={user.firstName}
-                      onChange={handleChange} name = "firstName"
+                      placeholder={formData.firstName}
+                      onBlur={handleChange}
+                      name="firstName"
                     />
-                    <br />
                     <input
                       className="w-full h-10 px-3 my-2 border border-black "
                       type="text"
-                      placeholder={user.lastName}
-                      onChange={handleChange} name="lastName"
+                      placeholder={formData.lastName}
+                      onBlur={handleChange}
+                      name="lastName"
                     />
-                    <br />
-                    <input
-                      className="w-full h-10 px-3 my-2 border border-black "
-                      type="text"
-                      placeholder={user.currentjob}
-                      onChange={handleChange} name="currentjob"
-                    />
+                    <p>
+                      <br />
+                    </p>
                     <span className="text-xs font-semibold">
                       *Add a professional title, or a job position
                     </span>
-                    <div
-                      contenteditable="true"
-                      ref={editableDivRef}
-                      className="w-full h-20 px-3 my-2 border border-black "
-                      type="text" onBlur={handleChangeIntro} name="introduction"
-                    >
-                      <p>
-                        <br />
-                      </p>
-                    </div>
+                    <input
+                      className="w-full h-10 px-3 my-2 border border-black "
+                      type="text"
+                      placeholder={formData.currentjob}
+                      onBlur={handleChange}
+                      name="currentjob"
+                    />
+                    <p>
+                      <br />
+                    </p>
                     <span className="text-xs font-semibold">
                       *Write a brief introduction about you!
                     </span>
+                    <input
+                      contenteditable="true"
+                      className="w-full h-20 px-3 my-2 border border-black "
+                      type="text"
+                      placeholder={formData.introduction}
+                      onBlur={handleChange}
+                      name="introduction"
+                    />
                   </form>
                 </div>
-              </div>
-              <div className="border">
-                <div className="p-5 text-left">
-                  <span className="my-3 text-base font-bold">Links:</span>
-                  <form action="" className="p-5">
-                    <input
-                      className="w-full h-10 px-3 my-2 border border-black "
-                      type="text"
-                      placeholder={user.website}
-                      onChange={handleChange} name="website"
-                    />
-                    <input
-                      className="w-full h-10 px-3 my-2 border border-black "
-                      type="text"
-                      placeholder={user.twitter}
-                      onChange={handleChange} name="twitter"
-                    />
-                    <input
-                      className="w-full h-10 px-3 my-2 border border-black "
-                      type="text"
-                      placeholder={user.facebook}
-                      onChange={handleChange} name="facebook"
-                    />
-                    <input
-                      className="w-full h-10 px-3 my-2 border border-black "
-                      type="text"
-                      placeholder={user.linkedin}
-                      onChange={handleChange} name="linkedin"
-                    />
-                  </form>
-                  <span className="p-5">
-                    <button className="px-4 py-2 font-bold text-white bg-gray-500 border rounded hover:bg-blue"
-                    onClick={handleSaveClick}
-                    >
-                      Save
-                    </button>
-                  </span>
+                <div className="">
+                  <div className="p-5 text-left">
+                    <span className="my-3 text-base font-bold">
+                      Reference links:
+                    </span>
+                    <form action="" className="p-5">
+                      <span className="text-xs font-semibold">
+                        Your website
+                      </span>
+                      <input
+                        className="w-full h-10 px-3 my-2 border border-black "
+                        type="text"
+                        placeholder={formData.website}
+                        onChange={handleChange}
+                        name="website"
+                      />
+                      <span className="text-xs font-semibold">
+                        Your twitter
+                      </span>
+                      <input
+                        className="w-full h-10 px-3 my-2 border border-black "
+                        type="text"
+                        placeholder={formData.twitter}
+                        onChange={handleChange}
+                        name="twitter"
+                      />
+                      <span className="text-xs font-semibold">
+                        Your facebook
+                      </span>
+                      <input
+                        className="w-full h-10 px-3 my-2 border border-black "
+                        type="text"
+                        placeholder={formData.facebook}
+                        onChange={handleChange}
+                        name="facebook"
+                      />
+                      <span className="text-xs font-semibold">
+                        Your linkedin
+                      </span>
+                      <input
+                        className="w-full h-10 px-3 my-2 border border-black "
+                        type="text"
+                        placeholder={formData.linkedin}
+                        onChange={handleChange}
+                        name="linkedin"
+                      />
+                    </form>
+                    <span className="p-5">
+                      <button
+                        className="px-4 py-2 font-bold text-white bg-gray-500 border rounded hover:bg-blue"
+                        onClick={handleSaveClick}
+                      >
+                        Save
+                      </button>
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -254,14 +291,12 @@ export default function UserProfileEditing() {
         </div>
       </div>
       <Snackbar
-          anchorOrigin={{ vertical: "top", horizontal: "center" }}
-          open={snackbarOpen}
-          autoHideDuration={6000}
-          onClose={handleSnackbarClose}
-          message={snackbarMessage}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        message={snackbarMessage}
       />
-      <Footer />
     </>
   );
 }
-
