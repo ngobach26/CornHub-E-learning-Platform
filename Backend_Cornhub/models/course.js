@@ -36,7 +36,9 @@ const courseSchema = Schema(
         price: {
             type: Number,
             default: 0,
+            min: [0, 'Price must be greater than or equal to 0']
         },
+        
         contents: [Section.schema],
         totalRating: {
             type: Number,
