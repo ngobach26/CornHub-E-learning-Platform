@@ -51,8 +51,25 @@ const getCourseById = async (id) => {
   }
 }
 
+const updateRating = async (id, token, rating) => {
+  try {
+    const response = await axios.post(`${baseUrl}/rating/${id}`, {rating}, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("Course: ", response.data);
+    console.log(typeof response.data);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export default {
   getCourses,
   getPurchasedCourses,
-  getCourseById
+  getCourseById,
+  updateRating
 };

@@ -5,6 +5,16 @@ import LanguageIcon from "@mui/icons-material/Language";
 import OndemandVideoIcon from "@mui/icons-material/OndemandVideo";
 import AllInclusiveIcon from "@mui/icons-material/AllInclusive";
 import DoneIcon from "@mui/icons-material/Done";
+import Rating from '@mui/material/Rating';
+
+import { Button } from "@mui/material";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 import Description from "../../components/CourseLandingPage/Description";
 import CurriculumAccordion from "../../components/Curriculum/CurriculumAccordion";
@@ -46,6 +56,10 @@ export default function CourseLandingPage() {
   const [cart, setCart] = useState([]);
   const [createdCourses, setCreatedCourses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [rating, setRating] = useState(null);
+  const [oldRating, setOldRating] = useState(null);
+  const [openConfirmationDialog, setOpenConfirmationDialog] = useState(false);
+  const [openThankYouSnackbar, setOpenThankYouSnackbar] = useState(false);
 
   const isPurchased = (id) => {
     for (let purchasedCourse of purchasedCourses) {
@@ -63,6 +77,31 @@ export default function CourseLandingPage() {
   };
 
   const belongToUser = (id) => createdCourses.some(createdCourse => createdCourse._id===id);
+
+  const handleRatingChange = async (e, value) => {
+    if (value != null) {
+      setRating(value);
+      setOpenConfirmationDialog(true);
+    }
+  }
+  
+  const handleCloseDialog = () => {
+    setRating(oldRating);
+    setOpenConfirmationDialog(false);
+  }
+
+  const handleConfirmRating = async () => {
+    try {
+      await api.updateRating(id, user.token, rating);
+      setOldRating(rating);
+      setOpenConfirmationDialog(false);
+      setOpenThankYouSnackbar(true);
+    } catch (error) {
+      console.error("Error updating rating:", error);
+    }
+  };
+
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -99,10 +138,17 @@ export default function CourseLandingPage() {
         if (user) {
           const { purchasedCourses } = await api.getPurchasedCourses(user.token);
           setPurchasedCourses(purchasedCourses);
+
+          const userRating = purchasedCourses.find(purchasedCourse => purchasedCourse.courseId && purchasedCourse.courseId._id===id)?.rating;
+          if (userRating) {
+            setRating(userRating);
+            setOldRating(userRating);
+          }
+
           const getCart = await cartApi.viewCart(user.token);
           setCart(getCart);
           const getCreatedCourses = await instructorAPI.getPublishedCourse(user.token);
-          setCreatedCourses(getCreatedCourses);
+          setCreatedCourses(getCreatedCourses);        
         }
       } catch (error) {
         console.error("Error fetching course details:", error);
@@ -148,6 +194,63 @@ export default function CourseLandingPage() {
                 {courseDetail.language}
               </p>
             </div>
+            {isPurchased(id) && (
+              <div className="flex flex-col items-start my-3 mt-20">
+                <h3 className="text-lg font-semibold">{rating ? 'Your Rating' : 'Please rate our course'}</h3>
+                <Rating
+                  name="courseRating"
+                  value={rating}
+                  precision={0.5}
+                  onChange={handleRatingChange}
+                  size="large"  // Making the stars slightly bigger
+                  sx={{
+                    color: 'gold',  // Change the color of the stars
+                    '& .MuiRating-iconFilled': { color: '#ffc107' },
+                    '& .MuiRating-iconHover': { color: '#ff3d47' }
+                  }}
+                />
+              </div>
+            )}
+
+            <Dialog
+              open={openConfirmationDialog}
+              onClose={handleCloseDialog}
+            >
+              <DialogTitle>Confirm Rating</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  Are you sure you want to rate this course with {rating} stars?
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleCloseDialog} color="primary">
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleConfirmRating}
+                  color="primary"
+                  variant="contained"
+                >
+                  Confirm
+                </Button>
+              </DialogActions>
+            </Dialog>
+
+            <Snackbar
+              open={openThankYouSnackbar}
+              autoHideDuration={4000}
+              onClose={() => setOpenThankYouSnackbar(false)}
+            >
+              <MuiAlert
+                elevation={6}
+                variant="filled"
+                onClose={() => setOpenThankYouSnackbar(false)}
+                severity="success"
+              >
+                Thank you for your rating!
+              </MuiAlert>
+            </Snackbar>
+
           </div>
           {renderSidebar()}
         </div>
@@ -248,12 +351,6 @@ export default function CourseLandingPage() {
               ))}
             </div>
           </div>
-          {/* <Instructors data={course?.instructors} /> */}
-          {/* <Reviews
-              url={`http://localhost:3000/course/${slug}`}
-              id={course?.id}
-              title={slug}
-            /> */}
           <Reviews />
         </div>
       </div>
