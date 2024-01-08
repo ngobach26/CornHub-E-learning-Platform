@@ -3,6 +3,7 @@ import { styled } from "@mui/material/styles";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import DoneIcon from "@mui/icons-material/Done";
 import CourseCTA from "../CourseCTA";
+import { convertArr } from "../../utils/formatter";
 
 const Info = styled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -21,14 +22,14 @@ const Info = styled(({ className, ...props }) => (
 }));
 
 const CourseInfoPopover = ({ children, course, isPurchased, courseID, isInCart, belongToUser }) => {
-  console.log(course);
+  // console.log(course);
   const renderHighlights = () => {
     if (!course.outcomes || !course.outcomes[0]) return null;
-    const topHighlights = course.outcomes[0].replace(/\[|\]/g, "").split(",");
+    const topHighlights = convertArr(course.outcomes[0]);
     return (
       <div className="flex flex-col gap-2 mt-2 text-sm">
         {topHighlights.map((outcome, index) => (
-          <p key={index} className="flex gap-2 items-center">
+          <p key={index} className="flex items-center gap-2">
             <DoneIcon fontSize="small" color="success" />
             <span>{JSON.parse(outcome).points}</span>
           </p>

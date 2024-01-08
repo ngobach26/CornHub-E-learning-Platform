@@ -9,7 +9,6 @@ const CourseCarousel = ({ publishedCourses, purchasedCourses, cart, createdCours
   // const { data } = props;
   const categories = ["Information Technology", "Business", "Finance and accouting", "Editing and design", "Music", "Fitness", "Self development"]
   const coursesArray = publishedCourses;
-
   const responsive = {
     superLargeDesktop: {
       // the naming can be any, depends on you.

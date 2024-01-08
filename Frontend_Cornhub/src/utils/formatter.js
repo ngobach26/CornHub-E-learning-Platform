@@ -11,3 +11,25 @@ export function formatTime(seconds) {
 export function formatPrice(price) {
     return price.toLocaleString();
 }
+
+export function convertArr(input) {
+    let arr = [];
+    let getStr = "";
+    let check = 0;
+    for (let i of input) {
+        if (check === 0) {
+            if (i === ',' || i === '[' || i === ']') {
+                getStr = "";
+                continue;
+            }
+        }
+        getStr += i;
+        if (i === '}') {
+            arr.push(Object(getStr));
+            check = 0;
+            continue;
+        }
+        check = 1;
+    }
+    return arr;
+}
