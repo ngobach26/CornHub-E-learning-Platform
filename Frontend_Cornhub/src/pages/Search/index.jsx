@@ -6,6 +6,7 @@ import Layout from "../../components/Layout";
 import api from "../../services/searchAPI";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import CourseInfoCard from "../../components/CourseInfoCard";
+import { CircularProgress } from "@mui/material";
 
 export default function Search() {
   const [results, setResults] = useState([]);
@@ -15,24 +16,26 @@ export default function Search() {
   const { user } = useAuthContext();
 
   const isPurchased = (id) => {
-    for (let purchasedCourse of purchasedCourses){
-      if (purchasedCourse.courseId && purchasedCourse.courseId._id===id) return true;
+    for (let purchasedCourse of purchasedCourses) {
+      if (purchasedCourse.courseId && purchasedCourse.courseId._id === id)
+        return true;
     }
     return false;
-  }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const keyword = searchParams.get('keyword'); 
-        const {courses} = await api.getCourses(keyword);
-        setResults(courses); 
-        if (user){
-          const {purchasedCourses} = await api.getPurchasedCourses(user.token);
+        const keyword = searchParams.get("keyword");
+        const { courses } = await api.getCourses(keyword);
+        setResults(courses);
+        if (user) {
+          const { purchasedCourses } = await api.getPurchasedCourses(
+            user.token
+          );
           setPurchasedCourses(purchasedCourses);
         }
-        
       } catch (error) {
         console.error("Failed to fetch courses:", error);
       } finally {
@@ -45,7 +48,11 @@ export default function Search() {
 
   const renderContent = () => {
     if (isLoading) {
-      return <p>Loading...</p>; // You can replace this with a proper loading spinner
+      return (
+        <CenterAligned>
+          <CircularProgress />
+        </CenterAligned>
+      ); 
     }
 
     if (results.length === 0) {
@@ -63,11 +70,14 @@ export default function Search() {
 
     return (
       <>
-        <p className="my-5 text-2xl font-bold">{results.length} results</p>
-        <div className="flex flex-wrap gap-10">
+        <p className="my-5 text-2xl font-bold">{results.length} result(s)</p>
+        <div className="flex flex-wrap gap-10 ml-10">
           {results.map((course) => (
             <div key={course._id} className="w-60">
-              <CourseInfoCard course={course} isPurchased={isPurchased(course._id)}/>
+              <CourseInfoCard
+                course={course}
+                isPurchased={isPurchased(course._id)}
+              />
             </div>
           ))}
         </div>
@@ -78,7 +88,9 @@ export default function Search() {
   return (
     <>
       <div className="px-10 my-10 xl:px-0">
-        <p className="mb-5 text-2xl font-semibold">Search Results for "{searchParams.get('keyword')}"</p>
+        <p className="mb-5 text-2xl font-semibold">
+          Search Results for "{searchParams.get("keyword")}"
+        </p>
       </div>
       {renderContent()}
     </>
