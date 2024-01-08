@@ -12,14 +12,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-const uploadRouter = require('./routes/Upload');
-app.use("/api/upload", uploadRouter);
-
 const authRouter = require("./routes/Auth")
 app.use("/api/auth", authRouter);
 
-const instructorRouter = require("./routes/Instructor")
-app.use("/api/instructor", instructorRouter);
+const courseRouter = require("./routes/Instructor")
+app.use("/api/instructor", courseRouter);
 
 const userRouter = require("./routes/User")
 app.use("/api/user", userRouter);
@@ -30,8 +27,8 @@ app.use("/api/cart", cartRouter);
 const adminRouter = require("./routes/Admin")
 app.use("/api/admin", adminRouter);
 
-const courseRouter = require("./routes/Course")
-app.use("/api/course", courseRouter);
+const searchRouter = require("./routes/Course")
+app.use("/api/course", searchRouter);
 
 app.listen(process.env.PORT, () => {
     console.log(`Listening on port ${process.env.PORT}`);

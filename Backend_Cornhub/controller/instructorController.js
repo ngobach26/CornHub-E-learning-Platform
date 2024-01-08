@@ -1,5 +1,3 @@
-const express = require("express");
-const mongoose = require("mongoose");
 const Course = require("../models/course");
 const Section = require("../models/section");
 const Lesson = require("../models/lesson");
@@ -276,7 +274,7 @@ const updateCourse = async (req, res) => {
                     const section = course.contents.id(sectionLesson.sectionId);
                     if (section && section.content) {
                         sectionLesson.lessons.forEach(lessonId => {
-                            const lessonIndex = section.content.findIndex(lesson => lesson._id.toString() === lessonId);
+                            const lessonIndex = section.jjcontent.findIndex(lesson => lesson._id.toString() === lessonId);
                             if (lessonIndex !== -1) {
                                 section.content.splice(lessonIndex, 1);
                             }
@@ -290,7 +288,9 @@ const updateCourse = async (req, res) => {
         course.markModified('contents');
 
         // Save the updated course
-        course.status = 'updated';
+        if(course.status != 'waiting_ac'){
+            course.status = 'updated';
+        }
         await course.save();
         res.status(200).json({ message: "Course updated successfully", course });
     } catch (error) {
