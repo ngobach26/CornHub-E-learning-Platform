@@ -61,7 +61,11 @@ const Quiz = ({ quizData }) => {
     ).length;
     const newProgress = (answeredQuestions / quizData.length) * 100;
     setProgress(newProgress);
-  }, [selectedAnswers, quizData]);
+  }, [selectedAnswers]);
+
+  useEffect(() => {
+    handleRetry();
+  }, [quizData])
 
   const allQuestionsAnswered = () => {
     return quizData.every((_, index) => selectedAnswers[index] && selectedAnswers[index].length > 0);
