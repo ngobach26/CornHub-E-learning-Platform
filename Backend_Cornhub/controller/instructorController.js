@@ -141,7 +141,9 @@ const updateWithImage = async (req, res) => {
             course.coverImage = req.file.filename;
         }
 
-        course.status = 'updated';
+        if(course.status !== 'waiting_ac'){
+            course.status = 'updated';
+        }
         await course.save();
         res.status(200).json({ message: "Course updated successfully", course });
     } catch (error) {
@@ -284,13 +286,13 @@ const updateCourse = async (req, res) => {
             }
         }
 
-        // Mark the contents array as modified
-        course.markModified('contents');
-
         // Save the updated course
-        if(course.status != 'waiting_ac'){
+        if(course.status !== 'waiting_ac'){
             course.status = 'updated';
         }
+
+        // Mark the contents array as modified
+        course.markModified('contents');
         await course.save();
         res.status(200).json({ message: "Course updated successfully", course });
     } catch (error) {
